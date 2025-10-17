@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PilotMyVan 🚐
 
-## Getting Started
+Application de gestion d'entretien pour vans et fourgons aménagés.
 
-First, run the development server:
+## Stack Technique
+
+- **Next.js 15** (App Router)
+- **React 19**
+- **TypeScript**
+- **Tailwind CSS v4**
+- **Framer Motion** - Animations
+- **Lottie React** - Icônes animées
+- **@mantine/hooks** - Hooks utilitaires
+
+## Palette de couleurs
+
+- **Noir:** `#0a0a0a` (primary)
+- **Gris foncé:** `#1a1a1a`
+- **Orange:** `#ff6b35` (secondary/accent)
+- **Orange clair:** `#ff8c61`
+- **Orange foncé:** `#e85a2a`
+
+## Installation
+
+```bash
+npm install
+```
+
+## Développement
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvrir [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Images nécessaires
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Voir le fichier `IMAGES_NEEDED.md` pour la liste des images à créer/ajouter.
 
-## Learn More
+## Structure du projet
 
-To learn more about Next.js, take a look at the following resources:
+```
+app/
+├── page.tsx              # Landing page
+├── layout.tsx            # Layout global
+└── globals.css           # Styles globaux
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+components/
+├── layout/
+│   ├── Header.tsx        # Navigation
+│   └── Footer.tsx        # Footer
+└── home/
+    ├── HeroSection.tsx       # Section hero
+    ├── FeaturesSection.tsx   # Fonctionnalités
+    ├── PricingSection.tsx    # Tarifs
+    └── CTASection.tsx        # Call to action
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+hooks/
+└── useIsMobile.ts        # Hook responsive
 
-## Deploy on Vercel
+lib/
+└── animations.ts         # Config animations Framer Motion
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Prochaines étapes
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [ ] Pages login/signup
+- [ ] Dashboard utilisateur
+- [ ] Système de rappels
+- [ ] Gestion des véhicules
+- [ ] Gestion des équipements
+- [ ] Base de données (MongoDB)
+- [ ] Authentification (NextAuth)
+- [ ] Notifications
