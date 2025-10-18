@@ -31,15 +31,15 @@ export function CTASection() {
           className="max-w-4xl mx-auto text-center"
         >
           <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6">
-            Prêt à ne plus{" "}
+            Prêt à rouler{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange to-orange-light">
-              jamais oublier
+              l&apos;esprit tranquille
             </span>{" "}
-            une révision ?
+            ?
           </h2>
           <p className="text-lg lg:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-              Commencez dès maintenant à suivre l&apos;entretien de votre van
-              et de tous vos équipements en toute simplicité.
+              Prenez soin de votre maison sur roues et concentrez-vous sur ce qui
+              compte vraiment : profiter de chaque kilomètre.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

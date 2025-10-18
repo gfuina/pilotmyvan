@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { usePathname } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const isHomepage = pathname === "/";
+  const { data: session } = useSession();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,32 +39,18 @@ export function Header() {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="relative z-10 flex items-center group">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-orange to-orange-light rounded-2xl flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300">
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"
-                  />
-                </svg>
-              </div>
-              <span className="text-xl font-bold text-white">
-                Pilot<span className="text-orange">My</span>Van
-              </span>
-            </div>
+          <Link href="/" className="relative z-10 flex flex-col group">
+            <span className="text-2xl font-bold text-white leading-none">
+              P<span className="text-orange">M</span>V
+            </span>
+            <span className="text-[10px] text-white/70 font-medium leading-none mt-0.5">
+              PilotMyVan
+            </span>
           </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
-            {menuItems.map((item, index) => (
+            {isHomepage && menuItems.map((item, index) => (
               <a
                 key={index}
                 href={item.href}
@@ -72,18 +60,46 @@ export function Header() {
                 <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
               </a>
             ))}
-            <Link
-              href="/login"
-              className="ml-4 px-6 py-2.5 bg-white text-black font-semibold rounded-2xl hover:bg-gray-100 transition-all duration-300"
-            >
-              Connexion
-            </Link>
-            <Link
-              href="/signup"
-              className="px-6 py-2.5 bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300"
-            >
-              Essai gratuit
-            </Link>
+            
+            {session ? (
+              <>
+                {session.user.isAdmin && (
+                  <Link
+                    href="/administration"
+                    className="ml-4 px-6 py-2.5 bg-orange text-white font-semibold rounded-2xl hover:bg-orange-dark transition-all duration-300"
+                  >
+                    Admin
+                  </Link>
+                )}
+                <Link
+                  href="/dashboard"
+                  className="ml-4 px-6 py-2.5 bg-white text-black font-semibold rounded-2xl hover:bg-gray-100 transition-all duration-300"
+                >
+                  Dashboard
+                </Link>
+                <button
+                  onClick={() => signOut({ callbackUrl: "/" })}
+                  className="px-6 py-2.5 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-2xl hover:bg-white/20 transition-all duration-300 border border-white/30"
+                >
+                  Déconnexion
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="ml-4 px-6 py-2.5 bg-white text-black font-semibold rounded-2xl hover:bg-gray-100 transition-all duration-300"
+                >
+                  Connexion
+                </Link>
+                <Link
+                  href="/signup"
+                  className="px-6 py-2.5 bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300"
+                >
+                  Essai gratuit
+                </Link>
+              </>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -128,7 +144,7 @@ export function Header() {
               className="lg:hidden overflow-hidden"
             >
               <nav className="py-4 space-y-2 bg-white/95 backdrop-blur-md rounded-b-3xl mt-4 shadow-xl">
-                {menuItems.map((item, index) => (
+                {isHomepage && menuItems.map((item, index) => (
                   <a
                     key={index}
                     href={item.href}
@@ -139,20 +155,52 @@ export function Header() {
                   </a>
                 ))}
                 <div className="pt-2 space-y-2 mx-2">
-                  <Link
-                    href="/login"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="block px-4 py-2 text-center bg-gray-100 text-black font-semibold rounded-2xl hover:bg-gray-200 transition-all duration-300"
-                  >
-                    Connexion
-                  </Link>
-                  <Link
-                    href="/signup"
-                    onClick={() => setIsMenuOpen(false)}
-                    className="block px-4 py-2 text-center bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-2xl hover:shadow-lg transition-all duration-300"
-                  >
-                    Essai gratuit
-                  </Link>
+                  {session ? (
+                    <>
+                      {session.user.isAdmin && (
+                        <Link
+                          href="/administration"
+                          onClick={() => setIsMenuOpen(false)}
+                          className="block px-4 py-2 text-center bg-orange text-white font-semibold rounded-2xl hover:bg-orange-dark transition-all duration-300"
+                        >
+                          Administration
+                        </Link>
+                      )}
+                      <Link
+                        href="/dashboard"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="block px-4 py-2 text-center bg-gray-100 text-black font-semibold rounded-2xl hover:bg-gray-200 transition-all duration-300"
+                      >
+                        Dashboard
+                      </Link>
+                      <button
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                          signOut({ callbackUrl: "/" });
+                        }}
+                        className="w-full px-4 py-2 text-center bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-2xl hover:shadow-lg transition-all duration-300"
+                      >
+                        Déconnexion
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        href="/login"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="block px-4 py-2 text-center bg-gray-100 text-black font-semibold rounded-2xl hover:bg-gray-200 transition-all duration-300"
+                      >
+                        Connexion
+                      </Link>
+                      <Link
+                        href="/signup"
+                        onClick={() => setIsMenuOpen(false)}
+                        className="block px-4 py-2 text-center bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-2xl hover:shadow-lg transition-all duration-300"
+                      >
+                        Essai gratuit
+                      </Link>
+                    </>
+                  )}
                 </div>
               </nav>
             </motion.div>

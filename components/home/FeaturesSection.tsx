@@ -28,7 +28,7 @@ export function FeaturesSection() {
       ),
       title: "Rappels intelligents",
       description:
-        "Recevez des notifications au bon moment pour chaque entretien de votre van et équipements.",
+        "Restez serein sur la route : recevez des notifications pour prendre soin de votre maison roulante au bon moment.",
     },
     {
       icon: (
@@ -48,7 +48,7 @@ export function FeaturesSection() {
       ),
       title: "Historique complet",
       description:
-        "Gardez une trace de tous les entretiens effectués avec dates, photos et factures.",
+        "Gardez précieusement la mémoire de votre van avec dates, photos et factures de chaque entretien.",
     },
     {
       icon: (
@@ -66,9 +66,9 @@ export function FeaturesSection() {
           />
         </svg>
       ),
-      title: "Multi-équipements",
+      title: "Tous vos équipements",
       description:
-        "Gérez tous vos équipements : moteur, frigo, chauffage, panneaux solaires, batteries...",
+        "Moteur, frigo, chauffage, panneaux solaires... Chaque élément de votre home sweet home est important.",
     },
     {
       icon: (
@@ -86,9 +86,9 @@ export function FeaturesSection() {
           />
         </svg>
       ),
-      title: "Statistiques détaillées",
+      title: "Budget maîtrisé",
       description:
-        "Analysez vos coûts d'entretien et anticipez vos prochaines dépenses.",
+        "Anticipez vos dépenses pour rouler sans stress et profiter pleinement de votre aventure.",
     },
     {
       icon: (
@@ -106,9 +106,9 @@ export function FeaturesSection() {
           />
         </svg>
       ),
-      title: "Application mobile",
+      title: "Toujours avec vous",
       description:
-        "Accédez à vos données partout, même en voyage. iOS et Android.",
+        "Où que la route vous mène, vos données vous suivent. Disponible sur iOS et Android.",
     },
     {
       icon: (
@@ -126,9 +126,9 @@ export function FeaturesSection() {
           />
         </svg>
       ),
-      title: "Synchronisation cloud",
+      title: "Vos données protégées",
       description:
-        "Vos données sont sauvegardées et synchronisées en temps réel.",
+        "Sauvegarde automatique et synchronisation en temps réel. Votre historique est en sécurité.",
     },
   ];
 
@@ -147,12 +147,12 @@ export function FeaturesSection() {
           <h2 className="text-4xl lg:text-5xl font-bold text-black mb-6">
             Tout ce dont vous avez besoin pour{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange to-orange-light">
-              piloter votre van
+              vivre sereinement
             </span>
           </h2>
           <p className="text-lg text-gray max-w-3xl mx-auto">
-            Des fonctionnalités pensées pour simplifier la maintenance et
-            prolonger la vie de votre véhicule.
+            Des fonctionnalités pensées pour les vanlifers qui veulent profiter de
+            la route sans se soucier des imprévus.
           </p>
         </motion.div>
 
@@ -186,12 +186,11 @@ export function FeaturesSection() {
               <div>
                 <h3 className="text-3xl lg:text-4xl font-bold text-white mb-6">
                   Une interface{" "}
-                  <span className="text-orange">simple et intuitive</span>
+                  <span className="text-orange">pensée pour la route</span>
                 </h3>
                 <p className="text-white/80 mb-6">
-                  Conçue pour être utilisée en quelques secondes, même en
-                  déplacement. Ajoutez un rappel, consultez votre historique,
-                  téléchargez vos factures.
+                  Simple, rapide, même avec un réseau faible. Parce que votre temps
+                  est précieux et la vraie vie est dehors, pas dans une app.
                 </p>
                 <ul className="space-y-3">
                   {[

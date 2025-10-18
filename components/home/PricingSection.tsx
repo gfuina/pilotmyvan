@@ -14,7 +14,7 @@ export function PricingSection() {
       name: "Gratuit",
       price: "0€",
       period: "/mois",
-      description: "Pour découvrir PilotMyVan",
+      description: "Pour commencer l'aventure",
       features: [
         "1 véhicule",
         "5 équipements maximum",
@@ -29,7 +29,7 @@ export function PricingSection() {
       name: "Pro",
       price: "2,99€",
       period: "/mois",
-      description: "Pour les passionnés",
+      description: "Pour les nomades confirmés",
       features: [
         "Véhicules illimités",
         "Équipements illimités",
@@ -64,8 +64,8 @@ export function PricingSection() {
             </span>
           </h2>
           <p className="text-lg text-gray max-w-3xl mx-auto">
-            Commencez gratuitement, puis choisissez le plan qui vous convient.
-            Sans engagement, annulez quand vous voulez.
+            Commencez gratuitement, évoluez à votre rythme.
+            Parce que la liberté, c&apos;est aussi de choisir sans engagement.
           </p>
         </motion.div>
 

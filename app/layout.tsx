@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Providers } from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,11 +15,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "PilotMyVan - Gérez l'entretien de votre van",
+    default: "PilotMyVan - Gérez l&apos;entretien de votre van",
     template: "%s | PilotMyVan",
   },
   description:
-    "Ne manquez plus jamais une révision. PilotMyVan vous aide à suivre l'entretien de votre van et de tous vos équipements.",
+    "Quand on vit sur la route, chaque entretien compte. PilotMyVan vous aide à prendre soin de votre maison roulante pour voyager l'esprit tranquille.",
   keywords: [
     "entretien van",
     "maintenance fourgon",
@@ -27,6 +28,8 @@ export const metadata: Metadata = {
     "vanlife",
     "entretien camping-car",
     "suivi maintenance",
+    "nomade",
+    "camion aménagé",
   ],
 };
 
@@ -40,7 +43,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

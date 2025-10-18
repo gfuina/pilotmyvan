@@ -1,0 +1,566 @@
+"use client";
+
+import { useState, useEffect, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import Image from "next/image";
+import EquipmentForm, { EquipmentFormData } from "./EquipmentForm";
+
+interface Equipment {
+  _id: string;
+  name: string;
+  description?: string;
+  categoryId: {
+    _id: string;
+    name: string;
+    level: number;
+  };
+  vehicleBrands: Array<{
+    _id: string;
+    name: string;
+    logo?: string;
+  }>;
+  equipmentBrands: Array<{
+    _id: string;
+    name: string;
+    logo?: string;
+  }>;
+  photos: string[];
+  manuals: Array<{
+    title: string;
+    url: string;
+    isExternal: boolean;
+  }>;
+}
+
+interface AddEquipmentModalProps {
+  vehicleId: string;
+  vehicleMake: string;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+export default function AddEquipmentModal({
+  vehicleId,
+  vehicleMake,
+  onClose,
+  onSuccess,
+}: AddEquipmentModalProps) {
+  const [activeTab, setActiveTab] = useState<"library" | "custom">("library");
+  
+  // Library state
+  const [equipments, setEquipments] = useState<Equipment[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchText, setSearchText] = useState("");
+  const [selectedVehicleBrand, setSelectedVehicleBrand] = useState<string>("");
+  const [selectedEquipmentBrand, setSelectedEquipmentBrand] = useState<string>("");
+  const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [vehicleBrands, setVehicleBrands] = useState<Array<{ _id: string; name: string }>>([]);
+  const [equipmentBrands, setEquipmentBrands] = useState<Array<{ _id: string; name: string }>>([]);
+  const [categories, setCategories] = useState<Array<{ _id: string; name: string; level: number; children?: unknown[] }>>([]);
+  
+  // Add equipment state
+  const [isAdding, setIsAdding] = useState(false);
+  const [error, setError] = useState("");
+  const [isCreatingEquipment, setIsCreatingEquipment] = useState(false);
+
+  useEffect(() => {
+    fetchEquipments();
+    fetchFilters();
+  }, []);
+
+  const fetchEquipments = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch("/api/equipments");
+      if (response.ok) {
+        const data = await response.json();
+        setEquipments(data.equipments);
+      }
+    } catch (error) {
+      console.error("Error fetching equipments:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchFilters = async () => {
+    try {
+      const [vbRes, ebRes, catRes] = await Promise.all([
+        fetch("/api/vehicle-brands"),
+        fetch("/api/admin/equipment-brands"),
+        fetch("/api/admin/categories"),
+      ]);
+
+      if (vbRes.ok) {
+        const data = await vbRes.json();
+        setVehicleBrands(data.brands);
+      }
+
+      if (ebRes.ok) {
+        const data = await ebRes.json();
+        setEquipmentBrands(data.brands);
+      }
+
+      if (catRes.ok) {
+        const data = await catRes.json();
+        // Flatten categories
+        type CategoryItem = { _id: string; name: string; level: number; children?: CategoryItem[] };
+        const flattenCategories = (cats: CategoryItem[], level = 1): CategoryItem[] => {
+          let result: CategoryItem[] = [];
+          for (const cat of cats) {
+            result.push({ ...cat, level });
+            if (cat.children && cat.children.length > 0) {
+              result = result.concat(flattenCategories(cat.children, level + 1));
+            }
+          }
+          return result;
+        };
+        setCategories(flattenCategories(data.categories));
+      }
+    } catch (error) {
+      console.error("Error fetching filters:", error);
+    }
+  };
+
+  // Real-time client-side filtering for ultra-smooth UX
+  const filteredEquipments = useMemo(() => {
+    let filtered = [...equipments];
+
+    // Text search
+    if (searchText.trim()) {
+      const search = searchText.toLowerCase();
+      filtered = filtered.filter(
+        (eq) =>
+          eq.name.toLowerCase().includes(search) ||
+          eq.description?.toLowerCase().includes(search) ||
+          eq.categoryId?.name?.toLowerCase().includes(search)
+      );
+    }
+
+    // Vehicle brand filter
+    if (selectedVehicleBrand) {
+      filtered = filtered.filter((eq) =>
+        eq.vehicleBrands.some((vb) => vb._id === selectedVehicleBrand)
+      );
+    }
+
+    // Equipment brand filter
+    if (selectedEquipmentBrand) {
+      filtered = filtered.filter((eq) =>
+        eq.equipmentBrands.some((eb) => eb._id === selectedEquipmentBrand)
+      );
+    }
+
+    // Category filter
+    if (selectedCategory) {
+      filtered = filtered.filter((eq) => eq.categoryId?._id === selectedCategory);
+    }
+
+    return filtered;
+  }, [equipments, searchText, selectedVehicleBrand, selectedEquipmentBrand, selectedCategory]);
+
+  const handleAddEquipment = async (equipmentId: string) => {
+    setIsAdding(true);
+    setError("");
+
+    try {
+      const response = await fetch(`/api/vehicles/${vehicleId}/equipments`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          equipmentId,
+          isCustom: false,
+        }),
+      });
+
+      if (response.ok) {
+        onSuccess();
+      } else {
+        const data = await response.json();
+        setError(data.error || "Erreur lors de l'ajout");
+      }
+    } catch (error) {
+      setError("Erreur lors de l'ajout");
+    } finally {
+      setIsAdding(false);
+    }
+  };
+
+  const handleCreateEquipment = async (data: EquipmentFormData) => {
+    setIsCreatingEquipment(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/user/equipments", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          vehicleId,
+        }),
+      });
+
+      if (response.ok) {
+        onSuccess();
+      } else {
+        const result = await response.json();
+        setError(result.error || "Erreur lors de la création");
+      }
+    } catch (error) {
+      setError("Erreur lors de la création");
+    } finally {
+      setIsCreatingEquipment(false);
+    }
+  };
+
+  const resetFilters = () => {
+    setSearchText("");
+    setSelectedVehicleBrand("");
+    setSelectedEquipmentBrand("");
+    setSelectedCategory("");
+  };
+
+  const activeFiltersCount = [
+    searchText,
+    selectedVehicleBrand,
+    selectedEquipmentBrand,
+    selectedCategory,
+  ].filter(Boolean).length;
+
+  return (
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.2 }}
+        className="bg-white rounded-3xl w-full max-w-6xl my-8 max-h-[90vh] flex flex-col shadow-2xl"
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
+          <div>
+            <h2 className="text-2xl font-bold text-black">
+              Ajouter un équipement
+            </h2>
+            <p className="text-sm text-gray">Pour votre {vehicleMake}</p>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex gap-2 p-6 border-b border-gray-200">
+          <button
+            onClick={() => setActiveTab("library")}
+            className={`flex-1 px-6 py-3 font-semibold rounded-2xl transition-all duration-300 ${
+              activeTab === "library"
+                ? "bg-gradient-to-r from-orange to-orange-light text-white shadow-lg"
+                : "bg-gray-100 text-gray hover:bg-gray-200"
+            }`}
+          >
+            📚 Bibliothèque
+          </button>
+          <button
+            onClick={() => setActiveTab("custom")}
+            className={`flex-1 px-6 py-3 font-semibold rounded-2xl transition-all duration-300 ${
+              activeTab === "custom"
+                ? "bg-gradient-to-r from-orange to-orange-light text-white shadow-lg"
+                : "bg-gray-100 text-gray hover:bg-gray-200"
+            }`}
+          >
+            ✏️ Créer le mien
+          </button>
+        </div>
+
+        {error && (
+          <div className="mx-6 mt-6 p-4 bg-red-50 border border-red-200 rounded-2xl">
+            <p className="text-red-600 text-sm">{error}</p>
+          </div>
+        )}
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto min-h-0">
+          <AnimatePresence mode="wait">
+            {activeTab === "library" ? (
+              <motion.div
+                key="library"
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: 20 }}
+                transition={{ duration: 0.2 }}
+                className="flex flex-col min-h-full"
+              >
+                {/* Filters */}
+                <div className="p-6 border-b border-gray-200 space-y-4">
+                  {/* Search Bar */}
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={searchText}
+                      onChange={(e) => setSearchText(e.target.value)}
+                      placeholder="Rechercher un équipement..."
+                      className="w-full px-12 py-3 rounded-2xl border-2 border-gray-200 focus:border-orange focus:outline-none transition-colors"
+                    />
+                    <svg
+                      className="w-5 h-5 text-gray absolute left-4 top-1/2 -translate-y-1/2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                    {searchText && (
+                      <button
+                        onClick={() => setSearchText("")}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded-full"
+                      >
+                        <svg
+                          className="w-4 h-4 text-gray"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+
+                  {/* Filter Pills */}
+                  <div className="flex flex-wrap gap-3">
+                    {/* Vehicle Brand */}
+                    <select
+                      value={selectedVehicleBrand}
+                      onChange={(e) => setSelectedVehicleBrand(e.target.value)}
+                      className="px-4 py-2 rounded-xl border border-gray-200 focus:border-orange focus:outline-none text-sm"
+                    >
+                      <option value="">🚐 Toutes marques véhicule</option>
+                      {vehicleBrands.map((brand) => (
+                        <option key={brand._id} value={brand._id}>
+                          {brand.name}
+                        </option>
+                      ))}
+                    </select>
+
+                    {/* Equipment Brand */}
+                    <select
+                      value={selectedEquipmentBrand}
+                      onChange={(e) => setSelectedEquipmentBrand(e.target.value)}
+                      className="px-4 py-2 rounded-xl border border-gray-200 focus:border-orange focus:outline-none text-sm"
+                    >
+                      <option value="">🔧 Toutes marques équipement</option>
+                      {equipmentBrands.map((brand) => (
+                        <option key={brand._id} value={brand._id}>
+                          {brand.name}
+                        </option>
+                      ))}
+                    </select>
+
+                    {/* Category */}
+                    <select
+                      value={selectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                      className="px-4 py-2 rounded-xl border border-gray-200 focus:border-orange focus:outline-none text-sm"
+                    >
+                      <option value="">📂 Toutes catégories</option>
+                      {categories.map((cat) => (
+                        <option key={cat._id} value={cat._id}>
+                          {"  ".repeat(cat.level - 1)}
+                          {cat.level > 1 ? "└─ " : ""}
+                          {cat.name}
+                        </option>
+                      ))}
+                    </select>
+
+                    {/* Reset Button */}
+                    {activeFiltersCount > 0 && (
+                      <button
+                        onClick={resetFilters}
+                        className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray text-sm font-medium rounded-xl transition-colors"
+                      >
+                        ✕ Réinitialiser ({activeFiltersCount})
+                      </button>
+                    )}
+                  </div>
+                </div>
+
+                {/* Equipment List */}
+                <div className="flex-1 overflow-y-auto p-6">
+                  {isLoading ? (
+                    <div className="flex justify-center items-center py-20">
+                      <div className="w-12 h-12 border-4 border-orange border-t-transparent rounded-full animate-spin" />
+                    </div>
+                  ) : filteredEquipments.length === 0 ? (
+                    <div className="text-center py-12">
+                      <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg
+                          className="w-8 h-8 text-gray"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </div>
+                      <h3 className="text-lg font-semibold text-black mb-2">
+                        Aucun équipement trouvé
+                      </h3>
+                      <p className="text-gray text-sm">
+                        Essayez de modifier vos filtres ou créez votre propre
+                        équipement
+                      </p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                      {filteredEquipments.map((equipment, index) => (
+                        <motion.div
+                          key={equipment._id}
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ delay: index * 0.05 }}
+                          className="bg-white border-2 border-gray-200 hover:border-orange rounded-2xl p-4 transition-all duration-300 hover:shadow-lg"
+                        >
+                          <div className="flex gap-4">
+                            {/* Photo */}
+                            <div className="relative w-24 h-24 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0">
+                              {equipment.photos[0] ? (
+                                <Image
+                                  src={equipment.photos[0]}
+                                  alt={equipment.name}
+                                  fill
+                                  className="object-cover"
+                                />
+                              ) : (
+                                <div className="absolute inset-0 flex items-center justify-center text-3xl">
+                                  🔧
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Info */}
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-bold text-black mb-1 truncate">
+                                {equipment.name}
+                              </h4>
+                              <p className="text-xs text-gray mb-2">
+                                {equipment.categoryId?.name}
+                              </p>
+                              {equipment.description && (
+                                <p className="text-sm text-gray line-clamp-2 mb-2">
+                                  {equipment.description}
+                                </p>
+                              )}
+                              <div className="flex flex-wrap gap-1">
+                                {equipment.equipmentBrands.slice(0, 2).map((brand) => (
+                                  <span
+                                    key={brand._id}
+                                    className="px-2 py-0.5 bg-purple-50 text-purple-700 text-xs font-medium rounded-full"
+                                  >
+                                    {brand.name}
+                                  </span>
+                                ))}
+                                {equipment.manuals.length > 0 && (
+                                  <span className="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full">
+                                    📄 {equipment.manuals.length}
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Add Button */}
+                            <div className="flex items-center">
+                              <button
+                                onClick={() => handleAddEquipment(equipment._id)}
+                                disabled={isAdding}
+                                className="px-4 py-2 bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 disabled:opacity-50 flex items-center gap-2"
+                              >
+                                <svg
+                                  className="w-4 h-4"
+                                  fill="none"
+                                  stroke="currentColor"
+                                  viewBox="0 0 24 24"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M12 4v16m8-8H4"
+                                  />
+                                </svg>
+                                Ajouter
+                              </button>
+                            </div>
+                          </div>
+                        </motion.div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Results Count */}
+                <div className="p-4 border-t border-gray-200 bg-gray-50">
+                  <p className="text-sm text-gray text-center">
+                    {filteredEquipments.length} équipement
+                    {filteredEquipments.length > 1 ? "s" : ""} trouvé
+                    {filteredEquipments.length > 1 ? "s" : ""}
+                    {activeFiltersCount > 0 && ` (${equipments.length} au total)`}
+                  </p>
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="custom"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.2 }}
+                className="p-6"
+              >
+                <EquipmentForm
+                  onSubmit={handleCreateEquipment}
+                  isSubmitting={isCreatingEquipment}
+                />
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+

@@ -1,10 +1,23 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useState, useEffect } from "react";
+
+const vehicles = ["van", "camping-car", "fourgon", "camion aménagé"];
 
 export function HeroSection() {
+  const [currentVehicleIndex, setCurrentVehicleIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentVehicleIndex((prev) => (prev + 1) % vehicles.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-black via-dark-gray to-black">
       {/* Background Image with overlay */}
@@ -40,9 +53,24 @@ export function HeroSection() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-6 leading-tight"
             >
-              Ne manquez plus jamais{" "}
+              Votre{" "}
+              <span className="inline-block">
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={currentVehicleIndex}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.5 }}
+                    className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-orange to-orange-light"
+                  >
+                    {vehicles[currentVehicleIndex]}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
+              , votre maison,{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange to-orange-light">
-                une révision
+                votre liberté
               </span>
             </motion.h1>
 
@@ -53,8 +81,8 @@ export function HeroSection() {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="text-lg md:text-xl text-white/80 mb-8 max-w-3xl mx-auto"
             >
-              PilotMyVan centralise tous les rappels d&apos;entretien de votre van et
-              de vos équipements. Simple, efficace, indispensable.
+              Quand on vit sur la route, chaque entretien compte. PilotMyVan vous aide à
+              prendre soin de votre maison roulante pour voyager l&apos;esprit tranquille.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -129,7 +157,7 @@ export function HeroSection() {
                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span>Version gratuite disponible</span>
+                <span>Gratuit pour commencer</span>
               </div>
             </motion.div>
           </motion.div>
