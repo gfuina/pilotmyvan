@@ -916,8 +916,8 @@ export default function VehicleMaintenancesCard({
                     ⚠️ <strong>Attention :</strong> Cette action supprimera définitivement :
                   </p>
                   <ul className="text-xs text-yellow-700 mt-2 ml-4 space-y-1">
-                    <li>• L'entretien planifié</li>
-                    <li>• Tout l'historique des interventions passées</li>
+                    <li>• L&apos;entretien planifié</li>
+                    <li>• Tout l&apos;historique des interventions passées</li>
                     <li>• Toutes les pièces jointes associées</li>
                   </ul>
                 </div>

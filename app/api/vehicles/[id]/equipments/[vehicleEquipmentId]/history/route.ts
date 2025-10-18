@@ -95,7 +95,7 @@ export async function GET(
           : 0,
       lastMaintenanceDate:
         enrichedRecords.length > 0 ? enrichedRecords[0].completedAt : null,
-      maintenanceTypes: schedules.reduce((acc: any, s) => {
+      maintenanceTypes: schedules.reduce((acc: Record<string, number>, s) => {
         const data = s.isCustom ? s.customData : s.maintenanceId;
         const type = data?.type || "other";
         acc[type] = (acc[type] || 0) + 1;
