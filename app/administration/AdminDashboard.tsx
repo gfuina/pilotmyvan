@@ -10,6 +10,7 @@ import CategoryBuilder from "@/components/admin/CategoryBuilder";
 import EquipmentList from "@/components/admin/EquipmentList";
 import AddEquipmentModal from "@/components/admin/AddEquipmentModal";
 import PendingEquipments from "@/components/admin/PendingEquipments";
+import PendingMaintenances from "@/components/admin/PendingMaintenances";
 
 interface User {
   name?: string | null;
@@ -93,7 +94,7 @@ interface Equipment {
 
 export default function AdminDashboard({ user }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState<
-    "stats" | "users" | "vehicles" | "vehicle-brands" | "equipment-brands" | "categories" | "equipments" | "pending-equipments"
+    "stats" | "users" | "vehicles" | "vehicle-brands" | "equipment-brands" | "categories" | "equipments" | "pending-equipments" | "pending-maintenances"
   >("stats");
   const [stats, setStats] = useState<Stats | null>(null);
   const [users, setUsers] = useState<UserData[]>([]);
@@ -361,7 +362,17 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
                   : "bg-white text-gray hover:bg-gray-50"
               }`}
             >
-              ⏳ Contributions
+              ⏳ Contributions Équipements
+            </button>
+            <button
+              onClick={() => setActiveTab("pending-maintenances")}
+              className={`px-6 py-3 font-semibold rounded-2xl transition-all duration-300 ${
+                activeTab === "pending-maintenances"
+                  ? "bg-gradient-to-r from-orange to-orange-light text-white shadow-lg"
+                  : "bg-white text-gray hover:bg-gray-50"
+              }`}
+            >
+              ⏳ Contributions Entretiens
             </button>
           </div>
 
@@ -370,11 +381,16 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
             <PendingEquipments />
           )}
 
-          {isLoading && activeTab !== "pending-equipments" ? (
+          {/* Pending Maintenances Tab - Always show */}
+          {activeTab === "pending-maintenances" && (
+            <PendingMaintenances />
+          )}
+
+          {isLoading && activeTab !== "pending-equipments" && activeTab !== "pending-maintenances" ? (
             <div className="flex justify-center items-center py-20">
               <div className="w-12 h-12 border-4 border-orange border-t-transparent rounded-full animate-spin" />
             </div>
-          ) : activeTab !== "pending-equipments" ? (
+          ) : activeTab !== "pending-equipments" && activeTab !== "pending-maintenances" ? (
             <>
               {/* Stats Tab */}
               {activeTab === "stats" && stats && (

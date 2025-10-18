@@ -8,6 +8,9 @@ export interface IUser extends Document {
   emailVerified?: Date | null;
   image?: string | null;
   isAdmin: boolean;
+  notificationPreferences: {
+    daysBeforeMaintenance: number[]; // Jours avant l'entretien pour recevoir une notification
+  };
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -41,6 +44,15 @@ const UserSchema: Schema<IUser> = new Schema(
     isAdmin: {
       type: Boolean,
       default: false,
+    },
+    notificationPreferences: {
+      type: {
+        daysBeforeMaintenance: {
+          type: [Number],
+          default: [1], // Par défaut 1 jour (24h) avant
+        },
+      },
+      default: () => ({ daysBeforeMaintenance: [1] }),
     },
   },
   {

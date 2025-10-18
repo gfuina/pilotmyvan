@@ -8,6 +8,7 @@ import EditVehicleModal from "@/components/dashboard/EditVehicleModal";
 import AddEquipmentModal from "@/components/dashboard/AddEquipmentModal";
 import VehicleEquipmentList from "@/components/dashboard/VehicleEquipmentList";
 import VehicleMaintenancesCard from "@/components/dashboard/VehicleMaintenancesCard";
+import MileageTrackerCard from "@/components/dashboard/MileageTrackerCard";
 
 interface Vehicle {
   _id: string;
@@ -268,61 +269,41 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
           </div>
         )}
 
-        {/* Details & Mileage History */}
+        {/* Details & Mileage Tracker */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Details */}
-          <div className="bg-white rounded-3xl shadow-lg p-6">
-            <h2 className="text-xl font-bold text-black mb-4">Détails</h2>
-            <div className="space-y-3">
-              {vehicle.vin && (
+          {(vehicle.vin || vehicle.notes || vehicle.createdAt) && (
+            <div className="bg-white rounded-3xl shadow-lg p-6">
+              <h2 className="text-xl font-bold text-black mb-4">Détails</h2>
+              <div className="space-y-3">
+                {vehicle.vin && (
+                  <div>
+                    <p className="text-sm text-gray">N° de série (VIN)</p>
+                    <p className="font-semibold text-black">{vehicle.vin}</p>
+                  </div>
+                )}
+                {vehicle.notes && (
+                  <div>
+                    <p className="text-sm text-gray">Notes</p>
+                    <p className="text-black whitespace-pre-wrap">{vehicle.notes}</p>
+                  </div>
+                )}
                 <div>
-                  <p className="text-sm text-gray">N° de série (VIN)</p>
-                  <p className="font-semibold text-black">{vehicle.vin}</p>
+                  <p className="text-sm text-gray">Créé le</p>
+                  <p className="font-semibold text-black">
+                    {new Date(vehicle.createdAt).toLocaleDateString("fr-FR")}
+                  </p>
                 </div>
-              )}
-              {vehicle.notes && (
-                <div>
-                  <p className="text-sm text-gray">Notes</p>
-                  <p className="text-black whitespace-pre-wrap">{vehicle.notes}</p>
-                </div>
-              )}
-              <div>
-                <p className="text-sm text-gray">Créé le</p>
-                <p className="font-semibold text-black">
-                  {new Date(vehicle.createdAt).toLocaleDateString("fr-FR")}
-                </p>
               </div>
             </div>
-          </div>
+          )}
 
-          {/* Mileage History */}
-          <div className="bg-white rounded-3xl shadow-lg p-6">
-            <h2 className="text-xl font-bold text-black mb-4">
-              Historique kilométrage
-            </h2>
-            <div className="space-y-3 max-h-96 overflow-y-auto">
-              {vehicle.mileageHistory
-                .slice()
-                .reverse()
-                .map((entry, index) => (
-                  <div
-                    key={index}
-                    className="flex items-start justify-between p-3 bg-gray-50 rounded-2xl"
-                  >
-                    <div>
-                      <p className="font-bold text-black">
-                        {entry.mileage.toLocaleString()} km
-                      </p>
-                      {entry.note && (
-                        <p className="text-sm text-gray">{entry.note}</p>
-                      )}
-                    </div>
-                    <p className="text-sm text-gray">
-                      {new Date(entry.date).toLocaleDateString("fr-FR")}
-                    </p>
-                  </div>
-                ))}
-            </div>
+          {/* Mileage Tracker */}
+          <div className={vehicle.vin || vehicle.notes ? "" : "lg:col-span-2"}>
+            <MileageTrackerCard
+              vehicleId={vehicleId}
+              vehicleName={vehicle.name}
+            />
           </div>
         </div>
 

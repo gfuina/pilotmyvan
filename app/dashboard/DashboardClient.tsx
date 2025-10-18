@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import VehicleCard from "@/components/dashboard/VehicleCard";
 import AddVehicleModal from "@/components/dashboard/AddVehicleModal";
+import NotificationPreferencesCard from "@/components/dashboard/NotificationPreferencesCard";
 
 interface Vehicle {
   _id: string;
@@ -228,6 +229,11 @@ export default function DashboardClient({ user }: DashboardClientProps) {
               ))}
             </div>
           )}
+
+          {/* Secondary Cards */}
+          <div className="mt-12 max-w-2xl">
+            <NotificationPreferencesCard />
+          </div>
         </motion.div>
       </main>
 

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import MaintenanceForm, { MaintenanceFormData } from "./MaintenanceForm";
 
 interface Maintenance {
   _id: string;
@@ -69,6 +70,8 @@ export default function AddMaintenanceScheduleModal({
   const [selectedMaintenances, setSelectedMaintenances] = useState<Set<string>>(new Set());
   const [isAdding, setIsAdding] = useState(false);
   const [error, setError] = useState("");
+  const [isCreatingMaintenance, setIsCreatingMaintenance] = useState(false);
+  const [equipmentIdForCustom, setEquipmentIdForCustom] = useState<string | null>(null);
 
   const fetchRecommendedMaintenances = async () => {
     setIsLoading(true);
@@ -87,6 +90,9 @@ export default function AddMaintenanceScheduleModal({
         setIsLoading(false);
         return;
       }
+
+      // Store equipmentId for custom maintenance creation
+      setEquipmentIdForCustom(equipment.equipmentId._id);
 
       // Get recommended maintenances for this equipment
       const response = await fetch(`/api/equipments/${equipment.equipmentId._id}/maintenances`);
@@ -166,6 +172,37 @@ export default function AddMaintenanceScheduleModal({
       setError("Erreur lors de l'ajout");
     } finally {
       setIsAdding(false);
+    }
+  };
+
+  const handleCreateMaintenance = async (data: MaintenanceFormData) => {
+    setIsCreatingMaintenance(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/user/maintenances", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...data,
+          equipmentId: equipmentIdForCustom,
+          vehicleEquipmentId,
+          vehicleId,
+        }),
+      });
+
+      if (response.ok) {
+        onSuccess();
+      } else {
+        const result = await response.json();
+        setError(result.error || "Erreur lors de la création");
+      }
+    } catch (error) {
+      setError("Erreur lors de la création");
+    } finally {
+      setIsCreatingMaintenance(false);
     }
   };
 
@@ -420,108 +457,19 @@ export default function AddMaintenanceScheduleModal({
                 transition={{ duration: 0.2 }}
                 className="p-6"
               >
-                {/* Custom Maintenance Form (Maquette) */}
-                <div className="max-w-2xl mx-auto">
-                  <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-8 mb-6">
-                    <div className="flex items-start gap-4">
-                      <div className="w-12 h-12 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
-                        <svg
-                          className="w-6 h-6 text-white"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="text-lg font-bold text-blue-900 mb-2">
-                          Fonctionnalité à venir
-                        </h3>
-                        <p className="text-blue-700 text-sm mb-3">
-                          Vous pourrez bientôt créer vos propres entretiens personnalisés
-                          avec récurrence, instructions, photos, pièces nécessaires, etc.
-                        </p>
-                        <p className="text-blue-600 text-xs">
-                          💡 En attendant, utilisez les entretiens recommandés ou contactez
-                          l&apos;admin pour enrichir la bibliothèque.
-                        </p>
-                      </div>
-                    </div>
+                {equipmentIdForCustom ? (
+                  <MaintenanceForm
+                    equipmentId={equipmentIdForCustom}
+                    equipmentName={equipmentName}
+                    onSubmit={handleCreateMaintenance}
+                    isSubmitting={isCreatingMaintenance}
+                  />
+                ) : (
+                  <div className="text-center py-12">
+                    <div className="w-12 h-12 border-4 border-orange border-t-transparent rounded-full animate-spin mx-auto" />
+                    <p className="text-gray mt-4">Chargement...</p>
                   </div>
-
-                  {/* Maquette du formulaire */}
-                  <div className="space-y-4 opacity-50 pointer-events-none">
-                    <div>
-                      <label className="block text-sm font-medium text-black mb-2">
-                        Nom de l&apos;entretien <span className="text-orange">*</span>
-                      </label>
-                      <input
-                        type="text"
-                        placeholder="Ex: Vérification du filtre"
-                        className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none"
-                        disabled
-                      />
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-black mb-2">
-                          Type
-                        </label>
-                        <select
-                          className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none"
-                          disabled
-                        >
-                          <option>Inspection</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-black mb-2">
-                          Priorité
-                        </label>
-                        <select
-                          className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none"
-                          disabled
-                        >
-                          <option>Recommandé</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-black mb-2">
-                        Récurrence
-                      </label>
-                      <div className="flex gap-3">
-                        <input
-                          type="number"
-                          placeholder="6"
-                          className="w-24 px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none"
-                          disabled
-                        />
-                        <select
-                          className="flex-1 px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none"
-                          disabled
-                        >
-                          <option>Mois</option>
-                        </select>
-                      </div>
-                    </div>
-
-                    <button
-                      disabled
-                      className="w-full px-6 py-4 bg-gradient-to-r from-orange to-orange-light text-white font-bold rounded-2xl"
-                    >
-                      Créer mon entretien
-                    </button>
-                  </div>
-                </div>
+                )}
               </motion.div>
             )}
           </AnimatePresence>

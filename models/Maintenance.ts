@@ -55,6 +55,11 @@ export interface IMaintenance extends Document {
   isOfficial?: boolean;
   source?: string;
 
+  // Contribution utilisateur
+  isUserContributed?: boolean;
+  contributedBy?: mongoose.Types.ObjectId;
+  status?: "pending" | "approved" | "rejected";
+
   createdAt: Date;
   updatedAt: Date;
 }
@@ -135,6 +140,19 @@ const MaintenanceSchema = new mongoose.Schema<IMaintenance>(
       default: true,
     },
     source: String,
+    isUserContributed: {
+      type: Boolean,
+      default: false,
+    },
+    contributedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+    status: {
+      type: String,
+      enum: ["pending", "approved", "rejected"],
+      default: "approved",
+    },
   },
   {
     timestamps: true,
