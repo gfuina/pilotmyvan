@@ -88,7 +88,7 @@ export async function POST(
     }
 
     // Recalculer la prochaine échéance
-    const maintenanceData = schedule.isCustom
+    const maintenanceData: any = schedule.isCustom
       ? schedule.customData
       : schedule.maintenanceId;
 

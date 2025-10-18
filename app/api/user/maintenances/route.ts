@@ -42,7 +42,7 @@ export async function GET() {
       .sort({ nextDueDate: 1 }); // Trier par date d'échéance la plus proche
 
     // Enrichir les données avec les informations du véhicule
-    const enrichedMaintenances = maintenances.map(m => {
+    const enrichedMaintenances = maintenances.map((m: any) => {
       const maintenanceData = m.isCustom ? m.customData : m.maintenanceId;
       
       return {

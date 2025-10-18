@@ -895,7 +895,7 @@ export default function VehicleMaintenancesCard({
                   </div>
                   <div>
                     <h3 className="text-lg sm:text-xl font-bold text-red-900">
-                      Supprimer l'entretien ?
+                      Supprimer l&apos;entretien ?
                     </h3>
                     <p className="text-sm text-red-700 mt-0.5">
                       Action irréversible

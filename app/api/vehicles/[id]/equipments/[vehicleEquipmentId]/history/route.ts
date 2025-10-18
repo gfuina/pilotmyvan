@@ -67,9 +67,9 @@ export async function GET(
       .lean();
 
     // Enrichir les records avec les informations de maintenance
-    const enrichedRecords = records.map((record) => {
-      const schedule = schedules.find(
-        (s) => s._id.toString() === record.vehicleMaintenanceScheduleId.toString()
+    const enrichedRecords = records.map((record: any) => {
+      const schedule: any = schedules.find(
+        (s: any) => s._id.toString() === record.vehicleMaintenanceScheduleId.toString()
       );
       
       const maintenanceData = schedule?.isCustom
@@ -95,7 +95,7 @@ export async function GET(
           : 0,
       lastMaintenanceDate:
         enrichedRecords.length > 0 ? enrichedRecords[0].completedAt : null,
-      maintenanceTypes: schedules.reduce((acc: Record<string, number>, s) => {
+      maintenanceTypes: schedules.reduce((acc: Record<string, number>, s: any) => {
         const data = s.isCustom ? s.customData : s.maintenanceId;
         const type = data?.type || "other";
         acc[type] = (acc[type] || 0) + 1;
@@ -106,7 +106,7 @@ export async function GET(
     return NextResponse.json({
       records: enrichedRecords,
       stats,
-      schedules: schedules.map((s) => ({
+      schedules: schedules.map((s: any) => ({
         _id: s._id,
         name: s.isCustom ? s.customData?.name : s.maintenanceId?.name,
         type: s.isCustom ? s.customData?.type : s.maintenanceId?.type,
