@@ -30,8 +30,12 @@ export interface IVehicleMaintenanceSchedule extends Document {
     estimatedCost?: number;
   };
 
-  // Historique des entretiens effectués
+  // Historique des entretiens effectués (deprecated - use MaintenanceRecord model)
   history: IMaintenanceHistory[];
+
+  // Dernière exécution (synchronisé avec le dernier MaintenanceRecord)
+  lastCompletedAt?: Date;
+  lastCompletedMileage?: number;
 
   // Calcul de la prochaine échéance
   nextDueDate?: Date;
@@ -104,6 +108,13 @@ const VehicleMaintenanceScheduleSchema: Schema<IVehicleMaintenanceSchedule> = ne
     history: {
       type: [MaintenanceHistorySchema],
       default: [],
+    },
+    lastCompletedAt: {
+      type: Date,
+    },
+    lastCompletedMileage: {
+      type: Number,
+      min: 0,
     },
     nextDueDate: Date,
     nextDueKilometers: Number,

@@ -272,7 +272,7 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
         {/* Details & Mileage Tracker */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {/* Details */}
-          {(vehicle.vin || vehicle.notes || vehicle.createdAt) && (
+          {/* {(vehicle.vin || vehicle.notes || vehicle.createdAt) && (
             <div className="bg-white rounded-3xl shadow-lg p-6">
               <h2 className="text-xl font-bold text-black mb-4">Détails</h2>
               <div className="space-y-3">
@@ -296,7 +296,7 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
                 </div>
               </div>
             </div>
-          )}
+          )} */}
 
           {/* Mileage Tracker */}
           <div className={vehicle.vin || vehicle.notes ? "" : "lg:col-span-2"}>
@@ -308,22 +308,22 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
         </div>
 
         {/* Equipments Section */}
-        <div className="mt-6 bg-white rounded-3xl shadow-lg p-6">
-          <div className="flex items-center justify-between mb-6">
+        <div className="mt-6 bg-white rounded-3xl shadow-lg p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>
-              <h2 className="text-2xl font-bold text-black">
+              <h2 className="text-xl sm:text-2xl font-bold text-black">
                 Équipements 🔧
               </h2>
-              <p className="text-gray">
+              <p className="text-gray text-sm sm:text-base">
                 Gérez les équipements installés dans votre véhicule
               </p>
             </div>
             <button
               onClick={() => setIsAddEquipmentModalOpen(true)}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange to-orange-light text-white font-bold rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300"
+              className="inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-orange to-orange-light text-white font-bold text-sm sm:text-base rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300"
             >
               <svg
-                className="w-5 h-5"
+                className="w-4 h-4 sm:w-5 sm:h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -335,7 +335,8 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
                   d="M12 4v16m8-8H4"
                 />
               </svg>
-              Ajouter un équipement
+              <span className="hidden sm:inline">Ajouter un équipement</span>
+              <span className="sm:hidden">Ajouter</span>
             </button>
           </div>
 
@@ -368,10 +369,10 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
               </p>
               <button
                 onClick={() => setIsAddEquipmentModalOpen(true)}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange to-orange-light text-white font-bold rounded-2xl hover:shadow-lg transition-all duration-300"
+                className="inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-orange to-orange-light text-white font-bold text-sm sm:text-base rounded-2xl hover:shadow-lg transition-all duration-300"
               >
                 <svg
-                  className="w-5 h-5"
+                  className="w-4 h-4 sm:w-5 sm:h-5"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -383,7 +384,8 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
                     d="M12 4v16m8-8H4"
                   />
                 </svg>
-                Ajouter mon premier équipement
+                <span className="hidden sm:inline">Ajouter mon premier équipement</span>
+                <span className="sm:hidden">Ajouter</span>
               </button>
             </div>
           ) : (

@@ -7,6 +7,7 @@ import Link from "next/link";
 import VehicleCard from "@/components/dashboard/VehicleCard";
 import AddVehicleModal from "@/components/dashboard/AddVehicleModal";
 import NotificationPreferencesCard from "@/components/dashboard/NotificationPreferencesCard";
+import MaintenancesOverviewCard from "@/components/dashboard/MaintenancesOverviewCard";
 
 interface Vehicle {
   _id: string;
@@ -115,6 +116,9 @@ export default function DashboardClient({ user }: DashboardClientProps) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
+          {/* Maintenances Overview */}
+          <MaintenancesOverviewCard />
+
           {/* Header Section */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
             <div>

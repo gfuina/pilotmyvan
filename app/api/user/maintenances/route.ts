@@ -1,145 +1,83 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import connectDB from "@/lib/mongodb";
+import dbConnect from "@/lib/mongodb";
+import VehicleMaintenanceSchedule from "@/models/VehicleMaintenanceSchedule";
+import Vehicle from "@/models/Vehicle";
+import Maintenance from "@/models/Maintenance";
+import VehicleEquipment from "@/models/VehicleEquipment";
+import Equipment from "@/models/Equipment";
 
-// POST - User creates a new maintenance and adds it to their equipment
-export async function POST(request: NextRequest) {
+export async function GET() {
   try {
     const session = await auth();
 
     if (!session?.user?.id) {
-      return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
+      return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
-    await connectDB();
+    await dbConnect();
 
-    const Maintenance = (await import("@/models/Maintenance")).default;
-    const Equipment = (await import("@/models/Equipment")).default;
-    const VehicleEquipment = (await import("@/models/VehicleEquipment")).default;
-    const VehicleMaintenanceSchedule = (await import("@/models/VehicleMaintenanceSchedule")).default;
+    // Force les modèles à être enregistrés
+    Maintenance;
+    VehicleEquipment;
+    Equipment;
 
-    const data = await request.json();
-    const {
-      equipmentId,
-      vehicleEquipmentId,
-      vehicleId,
-      name,
-      type,
-      priority,
-      difficulty,
-      recurrence,
-      conditions,
-      description,
-      instructions,
-      photos,
-      parts,
-      estimatedDuration,
-      estimatedCost,
-      tags,
-    } = data;
+    // Récupérer les véhicules de l'utilisateur
+    const vehicles = await Vehicle.find({ userId: session.user.id }).select('_id name make model');
 
-    // Validation
-    if (!name || !equipmentId) {
-      return NextResponse.json(
-        { error: "Nom et équipement requis" },
-        { status: 400 }
-      );
-    }
+    const vehicleIds = vehicles.map(v => v._id);
 
-    if (!recurrence?.time && !recurrence?.kilometers) {
-      return NextResponse.json(
-        { error: "Au moins une récurrence (temporelle ou kilométrique) est requise" },
-        { status: 400 }
-      );
-    }
+    // Récupérer tous les entretiens pour ces véhicules
+    const maintenances = await VehicleMaintenanceSchedule.find({
+      vehicleId: { $in: vehicleIds }
+    })
+      .populate('maintenanceId')
+      .populate({
+        path: 'vehicleEquipmentId',
+        populate: {
+          path: 'equipmentId'
+        }
+      })
+      .populate('vehicleId', 'name make model currentMileage')
+      .sort({ nextDueDate: 1 }); // Trier par date d'échéance la plus proche
 
-    if (!vehicleEquipmentId || !vehicleId) {
-      return NextResponse.json(
-        { error: "Équipement véhicule requis" },
-        { status: 400 }
-      );
-    }
-
-    // Verify equipment exists
-    const equipment = await Equipment.findById(equipmentId);
-    if (!equipment) {
-      return NextResponse.json(
-        { error: "Équipement non trouvé" },
-        { status: 404 }
-      );
-    }
-
-    // Verify vehicle equipment belongs to user
-    const vehicleEquipment = await VehicleEquipment.findOne({
-      _id: vehicleEquipmentId,
-      vehicleId,
-    }).populate("vehicleId");
-
-    if (!vehicleEquipment) {
-      return NextResponse.json(
-        { error: "Équipement véhicule non trouvé" },
-        { status: 404 }
-      );
-    }
-
-    // Verify vehicle belongs to user
-    const Vehicle = (await import("@/models/Vehicle")).default;
-    const vehicle = await Vehicle.findOne({
-      _id: vehicleId,
-      userId: session.user.id,
+    // Enrichir les données avec les informations du véhicule
+    const enrichedMaintenances = maintenances.map(m => {
+      const maintenanceData = m.isCustom ? m.customData : m.maintenanceId;
+      
+      return {
+        _id: m._id.toString(),
+        vehicleId: m.vehicleId._id.toString(),
+        vehicleEquipmentId: m.vehicleEquipmentId,
+        maintenanceId: m.maintenanceId,
+        isCustom: m.isCustom,
+        customData: m.customData,
+        status: m.status,
+        history: m.history,
+        lastCompletedAt: m.lastCompletedAt,
+        lastCompletedMileage: m.lastCompletedMileage,
+        nextDueDate: m.nextDueDate,
+        nextDueKilometers: m.nextDueKilometers,
+        notes: m.notes,
+        createdAt: m.createdAt,
+        updatedAt: m.updatedAt,
+        vehicleInfo: {
+          _id: m.vehicleId._id.toString(),
+          name: m.vehicleId.name,
+          make: m.vehicleId.make,
+          model: m.vehicleId.model,
+          currentMileage: m.vehicleId.currentMileage,
+        },
+        maintenanceData,
+      };
     });
 
-    if (!vehicle) {
-      return NextResponse.json(
-        { error: "Véhicule non autorisé" },
-        { status: 403 }
-      );
-    }
-
-    // Create maintenance with pending status (will be reviewed by admin)
-    const maintenance = await Maintenance.create({
-      equipmentId,
-      name,
-      type,
-      priority,
-      difficulty,
-      recurrence,
-      conditions: conditions || [],
-      description,
-      instructions,
-      photos: photos || [],
-      parts: parts || [],
-      estimatedDuration,
-      estimatedCost,
-      tags: tags || [],
-      isOfficial: false,
-      isUserContributed: true,
-      contributedBy: session.user.id,
-      status: "pending", // Admin will review to make it available for everyone
-    });
-
-    // Add maintenance schedule to user's vehicle equipment
-    const maintenanceSchedule = await VehicleMaintenanceSchedule.create({
-      vehicleId,
-      vehicleEquipmentId,
-      maintenanceId: maintenance._id,
-      isCustom: false,
-    });
-
-    return NextResponse.json(
-      {
-        message: "Entretien créé et ajouté à votre équipement",
-        maintenance,
-        maintenanceSchedule,
-      },
-      { status: 201 }
-    );
+    return NextResponse.json({ maintenances: enrichedMaintenances });
   } catch (error) {
-    console.error("Error creating user maintenance:", error);
+    console.error("Error fetching user maintenances:", error);
     return NextResponse.json(
-      { error: "Erreur lors de la création de l'entretien" },
+      { error: "Erreur lors de la récupération des entretiens" },
       { status: 500 }
     );
   }
 }
-

@@ -55,7 +55,8 @@ export async function GET(
           select: "name photos",
         },
       })
-      .sort({ status: 1, nextDueDate: 1 });
+      .sort({ status: 1, nextDueDate: 1 })
+      .lean(); // Convert to plain JS objects to ensure proper serialization
 
     return NextResponse.json({ maintenances }, { status: 200 });
   } catch (error) {
