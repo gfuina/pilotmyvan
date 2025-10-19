@@ -4,6 +4,9 @@ import User from "@/models/User";
 import Vehicle from "@/models/Vehicle";
 import VehicleMaintenanceSchedule from "@/models/VehicleMaintenanceSchedule";
 import NotificationHistory from "@/models/NotificationHistory";
+import VehicleEquipment from "@/models/VehicleEquipment";
+import Equipment from "@/models/Equipment";
+import Maintenance from "@/models/Maintenance";
 import { sendEmail } from "@/lib/email";
 import { generateMaintenanceReminderEmail } from "@/lib/emailTemplates";
 
