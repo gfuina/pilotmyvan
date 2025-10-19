@@ -77,31 +77,87 @@ const PRIORITY_COLORS: Record<string, { bg: string; text: string; border: string
   },
 };
 
-// Couleurs basées sur l'urgence de l'échéance
-const URGENCY_COLORS: Record<string, { bg: string; text: string; border: string; shadow: string }> = {
+// Couleurs basées sur l'urgence de l'échéance - Large gamme de dégradés
+const URGENCY_COLORS: Record<string, { bg: string; text: string; border: string; shadow: string; badgeBg: string; dotBg: string }> = {
   overdue: {
+    bg: "bg-red-100",
+    text: "text-red-950",
+    border: "border-red-500",
+    shadow: "shadow-red-300",
+    badgeBg: "bg-red-600",
+    dotBg: "bg-red-700",
+  },
+  critical: {
     bg: "bg-red-50",
     text: "text-red-900",
     border: "border-red-400",
     shadow: "shadow-red-200",
+    badgeBg: "bg-red-500",
+    dotBg: "bg-red-600",
+  },
+  veryUrgent: {
+    bg: "bg-orange-100",
+    text: "text-orange-950",
+    border: "border-orange-500",
+    shadow: "shadow-orange-300",
+    badgeBg: "bg-orange-600",
+    dotBg: "bg-orange-700",
   },
   urgent: {
     bg: "bg-orange-50",
     text: "text-orange-900",
     border: "border-orange-400",
     shadow: "shadow-orange-200",
+    badgeBg: "bg-orange-500",
+    dotBg: "bg-orange-600",
+  },
+  soon: {
+    bg: "bg-yellow-100",
+    text: "text-yellow-950",
+    border: "border-yellow-500",
+    shadow: "shadow-yellow-300",
+    badgeBg: "bg-yellow-600",
+    dotBg: "bg-yellow-700",
   },
   warning: {
     bg: "bg-yellow-50",
     text: "text-yellow-900",
-    border: "border-yellow-300",
+    border: "border-yellow-400",
     shadow: "shadow-yellow-200",
+    badgeBg: "bg-yellow-500",
+    dotBg: "bg-yellow-600",
   },
-  ok: {
-    bg: "bg-blue-50",
-    text: "text-blue-900",
-    border: "border-blue-300",
-    shadow: "shadow-blue-200",
+  moderate: {
+    bg: "bg-lime-50",
+    text: "text-lime-900",
+    border: "border-lime-400",
+    shadow: "shadow-lime-200",
+    badgeBg: "bg-lime-600",
+    dotBg: "bg-lime-700",
+  },
+  good: {
+    bg: "bg-green-50",
+    text: "text-green-900",
+    border: "border-green-400",
+    shadow: "shadow-green-200",
+    badgeBg: "bg-green-500",
+    dotBg: "bg-green-600",
+  },
+  veryGood: {
+    bg: "bg-emerald-50",
+    text: "text-emerald-900",
+    border: "border-emerald-400",
+    shadow: "shadow-emerald-200",
+    badgeBg: "bg-emerald-500",
+    dotBg: "bg-emerald-600",
+  },
+  excellent: {
+    bg: "bg-cyan-50",
+    text: "text-cyan-900",
+    border: "border-cyan-400",
+    shadow: "shadow-cyan-200",
+    badgeBg: "bg-cyan-500",
+    dotBg: "bg-cyan-600",
   },
 };
 
@@ -183,31 +239,65 @@ export default function MaintenancesOverviewCard() {
     return Math.min(urgency, 100);
   };
 
-  // Détermine l'état d'urgence pour les couleurs de la card
+  // Détermine l'état d'urgence pour les couleurs de la card avec dégradé granulaire
   const getUrgencyState = (schedule: MaintenanceSchedule): string => {
     const daysRemaining = calculateDaysRemaining(schedule);
     const kmRemaining = calculateKmRemaining(schedule);
 
-    // En retard sur au moins un critère
-    if ((daysRemaining !== null && daysRemaining < 0) || (kmRemaining !== null && kmRemaining < 0)) {
+    // Prendre le critère le plus urgent entre jours et km
+    let worstDays = daysRemaining ?? Infinity;
+    let worstKm = kmRemaining ?? Infinity;
+
+    // En retard
+    if (worstDays < 0 || worstKm < 0) {
       return "overdue";
     }
 
-    // Urgent : moins de 7 jours OU moins de 500km
-    if ((daysRemaining !== null && daysRemaining <= 7) || (kmRemaining !== null && kmRemaining <= 500)) {
+    // Critique : moins de 3 jours OU moins de 200km
+    if (worstDays <= 3 || worstKm <= 200) {
+      return "critical";
+    }
+
+    // Très urgent : moins de 7 jours OU moins de 500km
+    if (worstDays <= 7 || worstKm <= 500) {
+      return "veryUrgent";
+    }
+
+    // Urgent : moins de 14 jours OU moins de 1000km
+    if (worstDays <= 14 || worstKm <= 1000) {
       return "urgent";
     }
 
-    // Attention : moins de 30 jours OU moins de 2000km
-    if ((daysRemaining !== null && daysRemaining <= 30) || (kmRemaining !== null && kmRemaining <= 2000)) {
+    // Bientôt : moins de 30 jours OU moins de 2000km
+    if (worstDays <= 30 || worstKm <= 2000) {
+      return "soon";
+    }
+
+    // Attention : moins de 60 jours OU moins de 4000km
+    if (worstDays <= 60 || worstKm <= 4000) {
       return "warning";
     }
 
-    // OK : plus de 30 jours et plus de 2000km
-    return "ok";
+    // Modéré : moins de 90 jours OU moins de 6000km
+    if (worstDays <= 90 || worstKm <= 6000) {
+      return "moderate";
+    }
+
+    // Bon : moins de 180 jours OU moins de 10000km
+    if (worstDays <= 180 || worstKm <= 10000) {
+      return "good";
+    }
+
+    // Très bon : moins de 365 jours OU moins de 20000km
+    if (worstDays <= 365 || worstKm <= 20000) {
+      return "veryGood";
+    }
+
+    // Excellent : plus d'un an
+    return "excellent";
   };
 
-  // Filtrer et trier les maintenances
+  // Filtrer et trier les maintenances par ordre de date d'échéance
   const getFilteredMaintenances = () => {
     const urgentMaintenances = maintenances.filter(m => {
       const daysRemaining = calculateDaysRemaining(m);
@@ -216,15 +306,30 @@ export default function MaintenancesOverviewCard() {
     });
 
     return urgentMaintenances.sort((a, b) => {
-      const urgencyA = calculateUrgencyPercentage(a);
-      const urgencyB = calculateUrgencyPercentage(b);
+      const daysRemainingA = calculateDaysRemaining(a);
+      const daysRemainingB = calculateDaysRemaining(b);
+      const kmRemainingA = calculateKmRemaining(a);
+      const kmRemainingB = calculateKmRemaining(b);
 
-      // D'abord par urgence (les plus urgents en premier)
-      if (urgencyA !== urgencyB) {
-        return urgencyB - urgencyA;
+      // Si les deux ont une date d'échéance, trier par date
+      if (daysRemainingA !== null && daysRemainingB !== null) {
+        return daysRemainingA - daysRemainingB;
       }
 
-      // En cas d'égalité, par priorité
+      // Si seulement A a une date, A vient en premier
+      if (daysRemainingA !== null) return -1;
+      if (daysRemainingB !== null) return 1;
+
+      // Si ni l'un ni l'autre n'a de date, trier par kilométrage restant
+      if (kmRemainingA !== null && kmRemainingB !== null) {
+        return kmRemainingA - kmRemainingB;
+      }
+
+      // Si seulement A a un kilométrage, A vient en premier
+      if (kmRemainingA !== null) return -1;
+      if (kmRemainingB !== null) return 1;
+
+      // En dernier recours, trier par priorité
       const priorityA = PRIORITY_ORDER[a.maintenanceData?.priority || "optional"];
       const priorityB = PRIORITY_ORDER[b.maintenanceData?.priority || "optional"];
       return priorityB - priorityA;
@@ -427,9 +532,9 @@ export default function MaintenancesOverviewCard() {
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
-                className={`border-3 ${urgencyColors.border} rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-br ${urgencyColors.bg} hover:shadow-xl hover:${urgencyColors.shadow} transition-all duration-300`}
+                className={`border-3 ${urgencyColors.border} rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-br ${urgencyColors.bg} hover:shadow-xl hover:${urgencyColors.shadow} transition-all duration-300 flex flex-col`}
               >
-                <div className="p-3 sm:p-4 md:p-5">
+                <div className="p-3 sm:p-4 md:p-5 flex flex-col flex-1">
                   {/* En-tête avec priorité et véhicule */}
                   <div className="flex items-start gap-2 sm:gap-3 mb-3">
                     {/* Equipment Photo */}
@@ -446,120 +551,85 @@ export default function MaintenancesOverviewCard() {
                       <div
                         className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-lg sm:rounded-xl flex items-center justify-center border-2 ${urgencyColors.border} bg-white flex-shrink-0`}
                       >
-                        {/* Cercle d'urgence avec animation ping pour overdue */}
-                        {urgencyState === "overdue" && (
+                        {/* Cercle d'urgence avec animation ping pour overdue/critical */}
+                        {(urgencyState === "overdue" || urgencyState === "critical") && (
                           <span className="absolute inline-flex h-full w-full rounded-lg bg-red-400 opacity-75 animate-ping" />
                         )}
                         
                         {/* Cercle principal */}
-                        <div className={`relative w-6 h-6 sm:w-8 sm:h-8 rounded-full ${urgencyState === "overdue" || urgencyState === "urgent" ? "animate-pulse" : ""}`}>
-                          <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${urgencyState === "overdue" ? "from-red-500 to-red-600" : urgencyState === "urgent" ? "from-orange-500 to-orange-600" : urgencyState === "warning" ? "from-yellow-500 to-yellow-600" : "from-green-500 to-green-600"} shadow-lg`} />
+                        <div className={`relative w-6 h-6 sm:w-8 sm:h-8 rounded-full ${["overdue", "critical", "veryUrgent", "urgent"].includes(urgencyState) ? "animate-pulse" : ""}`}>
+                          <div className={`absolute inset-0 rounded-full ${urgencyColors.badgeBg} shadow-lg`} />
                         </div>
                       </div>
                     )}
 
                     {/* Info - flex-1 occupe l'espace restant */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-1.5 mb-2 flex-wrap">
-                            <span
-                              className={`inline-flex items-center gap-1.5 px-2.5 py-1 ${urgencyColors.bg} ${urgencyColors.text} text-[10px] sm:text-xs font-bold rounded-full border-2 ${urgencyColors.border} whitespace-nowrap ${urgencyState === "overdue" || urgencyState === "urgent" ? "animate-pulse" : ""}`}
-                            >
-                              <span className={`w-2 h-2 rounded-full ${urgencyState === "overdue" ? "bg-red-600" : urgencyState === "urgent" ? "bg-orange-600" : urgencyState === "warning" ? "bg-yellow-600" : "bg-green-600"}`} />
-                              {urgencyState === "overdue" ? "EN RETARD" : urgencyState === "urgent" ? "URGENT" : urgencyState === "warning" ? "BIENTÔT" : "OK"}
-                            </span>
-                            <span
-                              className={`inline-flex items-center gap-1 px-2 py-0.5 ${priorityColors.bg} ${priorityColors.text} text-[9px] sm:text-[10px] font-semibold rounded-full border ${priorityColors.border} whitespace-nowrap`}
-                            >
-                              <span className={`w-1.5 h-1.5 rounded-full ${maintenance.priority === "critical" ? "bg-red-600" : maintenance.priority === "important" ? "bg-orange-600" : maintenance.priority === "recommended" ? "bg-yellow-600" : "bg-gray-600"}`} />
-                              {PRIORITY_LABELS[maintenance.priority]}
-                            </span>
-                          </div>
-                          
-                          <h3 className={`font-bold text-sm sm:text-base md:text-lg leading-tight ${urgencyColors.text}`}>
-                            {maintenance.name}
-                          </h3>
+                      {((daysRemaining !== null && daysRemaining <= 0) || (kmRemaining !== null && kmRemaining <= 0)) && (
+                        <div className="flex items-center gap-1.5 mb-2 flex-wrap">
+                          <span
+                            className={`inline-flex items-center gap-1 px-2 py-0.5 ${priorityColors.bg} ${priorityColors.text} text-[9px] sm:text-[10px] font-semibold rounded-full border ${priorityColors.border} whitespace-nowrap`}
+                          >
+                            <span className={`w-1.5 h-1.5 rounded-full ${maintenance.priority === "critical" ? "bg-red-600" : maintenance.priority === "important" ? "bg-orange-600" : maintenance.priority === "recommended" ? "bg-yellow-600" : "bg-gray-600"}`} />
+                            {PRIORITY_LABELS[maintenance.priority]}
+                          </span>
                         </div>
-                        
-                        {/* Urgency score */}
-                        <div className="flex flex-col items-center gap-0.5 flex-shrink-0">
-                          <div className="relative w-12 h-12 sm:w-14 sm:h-14">
-                            <svg className="w-12 h-12 sm:w-14 sm:h-14 transform -rotate-90" viewBox="0 0 48 48">
-                              <circle
-                                cx="24"
-                                cy="24"
-                                r="20"
-                                stroke="currentColor"
-                                strokeWidth="4"
-                                fill="none"
-                                className="text-gray-200"
-                              />
-                              <circle
-                                cx="24"
-                                cy="24"
-                                r="20"
-                                stroke="currentColor"
-                                strokeWidth="4"
-                                fill="none"
-                                strokeDasharray={`${2 * Math.PI * 20}`}
-                                strokeDashoffset={`${2 * Math.PI * 20 * (1 - urgencyPercentage / 100)}`}
-                                className={`${
-                                  urgencyPercentage >= 70
-                                    ? "text-red-500"
-                                    : urgencyPercentage >= 40
-                                    ? "text-orange-500"
-                                    : "text-green-500"
-                                }`}
-                                strokeLinecap="round"
-                              />
-                            </svg>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                              <span className="text-[10px] sm:text-xs font-bold text-black">
-                                {urgencyPercentage}%
-                              </span>
-                            </div>
-                          </div>
-                          <span className="text-[9px] sm:text-xs text-gray-500 font-medium text-center">Urgence</span>
-                        </div>
-                      </div>
+                      )}
                       
-                      {/* Equipment et véhicule */}
-                      <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-gray-600 mt-1.5">
-                        <span className="flex items-center gap-1.5 truncate max-w-[calc(100%-100px)]">
-                          <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          </svg>
-                          <span className="truncate">{getEquipmentName(schedule)}</span>
-                        </span>
-                        <span className="text-gray-400">•</span>
-                        <Link
-                          href={`/dashboard/vehicles/${schedule.vehicleInfo._id}`}
-                          className="flex items-center gap-1.5 hover:text-orange transition-colors truncate"
-                        >
-                          <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0h.01M15 17a2 2 0 104 0m-4 0h.01M17 16h-1" />
-                          </svg>
-                          <span className="truncate">{schedule.vehicleInfo.name}</span>
-                        </Link>
-                      </div>
+                      <h3 className={`font-bold text-sm sm:text-base md:text-lg leading-tight ${urgencyColors.text}`}>
+                        {maintenance.name}
+                      </h3>
                     </div>
                   </div>
 
-                  {/* Échéances - grille responsive */}
+                  {/* Contenu flexible qui pousse les boutons vers le bas */}
+                  <div className="flex-1 flex flex-col">
+                    {/* Equipment et véhicule - alignés à gauche sur toute la largeur */}
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-gray-600 mb-3">
+                      <span className="flex items-center gap-1.5 truncate">
+                        <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        <span className="truncate font-medium">{getEquipmentName(schedule)}</span>
+                      </span>
+                      <span className="text-gray-400">•</span>
+                      <Link
+                        href={`/dashboard/vehicles/${schedule.vehicleInfo._id}`}
+                        className="flex items-center gap-1.5 hover:text-orange transition-colors truncate"
+                      >
+                        <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0h.01M15 17a2 2 0 104 0m-4 0h.01M17 16h-1" />
+                        </svg>
+                        <span className="truncate">{schedule.vehicleInfo.name}</span>
+                      </Link>
+                    </div>
+
+                  {/* Échéances - grille responsive avec dégradé de couleurs */}
                   <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-1.5 sm:gap-2 mb-3">
                     {daysRemaining !== null && (
                       <div
                         className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-semibold text-xs sm:text-sm ${
                           daysRemaining < 0
-                            ? "bg-red-50 text-red-700 border border-red-200"
+                            ? "bg-red-100 text-red-800 border-2 border-red-400"
+                            : daysRemaining <= 3
+                            ? "bg-red-50 text-red-700 border-2 border-red-300"
                             : daysRemaining <= 7
-                            ? "bg-orange-50 text-orange-700 border border-orange-200"
+                            ? "bg-orange-100 text-orange-800 border border-orange-400"
+                            : daysRemaining <= 14
+                            ? "bg-orange-50 text-orange-700 border border-orange-300"
                             : daysRemaining <= 30
-                            ? "bg-yellow-50 text-yellow-700 border border-yellow-200"
-                            : "bg-blue-50 text-blue-700 border border-blue-200"
+                            ? "bg-yellow-100 text-yellow-800 border border-yellow-400"
+                            : daysRemaining <= 60
+                            ? "bg-yellow-50 text-yellow-700 border border-yellow-300"
+                            : daysRemaining <= 90
+                            ? "bg-lime-50 text-lime-700 border border-lime-300"
+                            : daysRemaining <= 180
+                            ? "bg-green-50 text-green-700 border border-green-300"
+                            : daysRemaining <= 365
+                            ? "bg-emerald-50 text-emerald-700 border border-emerald-300"
+                            : "bg-cyan-50 text-cyan-700 border border-cyan-300"
                         }`}
                       >
                         <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -572,12 +642,24 @@ export default function MaintenancesOverviewCard() {
                       <div
                         className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-semibold text-xs sm:text-sm ${
                           kmRemaining < 0
-                            ? "bg-red-50 text-red-700 border border-red-200"
+                            ? "bg-red-100 text-red-800 border-2 border-red-400"
+                            : kmRemaining <= 200
+                            ? "bg-red-50 text-red-700 border-2 border-red-300"
                             : kmRemaining <= 500
-                            ? "bg-orange-50 text-orange-700 border border-orange-200"
+                            ? "bg-orange-100 text-orange-800 border border-orange-400"
+                            : kmRemaining <= 1000
+                            ? "bg-orange-50 text-orange-700 border border-orange-300"
                             : kmRemaining <= 2000
-                            ? "bg-yellow-50 text-yellow-700 border border-yellow-200"
-                            : "bg-blue-50 text-blue-700 border border-blue-200"
+                            ? "bg-yellow-100 text-yellow-800 border border-yellow-400"
+                            : kmRemaining <= 4000
+                            ? "bg-yellow-50 text-yellow-700 border border-yellow-300"
+                            : kmRemaining <= 6000
+                            ? "bg-lime-50 text-lime-700 border border-lime-300"
+                            : kmRemaining <= 10000
+                            ? "bg-green-50 text-green-700 border border-green-300"
+                            : kmRemaining <= 20000
+                            ? "bg-emerald-50 text-emerald-700 border border-emerald-300"
+                            : "bg-cyan-50 text-cyan-700 border border-cyan-300"
                         }`}
                       >
                         <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -594,11 +676,12 @@ export default function MaintenancesOverviewCard() {
                         {maintenance.estimatedDuration}min
                       </div>
                     )}
+                    </div>
                   </div>
 
-                  {/* Actions - Design amélioré */}
-                  <div className="space-y-2">
-                    {/* Bouton principal - Action complète */}
+                  {/* Actions - Tous sur la même ligne en mobile - alignées en bas */}
+                  <div className="flex gap-2 mt-auto">
+                    {/* Bouton principal - Valider */}
                     <button
                       onClick={() =>
                         setCompleteMaintenanceData({
@@ -608,24 +691,26 @@ export default function MaintenancesOverviewCard() {
                           currentMileage: schedule.vehicleInfo.currentMileage,
                         })
                       }
-                      className="w-full group relative overflow-hidden px-4 py-3 bg-gradient-to-r from-orange to-orange-light hover:from-orange-dark hover:to-orange text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2.5"
+                      className="flex-1 group relative overflow-hidden px-3 py-2.5 sm:px-4 sm:py-3 bg-gradient-to-r from-orange to-orange-light hover:from-orange-dark hover:to-orange text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center gap-1.5 sm:gap-2"
+                      title={!schedule.lastCompletedAt ? "Définir dernière exécution" : "Marquer comme fait"}
                     >
                       <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
-                      <svg className="w-4 h-4 sm:w-5 sm:h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 relative z-10 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
-                      <span className="relative z-10 text-sm sm:text-base">
-                        {!schedule.lastCompletedAt ? "Définir dernière exécution" : "Marquer comme fait"}
+                      <span className="relative z-10 text-xs sm:text-sm hidden sm:inline">
+                        {!schedule.lastCompletedAt ? "Définir" : "Valider"}
                       </span>
                     </button>
 
                     {/* Action secondaire - Voir détails */}
                     <Link
                       href={`/dashboard/vehicles/${schedule.vehicleInfo._id}`}
-                      className="w-full group relative overflow-hidden px-3 py-2.5 bg-white border-2 border-gray-200 hover:border-orange hover:bg-orange-50 text-gray-600 hover:text-orange font-medium rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
+                      className="group relative overflow-hidden px-3 py-2.5 bg-white border-2 border-gray-200 hover:border-orange hover:bg-orange-50 text-gray-600 hover:text-orange font-medium rounded-xl transition-all duration-300 flex items-center justify-center gap-1.5"
+                      title="Voir tous les détails"
                     >
-                      <span className="text-xs sm:text-sm">Voir tous les détails</span>
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <span className="text-xs hidden sm:inline">Détails</span>
+                      <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </Link>
