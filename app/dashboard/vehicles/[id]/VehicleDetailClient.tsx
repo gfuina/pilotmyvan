@@ -312,10 +312,10 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-black">
-                Équipements 🔧
+                Équipements & Mécanique 🔧
               </h2>
               <p className="text-gray text-sm sm:text-base">
-                Gérez les équipements installés dans votre véhicule
+                Choisissez ce que vous souhaitez contrôler : mécanique (freins, pneus...) ou équipements (chauffage, frigo...)
               </p>
             </div>
             <button
@@ -362,10 +362,17 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
                 </svg>
               </div>
               <h3 className="text-lg font-semibold text-black mb-2">
-                Aucun équipement pour le moment
+                Commencez à suivre vos éléments prioritaires
               </h3>
-              <p className="text-gray text-sm mb-4">
-                Ajoutez les équipements de votre véhicule pour suivre leurs entretiens
+              <p className="text-gray text-sm mb-2">
+                Ajoutez uniquement ce que <span className="font-semibold">vous</span> souhaitez contrôler et entretenir :
+              </p>
+              <p className="text-gray text-xs mb-4">
+                🔩 Mécanique : pneus, freins, filtres, batterie, courroie...
+                <br />
+                🏠 Équipements : chauffage, frigo, pompe à eau, panneau solaire...
+                <br />
+                <span className="text-orange text-xs mt-1 block">💡 Vous choisissez ce qui est important pour vous !</span>
               </p>
               <button
                 onClick={() => setIsAddEquipmentModalOpen(true)}
@@ -384,7 +391,7 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
                     d="M12 4v16m8-8H4"
                   />
                 </svg>
-                <span className="hidden sm:inline">Ajouter mon premier équipement</span>
+                <span className="hidden sm:inline">Commencer le suivi</span>
                 <span className="sm:hidden">Ajouter</span>
               </button>
             </div>

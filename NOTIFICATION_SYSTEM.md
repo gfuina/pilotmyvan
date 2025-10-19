@@ -2,6 +2,13 @@
 
 Ce document explique le fonctionnement du système de notifications automatiques par email pour les entretiens.
 
+## Vue d'ensemble
+
+Le système comprend **deux types de notifications** complémentaires :
+
+1. **Notifications préventives** : Avant l'échéance (selon les préférences utilisateur)
+2. **Notifications de retard** : Escalade intelligente après l'échéance
+
 ## Architecture
 
 ### 1. Modèle de données
@@ -16,7 +23,7 @@ Ce document explique le fonctionnement du système de notifications automatiques
 - Par défaut : `[1]` (24h avant)
 - L'utilisateur peut configurer plusieurs rappels (ex: `[1, 3, 7, 14, 30]`)
 
-### 2. Cron Job Vercel
+### 2. Cron Jobs Vercel
 
 **Configuration** (`vercel.json`)
 ```json
@@ -25,13 +32,24 @@ Ce document explique le fonctionnement du système de notifications automatiques
     {
       "path": "/api/cron/send-maintenance-notifications",
       "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/send-overdue-notifications",
+      "schedule": "0 9 * * *"
     }
   ]
 }
 ```
 
-- S'exécute tous les jours à **8h00 UTC** (9h Paris, 10h Paris en été)
-- Appelle automatiquement la route `/api/cron/send-maintenance-notifications`
+#### Cron 1: Notifications préventives
+- S'exécute à **8h00 UTC** tous les jours
+- Route : `/api/cron/send-maintenance-notifications`
+- Envoie les notifications AVANT l'échéance selon les préférences utilisateur
+
+#### Cron 2: Notifications de retard
+- S'exécute à **9h00 UTC** tous les jours
+- Route : `/api/cron/send-overdue-notifications`
+- Envoie les notifications APRÈS l'échéance avec escalade intelligente
 
 **Pour modifier l'horaire :**
 - `0 8 * * *` = 8h00 tous les jours
@@ -41,7 +59,7 @@ Ce document explique le fonctionnement du système de notifications automatiques
 
 ### 3. Logique d'envoi
 
-Le cron job (`app/api/cron/send-maintenance-notifications/route.ts`) :
+#### A. Notifications préventives (`send-maintenance-notifications`)
 
 1. Récupère tous les utilisateurs avec email vérifié
 2. Pour chaque utilisateur :
@@ -54,7 +72,36 @@ Le cron job (`app/api/cron/send-maintenance-notifications/route.ts`) :
    - Envoie l'email
    - Enregistre dans l'historique
 
-### 4. Template d'email
+#### B. Notifications de retard intelligentes (`send-overdue-notifications`)
+
+**Système d'escalade progressive basé sur la gravité du retard :**
+
+##### 1. ⚠️ WARNING (1-6 jours de retard)
+- **Quand** : Jour 1 et jour 3
+- **Ton** : Rappel amical
+- **Design** : Badge jaune
+- **Message** : "Votre entretien est en retard"
+
+##### 2. 🔥 URGENT (7-29 jours de retard)
+- **Quand** : Tous les 7 jours
+- **Ton** : Action fortement recommandée
+- **Design** : Badge orange avec emphase
+- **Message** : "Entretien en retard : action requise"
+- **Détails** : Risques de panne mentionnés
+
+##### 3. 🚨 CRITICAL (30+ jours de retard)
+- **Quand** : Tous les 7 jours
+- **Ton** : Alerte critique
+- **Design** : Badge rouge, animation subtile
+- **Message** : "Alerte critique : entretien très en retard"
+- **Détails** : Avertissement sur garanties, sécurité, coûts
+
+**Anti-spam intelligent :**
+- Pas de spam quotidien
+- Fréquence adaptée à la gravité
+- Historique pour éviter les doublons
+
+### 4. Templates d'email
 
 **Fonctionnalités** (`lib/emailTemplates.ts`)
 - Design moderne et responsive
@@ -64,9 +111,26 @@ Le cron job (`app/api/cron/send-maintenance-notifications/route.ts`) :
 - CTA pour voir le véhicule et marquer comme fait
 - Branding PilotMyVan
 
-**Deux types d'emails :**
-1. `generateMaintenanceReminderEmail()` - Email individuel pour une maintenance
-2. `generateMaintenanceSummaryEmail()` - Email de résumé (plusieurs maintenances)
+**Trois types d'emails :**
+
+1. **`generateMaintenanceReminderEmail()`** - Email préventif classique
+   - Header orangé PilotMyVan
+   - Badge de priorité
+   - Informations complètes
+   - Instructions si disponibles
+   - CTA : "Voir mon véhicule" + "Marquer comme fait"
+
+2. **`generateOverdueMaintenanceEmail()`** - Email de retard ⭐ NOUVEAU
+   - Header rouge/orange selon l'urgence
+   - Badge animé pour niveau critique
+   - Affichage du retard en jours et km
+   - Ton adapté à l'urgence (amical → critique)
+   - Section "Risques potentiels" pour niveau critique
+   - CTA urgent : "Action urgente requise" / "⚠️ Régler maintenant"
+
+3. **`generateMaintenanceSummaryEmail()`** - Email de résumé
+   - Plusieurs maintenances groupées
+   - Vue synthétique
 
 ## Configuration
 
@@ -140,31 +204,56 @@ Seul Vercel Cron peut appeler cette route avec le bon token.
 
 ## Tests
 
-### Test manuel de la route
+### Script de test automatisé
 
 ```bash
-# Remplacer YOUR_CRON_SECRET par votre vraie valeur
+# Test des notifications préventives uniquement
+npm run test:notifications
+
+# Test des notifications de retard uniquement
+npm run test:notifications overdue
+
+# Test des deux types
+npm run test:notifications both
+```
+
+### Test manuel des routes
+
+#### Notifications préventives
+```bash
 curl -X GET "http://localhost:3000/api/cron/send-maintenance-notifications" \
+  -H "Authorization: Bearer YOUR_CRON_SECRET"
+```
+
+#### Notifications de retard
+```bash
+curl -X GET "http://localhost:3000/api/cron/send-overdue-notifications" \
   -H "Authorization: Bearer YOUR_CRON_SECRET"
 ```
 
 ### Test en production
 
 ```bash
+# Notifications préventives
 curl -X GET "https://yourdomain.com/api/cron/send-maintenance-notifications" \
+  -H "Authorization: Bearer YOUR_CRON_SECRET"
+
+# Notifications de retard
+curl -X GET "https://yourdomain.com/api/cron/send-overdue-notifications" \
   -H "Authorization: Bearer YOUR_CRON_SECRET"
 ```
 
 ### Déclencher manuellement depuis Vercel
 
 1. Aller dans Project > Cron Jobs
-2. Cliquer sur votre cron
+2. Cliquer sur le cron désiré
 3. Cliquer sur "Run Now"
 
 ## Monitoring et Debugging
 
-### Response du cron
+### Response des crons
 
+#### Notifications préventives
 ```json
 {
   "success": true,
@@ -177,6 +266,28 @@ curl -X GET "https://yourdomain.com/api/cron/send-maintenance-notifications" \
     "errors": ["Failed to send email to user@example.com: SMTP error"]
   },
   "timestamp": "2025-10-19T08:00:00.000Z"
+}
+```
+
+#### Notifications de retard ⭐ NOUVEAU
+```json
+{
+  "success": true,
+  "message": "Overdue notifications cron job completed",
+  "results": {
+    "totalUsers": 10,
+    "totalOverdueMaintenances": 8,
+    "totalNotifications": 5,
+    "successfulEmails": 5,
+    "failedEmails": 0,
+    "breakdown": {
+      "warning": 2,   // 1-6 jours
+      "urgent": 2,    // 7-29 jours
+      "critical": 1   // 30+ jours
+    },
+    "errors": []
+  },
+  "timestamp": "2025-10-19T09:00:00.000Z"
 }
 ```
 

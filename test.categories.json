@@ -1,0 +1,3058 @@
+[{
+  "_id": {
+    "$oid": "68f3503dbe04ebdaad786ab6"
+  },
+  "name": "MÉCANIQUE & CHÂSSIS",
+  "level": 1,
+  "parentId": null,
+  "order": 1,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:53.867Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:53.867Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503dbe04ebdaad786ab8"
+  },
+  "name": "Moteur",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f3503dbe04ebdaad786ab6"
+  },
+  "order": 2,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:53.948Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:53.948Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786aba"
+  },
+  "name": "Filtres (huile, air, carburant, habitacle)",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503dbe04ebdaad786ab8"
+  },
+  "order": 3,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.012Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.012Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786abc"
+  },
+  "name": "Distribution (courroie, chaîne, tendeurs)",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503dbe04ebdaad786ab8"
+  },
+  "order": 4,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.079Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.079Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786abe"
+  },
+  "name": "Refroidissement (liquide, radiateur, durites)",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503dbe04ebdaad786ab8"
+  },
+  "order": 5,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.140Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.140Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786ac0"
+  },
+  "name": "Échappement (pot, FAP, vanne EGR)",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503dbe04ebdaad786ab8"
+  },
+  "order": 6,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.202Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.202Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786ac2"
+  },
+  "name": "Injection (injecteurs, pompe, calculateur)",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503dbe04ebdaad786ab8"
+  },
+  "order": 7,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.268Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.268Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786ac4"
+  },
+  "name": "Transmission",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f3503dbe04ebdaad786ab6"
+  },
+  "order": 8,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.331Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.331Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786ac6"
+  },
+  "name": "Boîte de vitesses",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503ebe04ebdaad786ac4"
+  },
+  "order": 9,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.395Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.395Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786ac8"
+  },
+  "name": "Embrayage",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503ebe04ebdaad786ac4"
+  },
+  "order": 10,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.467Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.467Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786aca"
+  },
+  "name": "Pont & différentiel",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503ebe04ebdaad786ac4"
+  },
+  "order": 11,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.538Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.538Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786acc"
+  },
+  "name": "Cardans & soufflets",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503ebe04ebdaad786ac4"
+  },
+  "order": 12,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.595Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.595Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786ace"
+  },
+  "name": "Freinage",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f3503dbe04ebdaad786ab6"
+  },
+  "order": 13,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.656Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.656Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786ad0"
+  },
+  "name": "Plaquettes & disques",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503ebe04ebdaad786ace"
+  },
+  "order": 14,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.724Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.724Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786ad2"
+  },
+  "name": "Liquide de frein",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503ebe04ebdaad786ace"
+  },
+  "order": 15,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.788Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.788Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786ad4"
+  },
+  "name": "Étriers & cylindres",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503ebe04ebdaad786ace"
+  },
+  "order": 16,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.859Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.859Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786ad6"
+  },
+  "name": "Frein à main",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503ebe04ebdaad786ace"
+  },
+  "order": 17,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.916Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.916Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503ebe04ebdaad786ad8"
+  },
+  "name": "Suspension & direction",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f3503dbe04ebdaad786ab6"
+  },
+  "order": 18,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:54.977Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:54.977Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786ada"
+  },
+  "name": "Amortisseurs",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503ebe04ebdaad786ad8"
+  },
+  "order": 19,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.046Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.046Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786adc"
+  },
+  "name": "Ressorts & lames",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503ebe04ebdaad786ad8"
+  },
+  "order": 20,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.112Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.112Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786ade"
+  },
+  "name": "Rotules & silentblocs",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503ebe04ebdaad786ad8"
+  },
+  "order": 21,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.179Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.179Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786ae0"
+  },
+  "name": "Direction assistée",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503ebe04ebdaad786ad8"
+  },
+  "order": 22,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.236Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.236Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786ae2"
+  },
+  "name": "Géométrie & parallélisme",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503ebe04ebdaad786ad8"
+  },
+  "order": 23,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.297Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.297Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786ae4"
+  },
+  "name": "Pneumatiques",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f3503dbe04ebdaad786ab6"
+  },
+  "order": 24,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.352Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.352Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786ae6"
+  },
+  "name": "Pneus avant",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503fbe04ebdaad786ae4"
+  },
+  "order": 25,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.408Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.408Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786ae8"
+  },
+  "name": "Pneus arrière",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503fbe04ebdaad786ae4"
+  },
+  "order": 26,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.467Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.467Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786aea"
+  },
+  "name": "Roue de secours",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503fbe04ebdaad786ae4"
+  },
+  "order": 27,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.524Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.524Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786aec"
+  },
+  "name": "Équilibrage & permutation",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503fbe04ebdaad786ae4"
+  },
+  "order": 28,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.591Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.591Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786aee"
+  },
+  "name": "ÉLECTRICITÉ & ÉNERGIE",
+  "level": 1,
+  "parentId": null,
+  "order": 29,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.648Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.648Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786af0"
+  },
+  "name": "Batterie moteur",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f3503fbe04ebdaad786aee"
+  },
+  "order": 30,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.709Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.709Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786af2"
+  },
+  "name": "Batterie principale",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503fbe04ebdaad786af0"
+  },
+  "order": 31,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.763Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.763Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786af4"
+  },
+  "name": "Alternateur",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503fbe04ebdaad786af0"
+  },
+  "order": 32,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.815Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.815Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786af6"
+  },
+  "name": "Démarreur",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503fbe04ebdaad786af0"
+  },
+  "order": 33,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.901Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.901Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f3503fbe04ebdaad786af8"
+  },
+  "name": "Batterie auxiliaire (cellule)",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f3503fbe04ebdaad786aee"
+  },
+  "order": 34,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:55.961Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:55.961Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35040be04ebdaad786afa"
+  },
+  "name": "Batteries AGM/Lithium",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503fbe04ebdaad786af8"
+  },
+  "order": 35,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:56.019Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:56.019Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35040be04ebdaad786afc"
+  },
+  "name": "Coupleur séparateur",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503fbe04ebdaad786af8"
+  },
+  "order": 36,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:56.101Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:56.101Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35040be04ebdaad786afe"
+  },
+  "name": "Chargeur de batterie",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f3503fbe04ebdaad786af8"
+  },
+  "order": 37,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:56.163Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:56.163Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35040be04ebdaad786b00"
+  },
+  "name": "Énergie solaire",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f3503fbe04ebdaad786aee"
+  },
+  "order": 38,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:56.241Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:56.241Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35040be04ebdaad786b02"
+  },
+  "name": "Panneaux solaires",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35040be04ebdaad786b00"
+  },
+  "order": 39,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:56.304Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:56.304Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35040be04ebdaad786b04"
+  },
+  "name": "Régulateur MPPT",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35040be04ebdaad786b00"
+  },
+  "order": 40,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:56.363Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:56.363Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35040be04ebdaad786b06"
+  },
+  "name": "Câblage & fixations",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35040be04ebdaad786b00"
+  },
+  "order": 41,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:56.422Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:56.422Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35040be04ebdaad786b08"
+  },
+  "name": "Convertisseur & onduleur",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f3503fbe04ebdaad786aee"
+  },
+  "order": 42,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:56.490Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:56.490Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35040be04ebdaad786b0a"
+  },
+  "name": "Convertisseur 12V",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35040be04ebdaad786b08"
+  },
+  "order": 43,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:56.556Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:56.556Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35040be04ebdaad786b0c"
+  },
+  "name": "Onduleur 220V",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35040be04ebdaad786b08"
+  },
+  "order": 44,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:56.621Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:56.621Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35040be04ebdaad786b0e"
+  },
+  "name": "Éclairage",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f3503fbe04ebdaad786aee"
+  },
+  "order": 45,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:56.676Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:56.676Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35040be04ebdaad786b10"
+  },
+  "name": "Éclairage intérieur",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35040be04ebdaad786b0e"
+  },
+  "order": 46,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:56.776Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:56.776Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35040be04ebdaad786b12"
+  },
+  "name": "Éclairage extérieur",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35040be04ebdaad786b0e"
+  },
+  "order": 47,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:56.818Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:56.818Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35040be04ebdaad786b14"
+  },
+  "name": "Feux de signalisation",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35040be04ebdaad786b0e"
+  },
+  "order": 48,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:56.889Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:56.889Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35040be04ebdaad786b16"
+  },
+  "name": "CHAUFFAGE & CLIMATISATION",
+  "level": 1,
+  "parentId": null,
+  "order": 49,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:56.955Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:56.955Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b18"
+  },
+  "name": "Chauffage stationnaire",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35040be04ebdaad786b16"
+  },
+  "order": 50,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.015Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.015Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b1a"
+  },
+  "name": "Chauffage diesel (Webasto, Eberspächer, Autoterm...)",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b18"
+  },
+  "order": 51,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.083Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.083Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b1c"
+  },
+  "name": "Chauffage gaz",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b18"
+  },
+  "order": 52,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.154Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.154Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b1e"
+  },
+  "name": "Radiateur électrique",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b18"
+  },
+  "order": 53,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.215Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.215Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b20"
+  },
+  "name": "Climatisation",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35040be04ebdaad786b16"
+  },
+  "order": 54,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.267Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.267Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b22"
+  },
+  "name": "Clim cabine (moteur)",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b20"
+  },
+  "order": 55,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.329Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.329Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b24"
+  },
+  "name": "Clim cellule (autonome)",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b20"
+  },
+  "order": 56,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.391Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.391Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b26"
+  },
+  "name": "Ventilation",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35040be04ebdaad786b16"
+  },
+  "order": 57,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.445Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.445Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b28"
+  },
+  "name": "Lanterneau ventilé",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b26"
+  },
+  "order": 58,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.506Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.506Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b2a"
+  },
+  "name": "Extracteurs d'air",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b26"
+  },
+  "order": 59,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.571Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.571Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b2c"
+  },
+  "name": "Aérations",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b26"
+  },
+  "order": 60,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.639Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.639Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b2e"
+  },
+  "name": "EAU & SANITAIRE",
+  "level": 1,
+  "parentId": null,
+  "order": 61,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.708Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.708Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b30"
+  },
+  "name": "Eau propre",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b2e"
+  },
+  "order": 62,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.775Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.775Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b32"
+  },
+  "name": "Réservoir eau propre",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b30"
+  },
+  "order": 63,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.832Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.832Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b34"
+  },
+  "name": "Pompe à eau",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b30"
+  },
+  "order": 64,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.892Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.892Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35041be04ebdaad786b36"
+  },
+  "name": "Filtres à eau",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b30"
+  },
+  "order": 65,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:57.962Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:57.962Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b38"
+  },
+  "name": "Tuyauterie & raccords",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b30"
+  },
+  "order": 66,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.028Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.028Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b3a"
+  },
+  "name": "Eau chaude",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b2e"
+  },
+  "order": 67,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.096Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.096Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b3c"
+  },
+  "name": "Chauffe-eau (Truma, gaz, électrique)",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35042be04ebdaad786b3a"
+  },
+  "order": 68,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.150Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.150Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b3e"
+  },
+  "name": "Serpentin échangeur",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35042be04ebdaad786b3a"
+  },
+  "order": 69,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.215Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.215Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b40"
+  },
+  "name": "Eaux usées",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b2e"
+  },
+  "order": 70,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.266Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.266Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b42"
+  },
+  "name": "Réservoir eaux grises",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35042be04ebdaad786b40"
+  },
+  "order": 71,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.331Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.331Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b44"
+  },
+  "name": "Réservoir eaux noires",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35042be04ebdaad786b40"
+  },
+  "order": 72,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.395Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.395Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b46"
+  },
+  "name": "Vannes & vidanges",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35042be04ebdaad786b40"
+  },
+  "order": 73,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.446Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.446Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b48"
+  },
+  "name": "Sanitaires",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b2e"
+  },
+  "order": 74,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.503Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.503Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b4a"
+  },
+  "name": "Toilettes (cassette, chimiques, sèches)",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35042be04ebdaad786b48"
+  },
+  "order": 75,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.553Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.553Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b4c"
+  },
+  "name": "Douche",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35042be04ebdaad786b48"
+  },
+  "order": 76,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.605Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.605Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b4e"
+  },
+  "name": "Robinetterie",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35042be04ebdaad786b48"
+  },
+  "order": 77,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.654Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.654Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b50"
+  },
+  "name": "GAZ & RÉFRIGÉRATION",
+  "level": 1,
+  "parentId": null,
+  "order": 78,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.713Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.713Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b52"
+  },
+  "name": "Installation gaz",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35042be04ebdaad786b50"
+  },
+  "order": 79,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.781Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.781Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b54"
+  },
+  "name": "Bouteilles de gaz",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35042be04ebdaad786b52"
+  },
+  "order": 80,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.839Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.839Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b56"
+  },
+  "name": "Détendeur",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35042be04ebdaad786b52"
+  },
+  "order": 81,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.895Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.895Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b58"
+  },
+  "name": "Tuyauterie gaz",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35042be04ebdaad786b52"
+  },
+  "order": 82,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.946Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.946Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35042be04ebdaad786b5a"
+  },
+  "name": "Contrôle étanchéité",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35042be04ebdaad786b52"
+  },
+  "order": 83,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:58.999Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:58.999Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b5c"
+  },
+  "name": "Réfrigération",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35042be04ebdaad786b50"
+  },
+  "order": 84,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.054Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.054Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b5e"
+  },
+  "name": "Réfrigérateur (à compression, absorption)",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b5c"
+  },
+  "order": 85,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.116Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.116Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b60"
+  },
+  "name": "Glacière électrique",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b5c"
+  },
+  "order": 86,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.175Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.175Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b62"
+  },
+  "name": "Congélateur",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b5c"
+  },
+  "order": 87,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.227Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.227Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b64"
+  },
+  "name": "Cuisson",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35042be04ebdaad786b50"
+  },
+  "order": 88,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.275Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.275Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b66"
+  },
+  "name": "Plaques de cuisson (gaz, électrique)",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b64"
+  },
+  "order": 89,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.327Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.327Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b68"
+  },
+  "name": "Four",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b64"
+  },
+  "order": 90,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.393Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.393Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b6a"
+  },
+  "name": "Micro-ondes",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b64"
+  },
+  "order": 91,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.458Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.458Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b6c"
+  },
+  "name": "AMÉNAGEMENT INTÉRIEUR",
+  "level": 1,
+  "parentId": null,
+  "order": 92,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.507Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.507Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b6e"
+  },
+  "name": "Mobilier",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b6c"
+  },
+  "order": 93,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.563Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.563Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b70"
+  },
+  "name": "Placards & rangements",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b6e"
+  },
+  "order": 94,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.623Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.623Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b72"
+  },
+  "name": "Table",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b6e"
+  },
+  "order": 95,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.688Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.688Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b74"
+  },
+  "name": "Assises",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b6e"
+  },
+  "order": 96,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.755Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.755Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b76"
+  },
+  "name": "Plan de travail",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b6e"
+  },
+  "order": 97,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.807Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.807Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b78"
+  },
+  "name": "Couchage",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b6c"
+  },
+  "order": 98,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.865Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.865Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b7a"
+  },
+  "name": "Lit fixe",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b78"
+  },
+  "order": 99,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.914Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.914Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35043be04ebdaad786b7c"
+  },
+  "name": "Banquette convertible",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b78"
+  },
+  "order": 100,
+  "createdAt": {
+    "$date": "2025-10-18T08:30:59.969Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:30:59.969Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b7e"
+  },
+  "name": "Lit pavillon",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b78"
+  },
+  "order": 101,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.022Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.022Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b80"
+  },
+  "name": "Matelas",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b78"
+  },
+  "order": 102,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.074Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.074Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b82"
+  },
+  "name": "Revêtements",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b6c"
+  },
+  "order": 103,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.125Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.125Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b84"
+  },
+  "name": "Sol (vinyle, parquet)",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b82"
+  },
+  "order": 104,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.179Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.179Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b86"
+  },
+  "name": "Murs & plafond",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b82"
+  },
+  "order": 105,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.239Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.239Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b88"
+  },
+  "name": "Rideaux & stores",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b82"
+  },
+  "order": 106,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.302Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.302Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b8a"
+  },
+  "name": "Isolation",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35043be04ebdaad786b6c"
+  },
+  "order": 107,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.356Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.356Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b8c"
+  },
+  "name": "Isolation thermique",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b8a"
+  },
+  "order": 108,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.407Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.407Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b8e"
+  },
+  "name": "Isolation phonique",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b8a"
+  },
+  "order": 109,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.467Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.467Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b90"
+  },
+  "name": "Étanchéité",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b8a"
+  },
+  "order": 110,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.532Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.532Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b92"
+  },
+  "name": "ÉQUIPEMENTS EXTÉRIEURS",
+  "level": 1,
+  "parentId": null,
+  "order": 111,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.583Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.583Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b94"
+  },
+  "name": "Carrosserie",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b92"
+  },
+  "order": 112,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.635Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.635Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b96"
+  },
+  "name": "Peinture & vernis",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b94"
+  },
+  "order": 113,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.696Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.696Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b98"
+  },
+  "name": "Pare-chocs",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b94"
+  },
+  "order": 114,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.748Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.748Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b9a"
+  },
+  "name": "Portières & hayon",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b94"
+  },
+  "order": 115,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.810Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.810Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b9c"
+  },
+  "name": "Vitres & pare-brise",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b94"
+  },
+  "order": 116,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.872Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.872Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786b9e"
+  },
+  "name": "Toiture",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b92"
+  },
+  "order": 117,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.927Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.927Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35044be04ebdaad786ba0"
+  },
+  "name": "Lanterneau",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b9e"
+  },
+  "order": 118,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:00.984Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:00.984Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786ba2"
+  },
+  "name": "Galerie de toit",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b9e"
+  },
+  "order": 119,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.039Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.039Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786ba4"
+  },
+  "name": "Étanchéité toit",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b9e"
+  },
+  "order": 120,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.099Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.099Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786ba6"
+  },
+  "name": "Antennes (TV, 4G, GPS)",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b9e"
+  },
+  "order": 121,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.156Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.156Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786ba8"
+  },
+  "name": "Accessoires de voyage",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b92"
+  },
+  "order": 122,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.222Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.222Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786baa"
+  },
+  "name": "Auvent & store",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35045be04ebdaad786ba8"
+  },
+  "order": 123,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.270Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.270Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786bac"
+  },
+  "name": "Porte-vélos",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35045be04ebdaad786ba8"
+  },
+  "order": 124,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.323Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.323Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786bae"
+  },
+  "name": "Coffre de toit/arrière",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35045be04ebdaad786ba8"
+  },
+  "order": 125,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.379Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.379Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786bb0"
+  },
+  "name": "Marchepied",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35045be04ebdaad786ba8"
+  },
+  "order": 126,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.427Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.427Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786bb2"
+  },
+  "name": "Attelage & remorque",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35044be04ebdaad786b92"
+  },
+  "order": 127,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.482Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.482Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786bb4"
+  },
+  "name": "Boule d'attelage",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35045be04ebdaad786bb2"
+  },
+  "order": 128,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.539Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.539Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786bb6"
+  },
+  "name": "Prise électrique",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35045be04ebdaad786bb2"
+  },
+  "order": 129,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.587Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.587Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786bb8"
+  },
+  "name": "Remorque",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35045be04ebdaad786bb2"
+  },
+  "order": 130,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.639Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.639Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786bba"
+  },
+  "name": "SÉCURITÉ & CONFORT",
+  "level": 1,
+  "parentId": null,
+  "order": 131,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.690Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.690Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786bbc"
+  },
+  "name": "Sécurité passive",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35045be04ebdaad786bba"
+  },
+  "order": 132,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.740Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.740Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786bbe"
+  },
+  "name": "Extincteur",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35045be04ebdaad786bbc"
+  },
+  "order": 133,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.792Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.792Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786bc0"
+  },
+  "name": "Détecteur gaz/CO",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35045be04ebdaad786bbc"
+  },
+  "order": 134,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.843Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.843Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786bc2"
+  },
+  "name": "Détecteur fumée",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35045be04ebdaad786bbc"
+  },
+  "order": 135,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.898Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.898Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35045be04ebdaad786bc4"
+  },
+  "name": "Trousse premiers secours",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35045be04ebdaad786bbc"
+  },
+  "order": 136,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:01.955Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:01.955Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786bc6"
+  },
+  "name": "Sécurité active",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35045be04ebdaad786bba"
+  },
+  "order": 137,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.004Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.004Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786bc8"
+  },
+  "name": "Alarme",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786bc6"
+  },
+  "order": 138,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.064Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.064Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786bca"
+  },
+  "name": "Antivol",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786bc6"
+  },
+  "order": 139,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.131Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.131Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786bcc"
+  },
+  "name": "Safe-lock portes",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786bc6"
+  },
+  "order": 140,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.190Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.190Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786bce"
+  },
+  "name": "Multimédia",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35045be04ebdaad786bba"
+  },
+  "order": 141,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.256Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.256Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786bd0"
+  },
+  "name": "Autoradio",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786bce"
+  },
+  "order": 142,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.321Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.321Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786bd2"
+  },
+  "name": "Caméra de recul",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786bce"
+  },
+  "order": 143,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.381Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.381Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786bd4"
+  },
+  "name": "TV/Satellite",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786bce"
+  },
+  "order": 144,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.434Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.434Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786bd6"
+  },
+  "name": "Wifi/4G",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786bce"
+  },
+  "order": 145,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.502Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.502Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786bd8"
+  },
+  "name": "ENTRETIEN COURANT",
+  "level": 1,
+  "parentId": null,
+  "order": 146,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.566Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.566Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786bda"
+  },
+  "name": "Révisions périodiques",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786bd8"
+  },
+  "order": 147,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.618Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.618Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786bdc"
+  },
+  "name": "Révision complète",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786bda"
+  },
+  "order": 148,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.666Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.666Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786bde"
+  },
+  "name": "Vidange moteur",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786bda"
+  },
+  "order": 149,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.718Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.718Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786be0"
+  },
+  "name": "Contrôle technique",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786bda"
+  },
+  "order": 150,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.766Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.766Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786be2"
+  },
+  "name": "Révision gaz (obligatoire)",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786bda"
+  },
+  "order": 151,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.818Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.818Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786be4"
+  },
+  "name": "Nettoyage & entretien",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786bd8"
+  },
+  "order": 152,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.870Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.870Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786be6"
+  },
+  "name": "Nettoyage extérieur",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786be4"
+  },
+  "order": 153,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.926Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.926Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35046be04ebdaad786be8"
+  },
+  "name": "Nettoyage intérieur",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786be4"
+  },
+  "order": 154,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:02.979Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:02.979Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786bea"
+  },
+  "name": "Traitement carrosserie",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786be4"
+  },
+  "order": 155,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.064Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.064Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786bec"
+  },
+  "name": "Désinfection circuit eau",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786be4"
+  },
+  "order": 156,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.125Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.125Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786bee"
+  },
+  "name": "Hivernage",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35046be04ebdaad786bd8"
+  },
+  "order": 157,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.174Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.174Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786bf0"
+  },
+  "name": "Vidange circuits eau",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35047be04ebdaad786bee"
+  },
+  "order": 158,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.234Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.234Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786bf2"
+  },
+  "name": "Mise en hivernage",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35047be04ebdaad786bee"
+  },
+  "order": 159,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.294Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.294Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786bf4"
+  },
+  "name": "Bâchage",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35047be04ebdaad786bee"
+  },
+  "order": 160,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.354Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.354Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786bf6"
+  },
+  "name": "Entretien batteries",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35047be04ebdaad786bee"
+  },
+  "order": 161,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.418Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.418Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786bf8"
+  },
+  "name": "ADMINISTRATIF & DIVERS",
+  "level": 1,
+  "parentId": null,
+  "order": 162,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.475Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.475Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786bfa"
+  },
+  "name": "Documents",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35047be04ebdaad786bf8"
+  },
+  "order": 163,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.523Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.523Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786bfc"
+  },
+  "name": "Assurance",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35047be04ebdaad786bfa"
+  },
+  "order": 164,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.586Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.586Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786bfe"
+  },
+  "name": "Carte grise",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35047be04ebdaad786bfa"
+  },
+  "order": 165,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.646Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.646Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786c00"
+  },
+  "name": "Contrôle technique",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35047be04ebdaad786bfa"
+  },
+  "order": 166,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.698Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.698Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786c02"
+  },
+  "name": "Accessoires divers",
+  "level": 2,
+  "parentId": {
+    "$oid": "68f35047be04ebdaad786bf8"
+  },
+  "order": 167,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.746Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.746Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786c04"
+  },
+  "name": "Cales de roue",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35047be04ebdaad786c02"
+  },
+  "order": 168,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.802Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.802Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786c06"
+  },
+  "name": "Câbles & rallonges",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35047be04ebdaad786c02"
+  },
+  "order": 169,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.854Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.854Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786c08"
+  },
+  "name": "Tuyaux d'eau",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35047be04ebdaad786c02"
+  },
+  "order": 170,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.911Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.911Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f35047be04ebdaad786c0a"
+  },
+  "name": "Outils & pièces de rechange",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35047be04ebdaad786c02"
+  },
+  "order": 171,
+  "createdAt": {
+    "$date": "2025-10-18T08:31:03.958Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-18T08:31:03.958Z"
+  },
+  "__v": 0
+}]

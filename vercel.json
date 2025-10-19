@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/send-maintenance-notifications",
       "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/send-overdue-notifications",
+      "schedule": "0 9 * * *"
     }
   ]
 }

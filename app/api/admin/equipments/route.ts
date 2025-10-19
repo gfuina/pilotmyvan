@@ -19,6 +19,8 @@ export async function GET(request: NextRequest) {
 
     // Import models after DB connection to ensure they're registered
     const Equipment = (await import("@/models/Equipment")).default;
+    await import("@/models/VehicleBrand");
+    await import("@/models/EquipmentBrand");
 
     // Build query - exclude pending equipments (they appear in Contributions tab)
     const query: { categoryId?: string; $or: Array<{ status: { $ne: string } } | { status: { $exists: boolean } }> } = categoryId ? { categoryId, $or: [] } : { $or: [] };
@@ -75,6 +77,8 @@ export async function POST(request: NextRequest) {
 
     // Import models after DB connection
     const Equipment = (await import("@/models/Equipment")).default;
+    await import("@/models/VehicleBrand");
+    await import("@/models/EquipmentBrand");
 
     const equipment = await Equipment.create({
       name,
