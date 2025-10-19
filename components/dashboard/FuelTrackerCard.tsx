@@ -53,6 +53,10 @@ export default function FuelTrackerCard({
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
 
+  // Accordion states
+  const [isStatsOpen, setIsStatsOpen] = useState(false);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+
   // Form state
   const [mileage, setMileage] = useState("");
   const [amountPaid, setAmountPaid] = useState("");
@@ -242,52 +246,124 @@ export default function FuelTrackerCard({
         </div>
       </div>
 
-      {/* Stats Grid */}
+      {/* Stats Grid - Improved Design */}
       {stats && records.length > 0 && (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          <div className="bg-gray-50 rounded-xl p-4">
-            <p className="text-xs text-gray-500 mb-1">Dépenses totales</p>
-            <p className="text-2xl font-bold text-black">
+        <div className="grid grid-cols-2 gap-3 mb-6">
+          {/* Dépenses totales */}
+          <div className="bg-gradient-to-br from-red-50 to-red-100 rounded-xl p-4 border border-red-200">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-8 h-8 bg-red-500 rounded-lg flex items-center justify-center">
+                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <p className="text-xs font-semibold text-red-800">Dépenses</p>
+            </div>
+            <p className="text-2xl font-bold text-red-900">
               {stats.totalSpent.toFixed(2)}€
             </p>
+            <p className="text-xs text-red-600 mt-1">Total cumulé</p>
           </div>
-          {stats.averageConsumption > 0 && (
-            <div className="bg-gray-50 rounded-xl p-4">
-              <p className="text-xs text-gray-500 mb-1">Conso moyenne</p>
-              <p className="text-2xl font-bold text-black">
-                {stats.averageConsumption} L
-              </p>
-              <p className="text-xs text-gray-400">/100km</p>
-            </div>
-          )}
+
+          {/* Prix moyen */}
           {stats.averagePricePerLiter > 0 && (
-            <div className="bg-gray-50 rounded-xl p-4">
-              <p className="text-xs text-gray-500 mb-1">Prix moyen</p>
-              <p className="text-2xl font-bold text-black">
+            <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 border border-orange-200">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 bg-orange rounded-lg flex items-center justify-center">
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" />
+                  </svg>
+                </div>
+                <p className="text-xs font-semibold text-orange-800">Prix moyen</p>
+              </div>
+              <p className="text-2xl font-bold text-orange-900">
                 {stats.averagePricePerLiter.toFixed(3)}€
               </p>
-              <p className="text-xs text-gray-400">/litre</p>
+              <p className="text-xs text-orange-600 mt-1">par litre</p>
             </div>
           )}
-          {stats.totalDistance > 0 && (
-            <div className="bg-gray-50 rounded-xl p-4">
-              <p className="text-xs text-gray-500 mb-1">Distance totale</p>
-              <p className="text-2xl font-bold text-black">
-                {stats.totalDistance.toLocaleString()} km
+
+          {/* Conso moyenne */}
+          {stats.averageConsumption > 0 && (
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 border border-green-200">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  </svg>
+                </div>
+                <p className="text-xs font-semibold text-green-800">Consommation</p>
+              </div>
+              <p className="text-2xl font-bold text-green-900">
+                {stats.averageConsumption}L
               </p>
+              <p className="text-xs text-green-600 mt-1">aux 100km</p>
+            </div>
+          )}
+
+          {/* Distance totale */}
+          {stats.totalDistance > 0 && (
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                  </svg>
+                </div>
+                <p className="text-xs font-semibold text-blue-800">Distance</p>
+              </div>
+              <p className="text-2xl font-bold text-blue-900">
+                {stats.totalDistance.toLocaleString()}
+              </p>
+              <p className="text-xs text-blue-600 mt-1">kilomètres</p>
             </div>
           )}
         </div>
       )}
 
-      {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        {/* Prix du carburant */}
-        {priceChartData.length >= 2 && (
-          <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">
-              Évolution du prix du carburant
-            </h3>
+      {/* Accordion: Statistiques détaillées */}
+      {(priceChartData.length >= 2 || consumptionChartData.length >= 2) && (
+        <div className="mb-4">
+          <button
+            onClick={() => setIsStatsOpen(!isStatsOpen)}
+            className="w-full flex items-center justify-between p-4 bg-gray-50 hover:bg-gray-100 rounded-xl transition-colors"
+          >
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+              </div>
+              <div className="text-left">
+                <p className="font-semibold text-black text-sm">Statistiques détaillées</p>
+                <p className="text-xs text-gray-500">Graphiques et analyses</p>
+              </div>
+            </div>
+            <svg
+              className={`w-5 h-5 text-gray-500 transition-transform ${isStatsOpen ? "rotate-180" : ""}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <AnimatePresence>
+            {isStatsOpen && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden"
+              >
+                <div className="pt-4 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Prix du carburant */}
+                  {priceChartData.length >= 2 && (
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-700 mb-3">
+                        Évolution du prix du carburant
+                      </h3>
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={priceChartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -322,16 +398,16 @@ export default function FuelTrackerCard({
                   activeDot={{ r: 6 }}
                 />
               </LineChart>
-            </ResponsiveContainer>
-          </div>
-        )}
+                      </ResponsiveContainer>
+                    </div>
+                  )}
 
-        {/* Consommation */}
-        {consumptionChartData.length >= 2 && (
-          <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-3">
-              Consommation (L/100km)
-            </h3>
+                  {/* Consommation */}
+                  {consumptionChartData.length >= 2 && (
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-700 mb-3">
+                        Consommation (L/100km)
+                      </h3>
             <ResponsiveContainer width="100%" height={200}>
               <BarChart data={consumptionChartData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -361,17 +437,52 @@ export default function FuelTrackerCard({
                 />
                 <Bar dataKey="consumption" fill="#4ade80" radius={[8, 8, 0, 0]} />
               </BarChart>
-            </ResponsiveContainer>
+                      </ResponsiveContainer>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
+
+      {/* Accordion: Enregistrer un plein */}
+      <div className="mb-4">
+        <button
+          onClick={() => setIsFormOpen(!isFormOpen)}
+          className="w-full flex items-center justify-between p-4 bg-gradient-to-r from-orange-50 to-orange-100 hover:from-orange-100 hover:to-orange-200 rounded-xl transition-colors border border-orange-200"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-orange rounded-lg flex items-center justify-center">
+              <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </div>
+            <div className="text-left">
+              <p className="font-semibold text-black text-sm">Enregistrer un plein</p>
+              <p className="text-xs text-orange-700">Ajouter une nouvelle entrée</p>
+            </div>
           </div>
-        )}
-      </div>
-
-      {/* Formulaire */}
-      <form onSubmit={handleSubmit} className="border-t pt-6">
-        <h3 className="text-sm font-semibold text-gray-700 mb-4">
-          Enregistrer un plein
-        </h3>
-
+          <svg
+            className={`w-5 h-5 text-orange-700 transition-transform ${isFormOpen ? "rotate-180" : ""}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <AnimatePresence>
+          {isFormOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3 }}
+              className="overflow-hidden"
+            >
+              <form onSubmit={handleSubmit} className="pt-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
           {/* Kilométrage */}
           <div>
@@ -495,10 +606,9 @@ export default function FuelTrackerCard({
         >
           {isSaving ? "Enregistrement..." : "Enregistrer le plein"}
         </button>
-      </form>
 
-      {/* Messages */}
-      <AnimatePresence>
+        {/* Messages */}
+        <AnimatePresence>
         {error && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -519,7 +629,12 @@ export default function FuelTrackerCard({
             <p className="text-green-600 text-sm">{successMessage}</p>
           </motion.div>
         )}
-      </AnimatePresence>
+        </AnimatePresence>
+              </form>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
 
       {/* Historique récent */}
       {records.length > 0 && (

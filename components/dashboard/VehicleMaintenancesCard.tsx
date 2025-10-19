@@ -185,6 +185,7 @@ export default function VehicleMaintenancesCard({
     difficulty?: string;
     conditions?: string[];
   } | null>(null);
+  const [expandedRecommendations, setExpandedRecommendations] = useState<Set<string>>(new Set());
 
   const fetchMaintenances = async () => {
     setIsLoading(true);
@@ -431,7 +432,8 @@ export default function VehicleMaintenancesCard({
     if (days <= 30) return `Dans ${Math.floor(days / 7)} sem`;
     if (days <= 90) return `Dans ${Math.floor(days / 30)} mois`;
     if (days <= 365) return `Dans ${Math.floor(days / 30)} mois`;
-    return `Dans ${Math.floor(days / 365)} an`;
+    const years = Math.floor(days / 365);
+    return `Dans ${years} an${years > 1 ? 's' : ''}`;
   };
 
   const formatKmRemaining = (km: number): string => {
@@ -834,73 +836,123 @@ export default function VehicleMaintenancesCard({
                 Basés sur vos équipements, ajoutez-les en un clic !
               </p>
 
-              <div className="space-y-4 sm:space-y-6">
-                {recommendations.map((rec) => (
-                  <div key={rec.equipment._id} className="border-l-4 border-orange pl-3 sm:pl-4">
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3">
-                      {rec.equipment.photos?.[0] && (
-                        <div className="relative w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                          <Image
-                            src={rec.equipment.photos[0]}
-                            alt={rec.equipment.name}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                      )}
-                      <h4 className="font-semibold text-black text-sm sm:text-base">
-                        {rec.equipment.name}
-                      </h4>
-                      <span className="text-xs text-gray">
-                        {rec.maintenances.length} entretien
-                        {rec.maintenances.length > 1 ? "s" : ""}
-                      </span>
-                    </div>
+              <div className="space-y-3">
+                {recommendations.map((rec) => {
+                  const isExpanded = expandedRecommendations.has(rec.equipment._id);
+                  const toggleExpanded = () => {
+                    setExpandedRecommendations(prev => {
+                      const next = new Set(prev);
+                      if (next.has(rec.equipment._id)) {
+                        next.delete(rec.equipment._id);
+                      } else {
+                        next.add(rec.equipment._id);
+                      }
+                      return next;
+                    });
+                  };
 
-                    <div className="space-y-2">
-                      {rec.maintenances.map((maintenance) => (
-                        <div
-                          key={maintenance._id}
-                          className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
-                        >
-                          <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                            <div
-                              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center border flex-shrink-0 ${
-                                PRIORITY_COLORS[maintenance.priority].bg
-                              } ${PRIORITY_COLORS[maintenance.priority].text} ${PRIORITY_COLORS[maintenance.priority].border}`}
-                            >
-                              <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full ${maintenance.priority === "critical" ? "bg-red-600" : maintenance.priority === "important" ? "bg-orange-600" : maintenance.priority === "recommended" ? "bg-yellow-600" : "bg-gray-600"}`} />
+                  return (
+                    <div key={rec.equipment._id} className="border border-gray-200 rounded-xl overflow-hidden">
+                      {/* Accordion Header */}
+                      <button
+                        onClick={toggleExpanded}
+                        className="w-full flex items-center justify-between p-3 sm:p-4 bg-gray-50 hover:bg-gray-100 transition-colors text-left"
+                      >
+                        <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                          {rec.equipment.photos?.[0] && (
+                            <div className="relative w-10 h-10 sm:w-12 sm:h-12 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+                              <Image
+                                src={rec.equipment.photos[0]}
+                                alt={rec.equipment.name}
+                                fill
+                                className="object-cover"
+                              />
                             </div>
-
-                            <div className="flex-1 min-w-0">
-                              <h5 className="font-semibold text-black text-xs sm:text-sm">
-                                {maintenance.name}
-                              </h5>
-                              <p className="text-xs text-gray truncate">
-                                Tous les {formatRecurrence(maintenance.recurrence)}
-                              </p>
-                            </div>
+                          )}
+                          <div className="flex-1 min-w-0">
+                            <h4 className="font-semibold text-black text-sm sm:text-base truncate">
+                              {rec.equipment.name}
+                            </h4>
+                            <p className="text-xs text-gray">
+                              {rec.maintenances.length} entretien{rec.maintenances.length > 1 ? "s" : ""} recommandé{rec.maintenances.length > 1 ? "s" : ""}
+                            </p>
                           </div>
-
-                          <button
-                            onClick={() =>
-                              handleQuickAdd(
-                                rec.vehicleEquipmentId,
-                                maintenance._id
-                              )
-                            }
-                            disabled={addingMaintenanceId === maintenance._id}
-                            className="w-full sm:w-auto px-3 sm:px-4 py-2 bg-orange text-white text-xs sm:text-sm font-semibold rounded-lg hover:bg-orange-dark transition-colors disabled:opacity-50 flex-shrink-0"
-                          >
-                            {addingMaintenanceId === maintenance._id
-                              ? "..."
-                              : "Ajouter"}
-                          </button>
                         </div>
-                      ))}
+                        <svg
+                          className={`w-5 h-5 text-gray-500 transition-transform flex-shrink-0 ${isExpanded ? "rotate-180" : ""}`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+
+                      {/* Accordion Content */}
+                      <AnimatePresence>
+                        {isExpanded && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            transition={{ duration: 0.3 }}
+                            className="overflow-hidden"
+                          >
+                            <div className="p-3 sm:p-4 pt-0 space-y-2">
+                              {rec.maintenances.map((maintenance) => (
+                                <div
+                                  key={maintenance._id}
+                                  className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3 p-2.5 sm:p-3 bg-gray-50 rounded-xl hover:bg-gray-100 transition-colors"
+                                >
+                                  <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+                                    <div
+                                      className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center border flex-shrink-0 ${
+                                        PRIORITY_COLORS[maintenance.priority].bg
+                                      } ${PRIORITY_COLORS[maintenance.priority].text} ${PRIORITY_COLORS[maintenance.priority].border}`}
+                                    >
+                                      <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full ${maintenance.priority === "critical" ? "bg-red-600" : maintenance.priority === "important" ? "bg-orange-600" : maintenance.priority === "recommended" ? "bg-yellow-600" : "bg-gray-600"}`} />
+                                    </div>
+
+                                    <div className="flex-1 min-w-0">
+                                      <h5 className="font-semibold text-black text-xs sm:text-sm">
+                                        {maintenance.name}
+                                      </h5>
+                                      <p className="text-xs text-gray truncate">
+                                        Tous les {formatRecurrence(maintenance.recurrence)}
+                                      </p>
+                                    </div>
+                                  </div>
+
+                                  <button
+                                    onClick={() =>
+                                      handleQuickAdd(
+                                        rec.vehicleEquipmentId,
+                                        maintenance._id
+                                      )
+                                    }
+                                    disabled={addingMaintenanceId === maintenance._id}
+                                    className="group w-9 h-9 sm:w-10 sm:h-10 bg-orange hover:bg-orange-dark text-white rounded-lg transition-all duration-300 disabled:opacity-50 flex items-center justify-center flex-shrink-0 hover:scale-110"
+                                    title="Ajouter cet entretien"
+                                  >
+                                    {addingMaintenanceId === maintenance._id ? (
+                                      <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                      </svg>
+                                    ) : (
+                                      <svg className="w-5 h-5 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 4v16m8-8H4" />
+                                      </svg>
+                                    )}
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ) : maintenances.length === 0 ? (

@@ -198,21 +198,40 @@ export default function MileageTrackerCard({
         </div>
       </div>
 
-      {/* Stats rapides */}
+      {/* Stats rapides - Improved Design */}
       {history.length > 0 && (
         <div className="grid grid-cols-2 gap-3 mb-5">
-          <div className="bg-gray-50 rounded-xl p-3">
-            <p className="text-xs text-gray-500 mb-1">Kilométrage actuel</p>
-            <p className="text-xl font-bold text-black">
-              {currentMileage.toLocaleString()} km
+          {/* Kilométrage actuel */}
+          <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
+                <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <p className="text-xs font-semibold text-blue-800">Kilométrage</p>
+            </div>
+            <p className="text-2xl font-bold text-blue-900">
+              {currentMileage.toLocaleString()}
             </p>
+            <p className="text-xs text-blue-600 mt-1">kilomètres</p>
           </div>
+
+          {/* Moyenne / jour */}
           {history.length >= 2 && (
-            <div className="bg-gray-50 rounded-xl p-3">
-              <p className="text-xs text-gray-500 mb-1">Moyenne / jour</p>
-              <p className="text-xl font-bold text-black">
-                ~{averageDailyKm} km
+            <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 border border-green-200">
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center">
+                  <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </div>
+                <p className="text-xs font-semibold text-green-800">Moyenne</p>
+              </div>
+              <p className="text-2xl font-bold text-green-900">
+                ~{averageDailyKm}
               </p>
+              <p className="text-xs text-green-600 mt-1">km par jour</p>
             </div>
           )}
         </div>

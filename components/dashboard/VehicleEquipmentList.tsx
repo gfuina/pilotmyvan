@@ -311,7 +311,7 @@ export default function VehicleEquipmentList({
   };
 
   return (
-    <div className="space-y-3 sm:space-y-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
       {equipments.map((item) => {
         const equipment = item.isCustom ? item.customData : item.equipmentId;
         const isExpanded = expandedId === item._id;
@@ -323,129 +323,131 @@ export default function VehicleEquipmentList({
         return (
           <div
             key={item._id}
-            className={`bg-white rounded-xl sm:rounded-2xl border-2 overflow-hidden transition-all ${
+            className={`bg-white rounded-2xl border-2 overflow-hidden transition-all hover:shadow-lg ${
               urgencyColors && maintenanceStatus.urgencyState !== "none" && maintenanceStatus.urgencyState !== "ok"
                 ? urgencyColors.border
                 : "border-gray-200 hover:border-orange"
             }`}
           >
-            {/* Equipment Header */}
-            <div className="p-3 sm:p-4">
-              <div className="flex items-start gap-2 sm:gap-4">
-                {/* Photo */}
-                <div className="relative w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-lg sm:rounded-xl overflow-hidden flex-shrink-0">
+            {/* Equipment Card */}
+            <div className="flex flex-col h-full">
+              {/* Main Content Row */}
+              <div className="flex flex-1">
+                {/* Photo Side */}
+                <div className="relative w-24 flex-shrink-0 bg-white overflow-hidden border-r border-gray-100">
                   {(equipment.photos?.[0] || item.customData?.photos?.[0]) ? (
                     <Image
                       src={equipment.photos?.[0] || item.customData?.photos?.[0] || ""}
                       alt={equipment.name}
                       fill
-                      className="object-cover"
+                      className="object-contain p-2"
                     />
                   ) : (
-                    <div className="absolute inset-0 flex items-center justify-center text-2xl sm:text-3xl">
+                    <div className="absolute inset-0 flex items-center justify-center text-3xl bg-gradient-to-br from-gray-50 to-gray-100">
                       🔧
-                    </div>
-                  )}
-                  
-                  {/* Badge Custom */}
-                  {item.isCustom && (
-                    <div className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 px-1 sm:px-1.5 py-0.5 bg-blue-600 text-white text-[10px] sm:text-xs font-bold rounded">
-                      Custom
                     </div>
                   )}
                   
                   {/* Badge Urgence Maintenance */}
                   {maintenanceStatus && urgencyColors && (maintenanceStatus.urgencyState === "overdue" || maintenanceStatus.urgencyState === "urgent") && (
-                    <div className={`absolute bottom-0.5 left-0.5 sm:bottom-1 sm:left-1 w-6 h-6 sm:w-7 sm:h-7 ${urgencyColors.bg} border-2 ${urgencyColors.border} rounded-full flex items-center justify-center shadow-lg`}>
-                      {/* Animation ping pour overdue */}
+                    <div className={`absolute top-2 left-2 w-6 h-6 ${urgencyColors.bg} border-2 ${urgencyColors.border} rounded-full flex items-center justify-center shadow-lg z-10`}>
                       {maintenanceStatus.urgencyState === "overdue" && (
                         <span className="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75 animate-ping" />
                       )}
-                      <div className={`relative w-3 h-3 sm:w-4 sm:h-4 rounded-full ${urgencyColors.dot} ${urgencyColors.animate ? "animate-pulse" : ""}`} />
+                      <div className={`relative w-2.5 h-2.5 rounded-full ${urgencyColors.dot} ${urgencyColors.animate ? "animate-pulse" : ""}`} />
                     </div>
                   )}
                 </div>
 
-                {/* Info */}
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-bold text-black text-base sm:text-lg mb-1 leading-tight">
-                    {equipment.name}
-                  </h4>
+                {/* Card Content */}
+                <div className="p-3 flex-1 flex flex-col min-w-0">
+                {/* Title & Category */}
+                <div className="mb-2">
+                  <div className="flex items-start gap-2 mb-1">
+                    <h4 className="font-bold text-black text-base leading-tight flex-1 line-clamp-1">
+                      {equipment.name}
+                    </h4>
+                    {item.isCustom && (
+                      <span className="px-1.5 py-0.5 bg-blue-600 text-white text-[10px] font-bold rounded flex-shrink-0">
+                        Custom
+                      </span>
+                    )}
+                  </div>
                   {!item.isCustom && item.equipmentId?.categoryId && (
-                    <p className="text-xs sm:text-sm text-gray mb-1 sm:mb-2">
+                    <p className="text-xs text-gray">
                       {item.equipmentId.categoryId.name}
                     </p>
                   )}
                   {item.isCustom && item.customData?.brand && (
-                    <p className="text-xs sm:text-sm text-gray mb-1 sm:mb-2 truncate">
+                    <p className="text-xs text-gray truncate">
                       {item.customData.brand}
                       {item.customData.model && ` - ${item.customData.model}`}
                     </p>
                   )}
-                  {equipment.description && (
-                    <p className="text-xs sm:text-sm text-gray line-clamp-2 mb-1 sm:mb-2 hidden sm:block">
-                      {equipment.description}
-                    </p>
-                  )}
-                  <div className="flex flex-wrap gap-1 sm:gap-2">
-                    {/* Badge de maintenance urgent */}
-                    {maintenanceStatus && urgencyColors && maintenanceStatus.urgencyState !== "none" && (
-                      <span
-                        className={`px-2 sm:px-2.5 py-0.5 sm:py-1 ${urgencyColors.bg} ${urgencyColors.text} border ${urgencyColors.border} text-[10px] sm:text-xs font-bold rounded-full flex items-center gap-1.5 ${urgencyColors.animate ? "animate-pulse" : ""}`}
-                      >
-                        <span className={`w-2 h-2 rounded-full ${urgencyColors.dot}`} />
-                        <span className="hidden sm:inline">{urgencyColors.label}</span>
-                        {maintenanceStatus.nextDueText && (
-                          <>
-                            <span className="hidden sm:inline">•</span>
-                            <span>{maintenanceStatus.nextDueText}</span>
-                          </>
-                        )}
-                        <span className="ml-0.5">({maintenanceStatus.maintenancesCount})</span>
-                      </span>
-                    )}
-                    
-                    {!item.isCustom &&
-                      item.equipmentId?.equipmentBrands.slice(0, 2).map((brand, idx) => (
-                        <span
-                          key={idx}
-                          className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-purple-50 text-purple-700 text-[10px] sm:text-xs font-semibold rounded-full"
-                        >
-                          {brand.name}
-                        </span>
-                      ))}
-                    {!item.isCustom && item.equipmentId?.equipmentBrands && item.equipmentId.equipmentBrands.length > 2 && (
-                      <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-purple-50 text-purple-700 text-[10px] sm:text-xs font-semibold rounded-full">
-                        +{item.equipmentId.equipmentBrands.length - 2}
-                      </span>
-                    )}
-                    {!item.isCustom && item.equipmentId?.manuals && item.equipmentId.manuals.length > 0 && (
-                      <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-green-50 text-green-700 text-[10px] sm:text-xs font-semibold rounded-full">
-                        📄 {item.equipmentId.manuals.length}
-                        <span className="hidden sm:inline"> manuel{item.equipmentId.manuals.length > 1 ? "s" : ""}</span>
-                      </span>
-                    )}
-                    {item.installDate && (
-                      <span className="px-1.5 sm:px-2 py-0.5 sm:py-1 bg-blue-50 text-blue-700 text-[10px] sm:text-xs font-semibold rounded-full">
-                        <span className="hidden sm:inline">📅 </span>
-                        <span className="sm:hidden">{new Date(item.installDate).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "2-digit" })}</span>
-                        <span className="hidden sm:inline">{new Date(item.installDate).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "numeric" })}</span>
-                      </span>
-                    )}
-                  </div>
                 </div>
 
+                {/* Badges */}
+                <div className="flex flex-wrap gap-1 mb-2">
+                  {/* Badge de maintenance urgent */}
+                  {maintenanceStatus && urgencyColors && maintenanceStatus.urgencyState !== "none" && (
+                    <span
+                      className={`px-1.5 py-0.5 ${urgencyColors.bg} ${urgencyColors.text} border ${urgencyColors.border} text-[10px] font-bold rounded-full flex items-center gap-1 ${urgencyColors.animate ? "animate-pulse" : ""}`}
+                    >
+                      <span className={`w-1.5 h-1.5 rounded-full ${urgencyColors.dot}`} />
+                      <span>{urgencyColors.label}</span>
+                      {maintenanceStatus.nextDueText && (
+                        <>
+                          <span>•</span>
+                          <span>{maintenanceStatus.nextDueText}</span>
+                        </>
+                      )}
+                      <span>({maintenanceStatus.maintenancesCount})</span>
+                    </span>
+                  )}
+                  
+                  {!item.isCustom &&
+                    item.equipmentId?.equipmentBrands.slice(0, 1).map((brand, idx) => (
+                      <span
+                        key={idx}
+                        className="px-1.5 py-0.5 bg-purple-50 text-purple-700 text-[10px] font-semibold rounded-full"
+                      >
+                        {brand.name}
+                      </span>
+                    ))}
+                  {!item.isCustom && item.equipmentId?.equipmentBrands && item.equipmentId.equipmentBrands.length > 1 && (
+                    <span className="px-1.5 py-0.5 bg-purple-50 text-purple-700 text-[10px] font-semibold rounded-full">
+                      +{item.equipmentId.equipmentBrands.length - 1}
+                    </span>
+                  )}
+                  {!item.isCustom && item.equipmentId?.manuals && item.equipmentId.manuals.length > 0 && (
+                    <span className="px-1.5 py-0.5 bg-green-50 text-green-700 text-[10px] font-semibold rounded-full">
+                      📄 {item.equipmentId.manuals.length}
+                    </span>
+                  )}
+                  {item.installDate && (
+                    <span className="px-1.5 py-0.5 bg-blue-50 text-blue-700 text-[10px] font-semibold rounded-full">
+                      📅 {new Date(item.installDate).toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit", year: "2-digit" })}
+                    </span>
+                  )}
+                </div>
+
+                {/* Description */}
+                {equipment.description && (
+                  <p className="text-xs text-gray line-clamp-2 mb-2">
+                    {equipment.description}
+                  </p>
+                )}
+
                 {/* Actions */}
-                <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
+                <div className="mt-auto flex items-center gap-1.5 pt-2 border-t border-gray-100">
                   <button
                     onClick={() =>
                       setHistoryEquipment({ id: item._id, name: equipment.name })
                     }
-                    className="p-1.5 sm:p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"
-                    title="Voir l'historique"
+                    className="flex-1 px-2 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg transition-colors font-semibold text-xs flex items-center justify-center gap-1.5"
                   >
                     <svg
-                      className="w-4 h-4 sm:w-5 sm:h-5"
+                      className="w-3.5 h-3.5"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -457,14 +459,15 @@ export default function VehicleEquipmentList({
                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                       />
                     </svg>
+                    <span className="hidden sm:inline">Historique</span>
                   </button>
                   <button
                     onClick={() => toggleExpand(item._id)}
-                    className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="px-2 py-1.5 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
                     title={isExpanded ? "Réduire" : "Voir détails"}
                   >
                     <svg
-                      className={`w-4 h-4 sm:w-5 sm:h-5 transition-transform ${
+                      className={`w-3.5 h-3.5 transition-transform ${
                         isExpanded ? "rotate-180" : ""
                       }`}
                       fill="none"
@@ -482,11 +485,11 @@ export default function VehicleEquipmentList({
                   <button
                     onClick={() => handleDelete(item._id)}
                     disabled={deletingId === item._id}
-                    className="p-1.5 sm:p-2 hover:bg-red-50 text-red-600 rounded-lg transition-colors disabled:opacity-50"
+                    className="px-2 py-1.5 hover:bg-red-50 text-red-600 rounded-lg transition-colors disabled:opacity-50"
                     title="Retirer"
                   >
                     <svg
-                      className="w-4 h-4 sm:w-5 sm:h-5"
+                      className="w-3.5 h-3.5"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -500,101 +503,93 @@ export default function VehicleEquipmentList({
                     </svg>
                   </button>
                 </div>
-              </div>
-            </div>
-
-            {/* Expanded Details */}
-            {isExpanded && (
-              <div className="border-t border-gray-200 p-3 sm:p-4 bg-gray-50 space-y-3 sm:space-y-4">
-                {/* Description (visible only on mobile when expanded) */}
-                {equipment.description && (
-                  <div className="sm:hidden">
-                    <p className="text-xs text-gray">
-                      {equipment.description}
-                    </p>
-                  </div>
-                )}
-
-                {/* Manuals */}
-                {!item.isCustom && item.equipmentId?.manuals && item.equipmentId.manuals.length > 0 && (
-                  <div>
-                    <h5 className="font-semibold text-black mb-2 text-sm sm:text-base">
-                      Manuels & Documents
-                    </h5>
-                    <div className="space-y-2">
-                      {item.equipmentId.manuals.map((manual, idx) => (
-                        <a
-                          key={idx}
-                          href={manual.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="flex items-center gap-2 sm:gap-3 p-2 sm:p-3 bg-white rounded-lg sm:rounded-xl hover:shadow-md transition-shadow"
-                        >
-                          <svg
-                            className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 flex-shrink-0"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                            />
-                          </svg>
-                          <div className="flex-1 min-w-0">
-                            <p className="font-medium text-black text-xs sm:text-sm truncate">
-                              {manual.title}
-                            </p>
-                            <p className="text-xs text-gray">
-                              {manual.isExternal ? "URL externe" : "Fichier"}
-                            </p>
-                          </div>
-                          <svg
-                            className="w-4 h-4 sm:w-5 sm:h-5 text-gray flex-shrink-0"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-                            />
-                          </svg>
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Notes */}
-                {item.notes && (
-                  <div>
-                    <h5 className="font-semibold text-black mb-2 text-sm sm:text-base">Notes</h5>
-                    <p className="text-gray text-xs sm:text-sm whitespace-pre-wrap bg-white p-2 sm:p-3 rounded-lg sm:rounded-xl">
-                      {item.notes}
-                    </p>
-                  </div>
-                )}
-
-                {/* Dates */}
-                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 text-xs text-gray">
-                  <div>
-                    <span className="font-medium">Ajouté le:</span>{" "}
-                    {new Date(item.createdAt).toLocaleDateString("fr-FR")}
-                  </div>
-                  {item.installDate && (
-                    <div>
-                      <span className="font-medium">Installé le:</span>{" "}
-                      {new Date(item.installDate).toLocaleDateString("fr-FR")}
-                    </div>
-                  )}
                 </div>
               </div>
-            )}
+
+              {/* Expanded Details */}
+              {isExpanded && (
+                <div className="border-t border-gray-200 p-4 bg-gray-50 space-y-4">
+                  {/* Manuals */}
+                  {!item.isCustom && item.equipmentId?.manuals && item.equipmentId.manuals.length > 0 && (
+                    <div>
+                      <h5 className="font-semibold text-black mb-2 text-sm">
+                        Manuels & Documents
+                      </h5>
+                      <div className="space-y-2">
+                        {item.equipmentId.manuals.map((manual, idx) => (
+                          <a
+                            key={idx}
+                            href={manual.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-2 p-2 bg-white rounded-lg hover:shadow-md transition-shadow"
+                          >
+                            <svg
+                              className="w-4 h-4 text-red-600 flex-shrink-0"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                              />
+                            </svg>
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium text-black text-xs truncate">
+                                {manual.title}
+                              </p>
+                              <p className="text-xs text-gray">
+                                {manual.isExternal ? "URL externe" : "Fichier"}
+                              </p>
+                            </div>
+                            <svg
+                              className="w-4 h-4 text-gray flex-shrink-0"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                              />
+                            </svg>
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Notes */}
+                  {item.notes && (
+                    <div>
+                      <h5 className="font-semibold text-black mb-2 text-sm">Notes</h5>
+                      <p className="text-gray text-xs whitespace-pre-wrap bg-white p-3 rounded-lg">
+                        {item.notes}
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Dates */}
+                  <div className="flex flex-col gap-2 text-xs text-gray">
+                    <div>
+                      <span className="font-medium">Ajouté le:</span>{" "}
+                      {new Date(item.createdAt).toLocaleDateString("fr-FR")}
+                    </div>
+                    {item.installDate && (
+                      <div>
+                        <span className="font-medium">Installé le:</span>{" "}
+                        {new Date(item.installDate).toLocaleDateString("fr-FR")}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         );
       })}
