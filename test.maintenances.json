@@ -1,0 +1,2599 @@
+[
+  {
+    "_id": {
+      "$oid": "68f36045e8448a53f94d321d"
+    },
+    "equipmentId": {
+      "$oid": "68f353f7beb5244c9062f75c"
+    },
+    "name": "Vérification de la corrosion sur les bougies et contacts électriques",
+    "type": "inspection",
+    "priority": "important",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "time": {
+        "value": 12,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Avant utilisation hivernale"
+    ],
+    "description": "Vérification de la corrosion sur les bougies et contacts électriques.",
+    "instructions": "1. Débrancher la batterie. 2. Inspecter les bougies et les contacts électriques pour la corrosion. 3. Nettoyer ou remplacer si nécessaire.",
+    "photos": [],
+    "videos": [],
+    "parts": [
+      {
+        "name": "Bougie de préchauffage",
+        "reference": "REF-456",
+        "quantity": 1,
+        "estimatedCost": 20,
+        "_id": {
+          "$oid": "68f36045e8448a53f94d321e"
+        }
+      }
+    ],
+    "estimatedDuration": 30,
+    "estimatedCost": 20,
+    "tags": [
+      "Sécurité",
+      "Performance"
+    ],
+    "isOfficial": true,
+    "source": "Manuel d'utilisation",
+    "createdAt": {
+      "$date": "2025-10-18T09:39:17.370Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-18T09:39:17.370Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f36046e8448a53f94d3223"
+    },
+    "equipmentId": {
+      "$oid": "68f353f7beb5244c9062f75c"
+    },
+    "name": "Vérification de l'étanchéité des tuyaux de carburant",
+    "type": "inspection",
+    "priority": "critical",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 12,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Avant utilisation hivernale"
+    ],
+    "description": "Vérification de l'étanchéité des tuyaux de carburant pour éviter les fuites.",
+    "instructions": "1. Inspecter visuellement les tuyaux de carburant. 2. Serrer les colliers si nécessaire. 3. Remplacer les tuyaux endommagés.",
+    "photos": [],
+    "videos": [],
+    "parts": [
+      {
+        "name": "Tuyau de carburant",
+        "reference": "REF-789",
+        "quantity": 1,
+        "estimatedCost": 10,
+        "_id": {
+          "$oid": "68f36046e8448a53f94d3224"
+        }
+      }
+    ],
+    "estimatedDuration": 20,
+    "estimatedCost": 0,
+    "tags": [
+      "Sécurité",
+      "Performance"
+    ],
+    "isOfficial": true,
+    "source": "",
+    "createdAt": {
+      "$date": "2025-10-18T09:39:18.111Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-18T09:40:11.512Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f36046e8448a53f94d3229"
+    },
+    "equipmentId": {
+      "$oid": "68f353f7beb5244c9062f75c"
+    },
+    "name": "Vérification de l'étanchéité et de la corrosion dans le système des gaz d'échappement",
+    "type": "inspection",
+    "priority": "important",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "time": {
+        "value": 12,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Avant utilisation hivernale"
+    ],
+    "description": "Vérification de l'étanchéité et de la corrosion dans le système des gaz d'échappement.",
+    "instructions": "1. Inspecter visuellement le système d'échappement. 2. Rechercher des signes de corrosion. 3. Remplacer les pièces corrodées.",
+    "photos": [],
+    "videos": [],
+    "parts": [
+      {
+        "name": "Tuyau d'échappement",
+        "reference": "REF-321",
+        "quantity": 1,
+        "estimatedCost": 30,
+        "_id": {
+          "$oid": "68f36046e8448a53f94d322a"
+        }
+      }
+    ],
+    "estimatedDuration": 30,
+    "estimatedCost": 30,
+    "tags": [
+      "Sécurité",
+      "Performance"
+    ],
+    "isOfficial": true,
+    "source": "Manuel d'utilisation",
+    "createdAt": {
+      "$date": "2025-10-18T09:39:18.608Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-18T09:39:18.608Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f36047e8448a53f94d322f"
+    },
+    "equipmentId": {
+      "$oid": "68f353f7beb5244c9062f75c"
+    },
+    "name": "Vérification des tuyaux d'admission d'air et des conduits d'air",
+    "type": "inspection",
+    "priority": "recommended",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 12,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Avant utilisation hivernale"
+    ],
+    "description": "Vérification des tuyaux d'admission d'air et des conduits d'air pour s'assurer qu'ils sont propres.",
+    "instructions": "1. Inspecter visuellement les tuyaux d'admission d'air. 2. Nettoyer les conduits si nécessaire.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 20,
+    "estimatedCost": 0,
+    "tags": [
+      "Performance"
+    ],
+    "isOfficial": true,
+    "source": "Manuel d'utilisation",
+    "createdAt": {
+      "$date": "2025-10-18T09:39:19.053Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-18T09:39:19.053Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f36047e8448a53f94d3233"
+    },
+    "equipmentId": {
+      "$oid": "68f353f7beb5244c9062f75c"
+    },
+    "name": "Diagnostic informatique de l'appareil de chauffage",
+    "type": "test",
+    "priority": "important",
+    "difficulty": "professional",
+    "recurrence": {
+      "time": {
+        "value": 12,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Avant utilisation hivernale"
+    ],
+    "description": "Exécution d'un diagnostic informatique pour vérifier le bon fonctionnement de l'appareil de chauffage.",
+    "instructions": "1. Connecter l'appareil de diagnostic à l'unité de commande. 2. Exécuter le test complet. 3. Analyser les résultats et effectuer les réparations nécessaires.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 60,
+    "estimatedCost": 50,
+    "tags": [
+      "Diagnostic",
+      "Performance"
+    ],
+    "isOfficial": true,
+    "source": "Manuel d'utilisation",
+    "createdAt": {
+      "$date": "2025-10-18T09:39:19.489Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-18T09:39:19.489Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f36047e8448a53f94d3237"
+    },
+    "equipmentId": {
+      "$oid": "68f353f7beb5244c9062f75c"
+    },
+    "name": "Allumage mensuel de l'appareil de chauffage",
+    "type": "test",
+    "priority": "recommended",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Même en été"
+    ],
+    "description": "Allumer l'appareil de chauffage une fois par mois pour éviter l'accumulation de sédiments.",
+    "instructions": "1. Allumer l'appareil de chauffage. \n2. Laisser fonctionner pendant 20 minutes à pleine puissance.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 20,
+    "estimatedCost": 0,
+    "tags": [
+      "Prévention",
+      "Performance"
+    ],
+    "isOfficial": true,
+    "source": "",
+    "createdAt": {
+      "$date": "2025-10-18T09:39:19.973Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-18T14:08:21.259Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f36048e8448a53f94d323b"
+    },
+    "equipmentId": {
+      "$oid": "68f353f7beb5244c9062f75c"
+    },
+    "name": "Seulement si réservoir séparé : Changement du carburant",
+    "type": "replacement",
+    "priority": "important",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 6,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Avant la saison de chauffage"
+    ],
+    "description": "Changer le carburant dans le réservoir séparé pour éviter les sédiments.",
+    "instructions": "1. Vidanger le réservoir de carburant. 2. Rincer avec de l'essence ou du kérosène. 3. Remplir avec du carburant diesel frais.",
+    "photos": [],
+    "videos": [],
+    "parts": [
+      {
+        "name": "Carburant diesel",
+        "reference": "N/A",
+        "quantity": 1,
+        "estimatedCost": 50,
+        "_id": {
+          "$oid": "68f36048e8448a53f94d323c"
+        }
+      }
+    ],
+    "estimatedDuration": 30,
+    "estimatedCost": 50,
+    "tags": [
+      "Prévention",
+      "Performance"
+    ],
+    "isOfficial": true,
+    "source": "",
+    "createdAt": {
+      "$date": "2025-10-18T09:39:20.401Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-18T09:41:34.654Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f36310e8448a53f94d32a5"
+    },
+    "equipmentId": {
+      "$oid": "68f3629fe8448a53f94d3283"
+    },
+    "name": "Nettoyage régulier de l'intérieur du réfrigérateur",
+    "type": "cleaning",
+    "priority": "important",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 3,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Après un long voyage",
+      "Avant une période d'inactivité"
+    ],
+    "description": "Nettoyage des surfaces internes du réfrigérateur pour des raisons d'hygiène.",
+    "instructions": "1. Débranchez le réfrigérateur de la source d'alimentation. 2. Utilisez un chiffon humide pour nettoyer l'intérieur. 3. Essuyez l'appareil après le nettoyage.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 30,
+    "estimatedCost": 0,
+    "tags": [
+      "Hygiène",
+      "Prévention"
+    ],
+    "isOfficial": true,
+    "source": "Dometic NRX0090V - Operating Manual EMEA24",
+    "createdAt": {
+      "$date": "2025-10-18T09:51:12.163Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-18T09:51:12.163Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f36310e8448a53f94d32a9"
+    },
+    "equipmentId": {
+      "$oid": "68f3629fe8448a53f94d3283"
+    },
+    "name": "Dégivrage du réfrigérateur",
+    "type": "cleaning",
+    "priority": "important",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 6,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Lorsque la couche de givre atteint environ 3 mm"
+    ],
+    "description": "Dégivrage du réfrigérateur pour maintenir une efficacité optimale.",
+    "instructions": "1. Éteignez le réfrigérateur. 2. Laissez la glace fondre naturellement. 3. Nettoyez l'eau de dégivrage. 4. Séchez l'intérieur avant de rallumer.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 60,
+    "estimatedCost": 0,
+    "tags": [
+      "Efficacité",
+      "Performance"
+    ],
+    "isOfficial": true,
+    "source": "Dometic NRX0090V - Operating Manual EMEA24",
+    "createdAt": {
+      "$date": "2025-10-18T09:51:12.589Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-18T09:51:12.589Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f36311e8448a53f94d32ad"
+    },
+    "equipmentId": {
+      "$oid": "68f3629fe8448a53f94d3283"
+    },
+    "name": "Vérification de l'évacuation de la condensation",
+    "type": "inspection",
+    "priority": "important",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 3,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Après nettoyage",
+      "Si accumulation d'eau"
+    ],
+    "description": "Vérification de l'évacuation de la condensation pour éviter les accumulations d'eau.",
+    "instructions": "1. Vérifiez l'évacuation de la condensation. 2. Nettoyez si nécessaire pour éviter l'obstruction.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 15,
+    "estimatedCost": 0,
+    "tags": [
+      "Prévention",
+      "Maintenance"
+    ],
+    "isOfficial": true,
+    "source": "Dometic NRX0090V - Operating Manual EMEA24",
+    "createdAt": {
+      "$date": "2025-10-18T09:51:13.007Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-18T09:51:13.007Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f36311e8448a53f94d32b1"
+    },
+    "equipmentId": {
+      "$oid": "68f3629fe8448a53f94d3283"
+    },
+    "name": "Nettoyage du condenseur",
+    "type": "cleaning",
+    "priority": "important",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "time": {
+        "value": 6,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Si accumulation de poussière"
+    ],
+    "description": "Nettoyage du condenseur pour maintenir l'efficacité du réfrigérateur.",
+    "instructions": "1. Débranchez le réfrigérateur. 2. Utilisez un chiffon humide pour enlever la poussière et la saleté du condenseur.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 30,
+    "estimatedCost": 0,
+    "tags": [
+      "Efficacité",
+      "Performance"
+    ],
+    "isOfficial": true,
+    "source": "Dometic NRX0090V - Operating Manual EMEA24",
+    "createdAt": {
+      "$date": "2025-10-18T09:51:13.415Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-18T09:51:13.415Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f3761d59d338aa5a3c6db1"
+    },
+    "equipmentId": {
+      "$oid": "68f3729262d3b81a21a11984"
+    },
+    "name": "Nettoyage de l'écran anti-insectes",
+    "type": "cleaning",
+    "priority": "important",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 6,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Après utilisation fréquente",
+      "Avant stockage prolongé"
+    ],
+    "description": "Nettoyage de l'écran anti-insectes pour assurer une bonne circulation de l'air.",
+    "instructions": "1. Éteindre le MAXXFAN et déconnecter l'alimentation 12 volts du véhicule. \n2. Tourner les 4 boutons de retenue d'un demi-tour pour retirer l'écran. \n3. Nettoyer l'écran avec une solution de détergent doux. \n4. Rincer à l'eau claire et laisser sécher. \n5. Remonter l'écran en tournant les boutons de retenue d'un demi-tour.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 30,
+    "estimatedCost": 0,
+    "tags": [
+      "Entretien",
+      "Performance"
+    ],
+    "isOfficial": true,
+    "source": "Notice de montage - GB",
+    "createdAt": {
+      "$date": "2025-10-18T11:12:29.074Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-18T11:12:29.074Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f3761d59d338aa5a3c6db5"
+    },
+    "equipmentId": {
+      "$oid": "68f3729262d3b81a21a11984"
+    },
+    "name": "Vérification des connexions électriques",
+    "type": "inspection",
+    "priority": "important",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "time": {
+        "value": 12,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Avant utilisation prolongée",
+      "Après installation"
+    ],
+    "description": "Vérification des connexions électriques pour s'assurer qu'elles sont sécurisées et fonctionnelles.",
+    "instructions": "1. Déconnecter l'alimentation principale du véhicule. \n2. Vérifier que les connecteurs électriques isolés sont bien fixés. \n3. S'assurer que le fil noir du MAXXFAN est connecté à l'alimentation positive du véhicule. \n4. Reconnecter l'alimentation et vérifier le bon fonctionnement.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 20,
+    "estimatedCost": 0,
+    "tags": [
+      "Sécurité",
+      "Électrique"
+    ],
+    "isOfficial": true,
+    "source": "Notice de montage - GB",
+    "createdAt": {
+      "$date": "2025-10-18T11:12:29.509Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-18T11:12:29.509Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f3761d59d338aa5a3c6db9"
+    },
+    "equipmentId": {
+      "$oid": "68f3729262d3b81a21a11984"
+    },
+    "name": "Inspection du joint d'étanchéité du toit",
+    "type": "inspection",
+    "priority": "important",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 12,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Après fortes pluies",
+      "Avant l'hiver"
+    ],
+    "description": "Inspection du joint d'étanchéité autour du MAXXFAN pour prévenir les infiltrations d'eau.",
+    "instructions": "1. Monter sur le toit du véhicule en toute sécurité. \n2. Inspecter visuellement le joint d'étanchéité autour de la bride de réception du toit. \n3. Rechercher des fissures ou des signes de dégradation. \n4. Appliquer un scellant compatible si nécessaire pour réparer les zones endommagées.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 30,
+    "estimatedCost": 0,
+    "tags": [
+      "Étanchéité",
+      "Prévention"
+    ],
+    "isOfficial": true,
+    "source": "Notice de montage - GB",
+    "createdAt": {
+      "$date": "2025-10-18T11:12:29.930Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-18T11:12:29.930Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f3761e59d338aa5a3c6dbd"
+    },
+    "equipmentId": {
+      "$oid": "68f3729262d3b81a21a11984"
+    },
+    "name": "Nettoyage des composants externes",
+    "type": "cleaning",
+    "priority": "recommended",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 6,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Après exposition à des conditions poussiéreuses"
+    ],
+    "description": "Nettoyage des composants externes du MAXXFAN pour maintenir son apparence et son bon fonctionnement.",
+    "instructions": "1. Utiliser de l'eau savonneuse douce pour nettoyer les surfaces extérieures du MAXXFAN. \n2. Éviter d'utiliser des solvants ou des produits chimiques agressifs. \n3. Rincer à l'eau claire et sécher avec un chiffon doux.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 20,
+    "estimatedCost": 0,
+    "tags": [
+      "Esthétique",
+      "Entretien"
+    ],
+    "isOfficial": true,
+    "source": "Notice de montage - GB",
+    "createdAt": {
+      "$date": "2025-10-18T11:12:30.348Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-18T11:12:30.348Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b6aeecb21ba9caf11a19"
+    },
+    "equipmentId": {
+      "$oid": "68f4b666ecb21ba9caf119eb"
+    },
+    "name": "Nettoyage des brûleurs",
+    "type": "cleaning",
+    "priority": "important",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 12,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Après une utilisation intensive"
+    ],
+    "description": "Nettoyage des brûleurs pour assurer une combustion efficace.",
+    "instructions": "1. Éteindre la cuisinière et laisser refroidir complètement.\n2. Retirer les grilles et les brûleurs.\n3. Nettoyer les brûleurs avec une brosse douce et de l'eau savonneuse.\n4. Rincer et sécher soigneusement.\n5. Remonter les brûleurs et les grilles.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 30,
+    "estimatedCost": 0,
+    "tags": [
+      "Performance",
+      "Efficacité"
+    ],
+    "isOfficial": true,
+    "source": "Notice d'utilisation",
+    "isUserContributed": false,
+    "status": "approved",
+    "createdAt": {
+      "$date": "2025-10-19T10:00:14.208Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:00:14.208Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b6aeecb21ba9caf11a1d"
+    },
+    "equipmentId": {
+      "$oid": "68f4b666ecb21ba9caf119eb"
+    },
+    "name": "Vérification de l'allumage électrique",
+    "type": "inspection",
+    "priority": "important",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 6,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Avant la saison de camping"
+    ],
+    "description": "S'assurer que l'allumage électrique fonctionne correctement.",
+    "instructions": "1. Allumer la cuisinière.\n2. Vérifier que l'allumage électrique fonctionne pour chaque brûleur.\n3. Si un problème est détecté, vérifier les connexions électriques et remplacer les pièces défectueuses.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 15,
+    "estimatedCost": 0,
+    "tags": [
+      "Sécurité",
+      "Fiabilité"
+    ],
+    "isOfficial": true,
+    "source": "Notice d'utilisation",
+    "isUserContributed": false,
+    "status": "approved",
+    "createdAt": {
+      "$date": "2025-10-19T10:00:14.653Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:00:14.653Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b6afecb21ba9caf11a21"
+    },
+    "equipmentId": {
+      "$oid": "68f4b666ecb21ba9caf119eb"
+    },
+    "name": "Inspection du four",
+    "type": "inspection",
+    "priority": "recommended",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 12,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Avant l'hiver"
+    ],
+    "description": "Inspection visuelle du four pour détecter tout dommage ou usure.",
+    "instructions": "1. Ouvrir le four et retirer les grilles.\n2. Inspecter l'intérieur pour détecter tout signe de rouille ou de dommage.\n3. Vérifier le joint de la porte pour s'assurer qu'il est intact.\n4. Remettre les grilles en place.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 20,
+    "estimatedCost": 0,
+    "tags": [
+      "Sécurité",
+      "Durabilité"
+    ],
+    "isOfficial": true,
+    "source": "Notice d'utilisation",
+    "isUserContributed": false,
+    "status": "approved",
+    "createdAt": {
+      "$date": "2025-10-19T10:00:15.064Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:00:15.064Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b6afecb21ba9caf11a25"
+    },
+    "equipmentId": {
+      "$oid": "68f4b666ecb21ba9caf119eb"
+    },
+    "name": "Vérification de la pression du gaz",
+    "type": "test",
+    "priority": "critical",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "time": {
+        "value": 6,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Avant chaque utilisation"
+    ],
+    "description": "Vérification de la pression du gaz pour garantir un fonctionnement sûr.",
+    "instructions": "1. Fermer toutes les vannes de gaz.\n2. Connecter un manomètre à la sortie de gaz.\n3. Ouvrir la vanne de gaz et vérifier la pression.\n4. Ajuster si nécessaire selon les spécifications du fabricant.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 30,
+    "estimatedCost": 0,
+    "tags": [
+      "Sécurité",
+      "Réglementation"
+    ],
+    "isOfficial": true,
+    "source": "Notice d'utilisation",
+    "isUserContributed": false,
+    "status": "approved",
+    "createdAt": {
+      "$date": "2025-10-19T10:00:15.490Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:00:15.490Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bd0aa02e3df6a8c703"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bc0aa02e3df6a8c701"
+    },
+    "name": "Remplacement du filtre à huile",
+    "type": "replacement",
+    "priority": "critical",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "years"
+      },
+      "kilometers": 15000
+    },
+    "conditions": [],
+    "description": "Remplacement du filtre à huile lors de chaque vidange moteur pour garantir une filtration optimale.",
+    "instructions": "1. Vidanger l'huile moteur\n2. Dévisser l'ancien filtre avec une clé appropriée\n3. Nettoyer la surface de montage\n4. Lubrifier le joint du nouveau filtre avec de l'huile neuve\n5. Visser le nouveau filtre à la main jusqu'à contact du joint, puis serrer de 3/4 de tour\n6. Remplir d'huile neuve et vérifier le niveau\n7. Démarrer le moteur et vérifier l'absence de fuites",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 30,
+    "estimatedCost": 15,
+    "tags": [
+      "moteur",
+      "vidange",
+      "huile",
+      "entretien courant"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:17.372Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:17.372Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bd0aa02e3df6a8c707"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bd0aa02e3df6a8c705"
+    },
+    "name": "Contrôle et nettoyage du filtre à air",
+    "type": "inspection",
+    "priority": "recommended",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 6,
+        "unit": "months"
+      },
+      "kilometers": 10000
+    },
+    "conditions": [],
+    "description": "Inspection visuelle et nettoyage si nécessaire du filtre à air.",
+    "instructions": "1. Ouvrir le boîtier du filtre à air\n2. Retirer le filtre\n3. Inspecter visuellement l'état (encrassement, déchirures)\n4. Si filtre en papier : remplacer si sale\n5. Si filtre lavable : nettoyer avec de l'air comprimé ou laver selon instructions fabricant\n6. Nettoyer le boîtier\n7. Remonter le filtre",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 15,
+    "estimatedCost": 5,
+    "tags": [
+      "moteur",
+      "air",
+      "performance"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:17.507Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:17.507Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bd0aa02e3df6a8c709"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bd0aa02e3df6a8c705"
+    },
+    "name": "Remplacement du filtre à air",
+    "type": "replacement",
+    "priority": "important",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 2,
+        "unit": "years"
+      },
+      "kilometers": 30000
+    },
+    "conditions": [],
+    "description": "Remplacement complet du filtre à air moteur.",
+    "instructions": "1. Ouvrir le boîtier du filtre à air\n2. Retirer l'ancien filtre\n3. Nettoyer le boîtier de tout résidu\n4. Installer le nouveau filtre en respectant le sens de montage\n5. Vérifier l'étanchéité du joint\n6. Refermer le boîtier",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 10,
+    "estimatedCost": 25,
+    "tags": [
+      "moteur",
+      "air",
+      "remplacement"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:17.575Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:17.575Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bd0aa02e3df6a8c70d"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bd0aa02e3df6a8c70b"
+    },
+    "name": "Remplacement du filtre à carburant",
+    "type": "replacement",
+    "priority": "critical",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "time": {
+        "value": 2,
+        "unit": "years"
+      },
+      "kilometers": 30000
+    },
+    "conditions": [],
+    "description": "Remplacement du filtre à carburant pour éviter l'encrassement du système d'injection.",
+    "instructions": "1. Dépressuriser le circuit carburant\n2. Placer un récipient sous le filtre\n3. Déconnecter les durites d'arrivée et de sortie\n4. Retirer l'ancien filtre\n5. Installer le nouveau filtre en respectant le sens de passage\n6. Reconnecter les durites\n7. Amorcer le circuit (pompe manuelle ou contact)\n8. Vérifier l'absence de fuites\n9. Purger l'air si nécessaire (diesel)",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 45,
+    "estimatedCost": 35,
+    "tags": [
+      "moteur",
+      "carburant",
+      "diesel",
+      "essence",
+      "injection"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:17.709Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:17.709Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bd0aa02e3df6a8c70f"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bd0aa02e3df6a8c70b"
+    },
+    "name": "Purge du filtre à carburant (diesel)",
+    "type": "drain",
+    "priority": "important",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "years"
+      },
+      "kilometers": 20000
+    },
+    "conditions": [
+      "Moteur diesel uniquement",
+      "Plus fréquent si carburant de mauvaise qualité"
+    ],
+    "description": "Purge de l'eau accumulée dans le filtre à carburant diesel.",
+    "instructions": "1. Localiser la vis de purge sous le filtre\n2. Placer un récipient dessous\n3. Desserrer la vis de purge\n4. Laisser couler jusqu'à ce que le carburant soit clair (sans eau)\n5. Resserrer la vis de purge\n6. Amorcer le circuit si nécessaire",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 10,
+    "estimatedCost": 0,
+    "tags": [
+      "diesel",
+      "eau",
+      "purge"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:17.767Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:17.767Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bd0aa02e3df6a8c713"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bd0aa02e3df6a8c711"
+    },
+    "name": "Remplacement du filtre d'habitacle",
+    "type": "replacement",
+    "priority": "recommended",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "years"
+      },
+      "kilometers": 15000
+    },
+    "conditions": [
+      "Plus fréquent si circulation urbaine dense",
+      "En cas d'odeurs désagréables"
+    ],
+    "description": "Remplacement du filtre d'habitacle pour un air intérieur sain.",
+    "instructions": "1. Localiser le filtre (souvent derrière la boîte à gants ou sous le capot)\n2. Retirer le cache d'accès\n3. Extraire l'ancien filtre\n4. Nettoyer le logement\n5. Installer le nouveau filtre dans le bon sens (flèche indiquant le sens d'écoulement de l'air)\n6. Remonter le cache",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 15,
+    "estimatedCost": 20,
+    "tags": [
+      "habitacle",
+      "air",
+      "climatisation",
+      "confort"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:17.886Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:17.886Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9be0aa02e3df6a8c717"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bd0aa02e3df6a8c715"
+    },
+    "name": "Remplacement de la courroie de distribution",
+    "type": "replacement",
+    "priority": "critical",
+    "difficulty": "professional",
+    "recurrence": {
+      "time": {
+        "value": 5,
+        "unit": "years"
+      },
+      "kilometers": 100000
+    },
+    "conditions": [
+      "Vérifier les préconisations constructeur",
+      "Remplacer également pompe à eau, tendeurs et galets"
+    ],
+    "description": "Remplacement préventif de la courroie de distribution avec kit complet.",
+    "instructions": "⚠️ INTERVENTION PROFESSIONNELLE RECOMMANDÉE\n\n1. Débrancher la batterie\n2. Déposer les protections moteur\n3. Caler le moteur au point mort haut (PMH)\n4. Déposer les accessoires gênants\n5. Retirer l'ancienne courroie\n6. Remplacer la pompe à eau\n7. Remplacer tous les galets et tendeurs\n8. Installer la nouvelle courroie en respectant les repères de calage\n9. Vérifier le calage\n10. Remonter et tester\n\nNécessite outils spécifiques de calage.",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 240,
+    "estimatedCost": 600,
+    "tags": [
+      "distribution",
+      "courroie",
+      "critique",
+      "professionnel"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:18.011Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:18.011Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9be0aa02e3df6a8c719"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bd0aa02e3df6a8c715"
+    },
+    "name": "Contrôle de la courroie de distribution",
+    "type": "inspection",
+    "priority": "critical",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "years"
+      },
+      "kilometers": 20000
+    },
+    "conditions": [],
+    "description": "Inspection visuelle de l'état de la courroie de distribution.",
+    "instructions": "1. Retirer le cache de distribution si accessible\n2. Inspecter visuellement la courroie :\n   - Fissures\n   - Effilochage\n   - Traces d'huile\n   - Usure anormale\n3. Vérifier la tension (selon méthode constructeur)\n4. Contrôler l'état des galets et tendeurs\n5. Écouter les bruits anormaux au ralenti\n\n⚠️ En cas de doute, remplacer immédiatement",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 30,
+    "estimatedCost": 0,
+    "tags": [
+      "distribution",
+      "contrôle",
+      "préventif"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:18.070Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:18.070Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9be0aa02e3df6a8c71d"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9be0aa02e3df6a8c71b"
+    },
+    "name": "Contrôle du niveau de liquide de refroidissement",
+    "type": "inspection",
+    "priority": "critical",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "months"
+      }
+    },
+    "conditions": [],
+    "description": "Vérification mensuelle du niveau de liquide de refroidissement.",
+    "instructions": "⚠️ Moteur froid uniquement\n\n1. Localiser le vase d'expansion\n2. Vérifier le niveau entre MIN et MAX\n3. Si nécessaire, compléter avec le même liquide\n4. Inspecter l'absence de fuites\n5. Vérifier l'état du liquide (coloration, propreté)",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 5,
+    "estimatedCost": 0,
+    "tags": [
+      "refroidissement",
+      "niveau",
+      "contrôle mensuel"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:18.190Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:18.190Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9be0aa02e3df6a8c71f"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9be0aa02e3df6a8c71b"
+    },
+    "name": "Remplacement du liquide de refroidissement",
+    "type": "replacement",
+    "priority": "important",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "time": {
+        "value": 4,
+        "unit": "years"
+      },
+      "kilometers": 60000
+    },
+    "conditions": [],
+    "description": "Vidange et remplacement complet du liquide de refroidissement.",
+    "instructions": "⚠️ Moteur froid\n\n1. Placer un récipient sous le radiateur\n2. Ouvrir la vis de purge du radiateur\n3. Vidanger complètement\n4. Refermer la vis de purge\n5. Remplir avec le liquide spécifié (mélange glycol/eau selon climat)\n6. Faire tourner le moteur en purgeant l'air\n7. Compléter le niveau après refroidissement\n8. Vérifier l'absence de fuites",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 60,
+    "estimatedCost": 40,
+    "tags": [
+      "refroidissement",
+      "vidange",
+      "antigel"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:18.252Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:18.252Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9be0aa02e3df6a8c723"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9be0aa02e3df6a8c721"
+    },
+    "name": "Contrôle de l'usure des plaquettes avant",
+    "type": "inspection",
+    "priority": "critical",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 6,
+        "unit": "months"
+      },
+      "kilometers": 10000
+    },
+    "conditions": [],
+    "description": "Vérification de l'épaisseur des plaquettes de frein avant.",
+    "instructions": "1. Inspecter visuellement à travers la jante\n2. Mesurer l'épaisseur de garniture restante\n3. Minimum requis : 3mm (remplacer si < 4mm)\n4. Vérifier l'usure régulière des deux plaquettes\n5. Écouter les bruits anormaux (grincement = témoin d'usure)\n6. Contrôler le niveau de liquide de frein",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 15,
+    "estimatedCost": 0,
+    "tags": [
+      "freinage",
+      "sécurité",
+      "plaquettes",
+      "contrôle"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:18.373Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:18.373Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9be0aa02e3df6a8c725"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9be0aa02e3df6a8c721"
+    },
+    "name": "Remplacement des plaquettes de frein avant",
+    "type": "replacement",
+    "priority": "critical",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "kilometers": 40000
+    },
+    "conditions": [
+      "Épaisseur < 4mm",
+      "Usure irrégulière",
+      "Grincements"
+    ],
+    "description": "Remplacement des plaquettes de frein avant.",
+    "instructions": "1. Soulever et caler le véhicule\n2. Déposer la roue\n3. Repousser le piston avec outil approprié\n4. Retirer les plaquettes usagées\n5. Nettoyer l'étrier et les supports\n6. Graisser les points de contact (graisse spéciale haute température)\n7. Installer les nouvelles plaquettes\n8. Remonter la roue\n9. Pomper plusieurs fois la pédale de frein\n10. Rodage : freinage progressif sur 200-300 km",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 60,
+    "estimatedCost": 80,
+    "tags": [
+      "freinage",
+      "plaquettes",
+      "avant",
+      "sécurité"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:18.434Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:18.434Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9be0aa02e3df6a8c729"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9be0aa02e3df6a8c727"
+    },
+    "name": "Contrôle de l'usure des plaquettes arrière",
+    "type": "inspection",
+    "priority": "important",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "years"
+      },
+      "kilometers": 15000
+    },
+    "conditions": [],
+    "description": "Vérification de l'épaisseur des plaquettes de frein arrière.",
+    "instructions": "1. Inspecter visuellement\n2. Mesurer l'épaisseur de garniture\n3. Minimum requis : 3mm\n4. Vérifier l'usure régulière\n5. Contrôler l'absence de bruits anormaux",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 15,
+    "estimatedCost": 0,
+    "tags": [
+      "freinage",
+      "plaquettes",
+      "arrière"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:18.554Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:18.554Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9be0aa02e3df6a8c72b"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9be0aa02e3df6a8c727"
+    },
+    "name": "Remplacement des plaquettes de frein arrière",
+    "type": "replacement",
+    "priority": "critical",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "kilometers": 60000
+    },
+    "conditions": [
+      "Épaisseur < 4mm"
+    ],
+    "description": "Remplacement des plaquettes de frein arrière.",
+    "instructions": "Procédure similaire aux plaquettes avant.\n\n⚠️ Sur certains véhicules avec frein de parking intégré, nécessite un outil spécifique pour rétracter le piston (mouvement rotatif).",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 60,
+    "estimatedCost": 70,
+    "tags": [
+      "freinage",
+      "plaquettes",
+      "arrière"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:18.682Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:18.682Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9be0aa02e3df6a8c72f"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9be0aa02e3df6a8c72d"
+    },
+    "name": "Contrôle des disques de frein avant",
+    "type": "inspection",
+    "priority": "important",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "years"
+      },
+      "kilometers": 20000
+    },
+    "conditions": [],
+    "description": "Inspection de l'état des disques de frein avant.",
+    "instructions": "1. Inspecter visuellement les disques\n2. Rechercher :\n   - Rayures profondes\n   - Fissures\n   - Voilage (ondulations)\n   - Rebord excessif sur le bord\n3. Mesurer l'épaisseur avec un palmer\n4. Comparer à l'épaisseur minimale gravée sur le disque\n5. En cas de vibrations au freinage : contrôler le voilage",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 20,
+    "estimatedCost": 0,
+    "tags": [
+      "freinage",
+      "disques",
+      "avant",
+      "contrôle"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:18.797Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:18.797Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9be0aa02e3df6a8c731"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9be0aa02e3df6a8c72d"
+    },
+    "name": "Remplacement des disques de frein avant",
+    "type": "replacement",
+    "priority": "critical",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "kilometers": 80000
+    },
+    "conditions": [
+      "Épaisseur minimale atteinte",
+      "Voilage",
+      "Rayures profondes",
+      "Fissures"
+    ],
+    "description": "Remplacement des disques de frein avant.",
+    "instructions": "⚠️ Toujours remplacer les deux disques par paire\n⚠️ Remplacer également les plaquettes\n\n1. Déposer l'étrier de frein\n2. Retirer les plaquettes\n3. Dévisser la vis de maintien du disque\n4. Retirer le disque usagé\n5. Nettoyer le moyeu\n6. Installer le nouveau disque\n7. Dégraisser le disque (frein-contact)\n8. Remonter plaquettes et étrier\n9. Rodage nécessaire sur 200-300 km",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 90,
+    "estimatedCost": 150,
+    "tags": [
+      "freinage",
+      "disques",
+      "avant",
+      "remplacement"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:18.857Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:18.857Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9be0aa02e3df6a8c735"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9be0aa02e3df6a8c733"
+    },
+    "name": "Contrôle du niveau de liquide de frein",
+    "type": "inspection",
+    "priority": "critical",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "months"
+      }
+    },
+    "conditions": [],
+    "description": "Vérification mensuelle du niveau de liquide de frein.",
+    "instructions": "1. Localiser le réservoir (compartiment moteur)\n2. Vérifier le niveau entre MIN et MAX\n3. ⚠️ Une baisse importante peut indiquer une fuite ou plaquettes usées\n4. Ne compléter que si nécessaire avec le DOT spécifié\n5. Vérifier l'absence de fuites sur les flexibles et étriers",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 5,
+    "estimatedCost": 0,
+    "tags": [
+      "freinage",
+      "liquide",
+      "sécurité",
+      "contrôle mensuel"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:18.973Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:18.973Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bf0aa02e3df6a8c737"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9be0aa02e3df6a8c733"
+    },
+    "name": "Remplacement du liquide de frein",
+    "type": "replacement",
+    "priority": "critical",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "time": {
+        "value": 2,
+        "unit": "years"
+      }
+    },
+    "conditions": [],
+    "description": "Purge et remplacement complet du liquide de frein.",
+    "instructions": "⚠️ Le liquide de frein est corrosif, porter des gants\n\n1. Aspirer l'ancien liquide du réservoir\n2. Remplir avec du liquide neuf du bon type\n3. Purger les freins dans l'ordre :\n   - Roue arrière droite\n   - Roue arrière gauche\n   - Roue avant droite\n   - Roue avant gauche\n4. Pour chaque roue :\n   - Connecter un tuyau à la vis de purge\n   - Demander à quelqu'un de pomper la pédale\n   - Ouvrir la vis, laisser couler, refermer\n   - Répéter jusqu'à liquide clair sans bulles\n   - Maintenir le niveau du réservoir\n5. Vérifier la dureté de la pédale\n6. Tester les freins à basse vitesse",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 60,
+    "estimatedCost": 25,
+    "tags": [
+      "freinage",
+      "liquide",
+      "purge",
+      "sécurité"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:19.034Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:19.034Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bf0aa02e3df6a8c73b"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bf0aa02e3df6a8c739"
+    },
+    "name": "Contrôle de la pression des pneus",
+    "type": "inspection",
+    "priority": "critical",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Avant long trajet",
+      "Changement de température"
+    ],
+    "description": "Vérification mensuelle de la pression des pneumatiques.",
+    "instructions": "⚠️ Pneus froids uniquement\n\n1. Consulter la pression recommandée (étiquette portière, manuel)\n2. Utiliser un manomètre fiable\n3. Contrôler les 4 pneus + roue de secours\n4. Ajuster la pression si nécessaire\n5. Vérifier les bouchons de valve\n6. Inspecter visuellement :\n   - Usure de la bande de roulement\n   - Témoins d'usure (TWI)\n   - Coupures, hernies\n   - Corps étrangers",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 10,
+    "estimatedCost": 0,
+    "tags": [
+      "pneus",
+      "pression",
+      "sécurité",
+      "mensuel"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:19.150Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:19.150Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bf0aa02e3df6a8c73d"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bf0aa02e3df6a8c739"
+    },
+    "name": "Contrôle de l'usure et de l'état des pneus",
+    "type": "inspection",
+    "priority": "critical",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 3,
+        "unit": "months"
+      },
+      "kilometers": 5000
+    },
+    "conditions": [],
+    "description": "Inspection approfondie de l'état des pneumatiques.",
+    "instructions": "1. Mesurer la profondeur des sculptures\n   - Minimum légal : 1,6 mm\n   - Recommandé de remplacer à 3 mm\n2. Vérifier l'usure régulière\n   - Usure au centre : surpression\n   - Usure sur bords : sous-pression\n   - Usure irrégulière : géométrie\n3. Inspecter les flancs :\n   - Fissures\n   - Hernies\n   - Déformations\n4. Vérifier l'âge (DOT sur flanc)\n   - Remplacer après 6-8 ans même si peu usés\n5. Rechercher les corps étrangers",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 20,
+    "estimatedCost": 0,
+    "tags": [
+      "pneus",
+      "usure",
+      "sécurité"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:19.209Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:19.209Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bf0aa02e3df6a8c73f"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bf0aa02e3df6a8c739"
+    },
+    "name": "Permutation des pneus",
+    "type": "service",
+    "priority": "recommended",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "kilometers": 10000
+    },
+    "conditions": [],
+    "description": "Rotation des pneus pour homogénéiser l'usure.",
+    "instructions": "Schéma de permutation (véhicule à traction) :\n- Avant gauche → Arrière droit\n- Avant droit → Arrière gauche\n- Arrière gauche → Avant gauche\n- Arrière droit → Avant droit\n\n1. Soulever le véhicule\n2. Marquer la position de chaque roue\n3. Démonter les 4 roues\n4. Remonter selon le schéma\n5. Serrer au couple (voir manuel)\n6. Ajuster les pressions\n7. Resserrer après 100 km",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 45,
+    "estimatedCost": 0,
+    "tags": [
+      "pneus",
+      "permutation",
+      "usure"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:19.269Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:19.269Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bf0aa02e3df6a8c741"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bf0aa02e3df6a8c739"
+    },
+    "name": "Remplacement des pneus avant",
+    "type": "replacement",
+    "priority": "critical",
+    "difficulty": "professional",
+    "recurrence": {
+      "kilometers": 40000
+    },
+    "conditions": [
+      "Profondeur < 3mm",
+      "Âge > 6 ans",
+      "Dommages",
+      "Usure irrégulière"
+    ],
+    "description": "Remplacement des pneumatiques avant.",
+    "instructions": "⚠️ Intervention professionnelle recommandée\n\n1. Démonter les roues\n2. Déjanter les pneus usagés\n3. Contrôler l'état des jantes\n4. Remplacer les valves\n5. Monter les pneus neufs (sens de rotation)\n6. Équilibrer les roues\n7. Gonfler à la pression recommandée\n8. Remonter sur le véhicule\n9. Serrer au couple\n10. Vérifier après 100 km\n\n⚠️ Toujours remplacer par paire (les 2 avant)",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 60,
+    "estimatedCost": 300,
+    "tags": [
+      "pneus",
+      "remplacement",
+      "sécurité"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:19.329Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:19.329Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bf0aa02e3df6a8c745"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bf0aa02e3df6a8c743"
+    },
+    "name": "Remplacement des pneus arrière",
+    "type": "replacement",
+    "priority": "critical",
+    "difficulty": "professional",
+    "recurrence": {
+      "kilometers": 50000
+    },
+    "conditions": [
+      "Profondeur < 3mm",
+      "Âge > 6 ans",
+      "Dommages"
+    ],
+    "description": "Remplacement des pneumatiques arrière.",
+    "instructions": "Procédure identique aux pneus avant.\n\n⚠️ Sur véhicules utilitaires : attention aux indices de charge",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 60,
+    "estimatedCost": 300,
+    "tags": [
+      "pneus",
+      "arrière",
+      "remplacement"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:19.448Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:19.448Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bf0aa02e3df6a8c749"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bf0aa02e3df6a8c747"
+    },
+    "name": "Équilibrage des roues",
+    "type": "calibration",
+    "priority": "important",
+    "difficulty": "professional",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "years"
+      },
+      "kilometers": 20000
+    },
+    "conditions": [
+      "Après montage de pneus neufs",
+      "En cas de vibrations",
+      "Après choc"
+    ],
+    "description": "Équilibrage des 4 roues sur machine.",
+    "instructions": "⚠️ INTERVENTION PROFESSIONNELLE OBLIGATOIRE\n\nNécessite une équilibreuse électronique.\n\nLe professionnel :\n1. Monte chaque roue sur l'équilibreuse\n2. Lance le cycle de mesure\n3. Pose des masses d'équilibrage\n4. Vérifie l'équilibrage\n\nIndications d'un déséquilibre :\n- Vibrations dans le volant (60-100 km/h)\n- Usure irrégulière des pneus\n- Usure prématurée des suspensions",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 30,
+    "estimatedCost": 40,
+    "tags": [
+      "pneus",
+      "équilibrage",
+      "vibrations",
+      "professionnel"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:19.566Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:19.566Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bf0aa02e3df6a8c74d"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bf0aa02e3df6a8c74b"
+    },
+    "name": "Contrôle des amortisseurs avant",
+    "type": "inspection",
+    "priority": "important",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "years"
+      },
+      "kilometers": 20000
+    },
+    "conditions": [],
+    "description": "Vérification de l'état et du fonctionnement des amortisseurs.",
+    "instructions": "Tests visuels :\n1. Inspecter les amortisseurs :\n   - Fuites d'huile\n   - Déformation de la tige\n   - Corrosion\n\nTests fonctionnels :\n2. Test de rebond :\n   - Appuyer fortement sur l'aile\n   - Relâcher\n   - Le véhicule doit se stabiliser en 1-2 oscillations\n   - Plus de 2 oscillations = amortisseur fatigué\n\n3. Sur route :\n   - Tenue de route dégradée\n   - Plongée excessive au freinage\n   - Rebonds après dos d'âne\n   - Déport en virage",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 30,
+    "estimatedCost": 0,
+    "tags": [
+      "suspension",
+      "amortisseurs",
+      "avant",
+      "sécurité"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:19.685Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:19.685Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bf0aa02e3df6a8c74f"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bf0aa02e3df6a8c74b"
+    },
+    "name": "Remplacement des amortisseurs avant",
+    "type": "replacement",
+    "priority": "important",
+    "difficulty": "advanced",
+    "recurrence": {
+      "kilometers": 80000
+    },
+    "conditions": [
+      "Fuites",
+      "Usure excessive",
+      "Tenue de route dégradée"
+    ],
+    "description": "Remplacement des amortisseurs avant.",
+    "instructions": "⚠️ INTERVENTION DÉLICATE - Professionnel recommandé\n⚠️ Risque avec ressorts sous pression\n\n1. Soulever et caler le véhicule\n2. Retirer la roue\n3. Déposer l'amortisseur (fixations haute et basse)\n4. Si nécessaire : comprimer le ressort avec compresseur\n5. Démonter l'ensemble coupelle/ressort\n6. Installer le nouvel amortisseur\n7. Remonter l'ensemble\n8. Vérifier les silentblocs\n9. Contrôler la géométrie\n\n⚠️ Remplacer par paire\n⚠️ Prévoir contrôle géométrie après remplacement",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 180,
+    "estimatedCost": 400,
+    "tags": [
+      "suspension",
+      "amortisseurs",
+      "avant"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:19.741Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:19.741Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bf0aa02e3df6a8c753"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bf0aa02e3df6a8c751"
+    },
+    "name": "Contrôle et réglage de la géométrie",
+    "type": "calibration",
+    "priority": "important",
+    "difficulty": "professional",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "years"
+      },
+      "kilometers": 20000
+    },
+    "conditions": [
+      "Après changement pneus",
+      "Après choc",
+      "Usure irrégulière pneus",
+      "Véhicule tire d'un côté"
+    ],
+    "description": "Contrôle et réglage des angles de géométrie (parallélisme, carrossage, chasse).",
+    "instructions": "⚠️ INTERVENTION PROFESSIONNELLE OBLIGATOIRE\n\nNécessite un banc de géométrie 3D.\n\nLe professionnel mesure et règle :\n1. Parallélisme (pincement/ouverture)\n2. Carrossage (inclinaison roues)\n3. Chasse (angle colonne direction)\n4. Angle de poussée arrière\n\nSignes d'une géométrie défaillante :\n- Volant pas droit en ligne droite\n- Véhicule tire d'un côté\n- Usure irrégulière des pneus\n- Mauvaise tenue de route",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 45,
+    "estimatedCost": 80,
+    "tags": [
+      "direction",
+      "géométrie",
+      "parallélisme",
+      "professionnel"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:19.869Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:19.869Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9bf0aa02e3df6a8c757"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bf0aa02e3df6a8c755"
+    },
+    "name": "Contrôle de la batterie moteur",
+    "type": "inspection",
+    "priority": "important",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 3,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Avant l'hiver",
+      "Avant long trajet"
+    ],
+    "description": "Vérification de l'état et de la charge de la batterie moteur.",
+    "instructions": "1. Inspection visuelle :\n   - Propreté des bornes\n   - Oxydation\n   - Fissures du boîtier\n   - Niveau d'électrolyte (si batterie ouverte)\n\n2. Test de tension :\n   - Moteur éteint : 12,4-12,7V = OK\n   - < 12,4V = déchargée\n   - < 12V = à remplacer\n   - Moteur tournant : 13,8-14,4V = alternateur OK\n\n3. Test de démarrage :\n   - Écouter le démarreur\n   - Démarrage difficile = batterie faible\n\n4. Nettoyage :\n   - Nettoyer les bornes si oxydées\n   - Graisser avec graisse diélectrique",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 20,
+    "estimatedCost": 0,
+    "tags": [
+      "batterie",
+      "électricité",
+      "démarrage"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:19.985Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:19.985Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9c00aa02e3df6a8c759"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9bf0aa02e3df6a8c755"
+    },
+    "name": "Remplacement de la batterie moteur",
+    "type": "replacement",
+    "priority": "critical",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 5,
+        "unit": "years"
+      }
+    },
+    "conditions": [
+      "Démarrage difficile",
+      "Tension < 12V",
+      "Âge > 5 ans"
+    ],
+    "description": "Remplacement de la batterie de démarrage.",
+    "instructions": "⚠️ Vérifier compatibilité : capacité (Ah), intensité démarrage (A), dimensions\n\n1. Noter les réglages radio, horloge\n2. Couper le contact\n3. Débrancher la borne NÉGATIVE (-) en premier\n4. Débrancher la borne POSITIVE (+)\n5. Retirer la fixation\n6. Extraire l'ancienne batterie\n7. Nettoyer le support\n8. Installer la nouvelle batterie\n9. Rebrancher POSITIVE (+) en premier\n10. Rebrancher NÉGATIVE (-)\n11. Serrer fermement\n12. Réinitialiser radio, horloge, vitres électriques\n\n♻️ Recycler l'ancienne batterie obligatoirement",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 30,
+    "estimatedCost": 120,
+    "tags": [
+      "batterie",
+      "remplacement",
+      "électricité"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:20.045Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:20.045Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9c00aa02e3df6a8c75d"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9c00aa02e3df6a8c75b"
+    },
+    "name": "Révision annuelle / 15 000 km",
+    "type": "service",
+    "priority": "critical",
+    "difficulty": "professional",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "years"
+      },
+      "kilometers": 15000
+    },
+    "conditions": [],
+    "description": "Révision périodique complète du véhicule selon plan d'entretien constructeur.",
+    "instructions": "⚠️ INTERVENTION PROFESSIONNELLE RECOMMANDÉE\n\nPoints de contrôle et entretien :\n\n🔧 MOTEUR\n- Vidange huile moteur\n- Remplacement filtre à huile\n- Contrôle filtre à air\n- Contrôle filtre à carburant\n- Contrôle courroie accessoires\n- Contrôle niveau liquides (refroidissement, lave-glace)\n\n🔧 FREINAGE\n- Contrôle plaquettes et disques\n- Contrôle niveau et état liquide de frein\n- Contrôle flexibles de frein\n- Test frein à main\n\n🔧 PNEUMATIQUES\n- Contrôle pression\n- Contrôle usure\n- Contrôle état général\n\n🔧 SUSPENSION/DIRECTION\n- Contrôle amortisseurs\n- Contrôle rotules et silentblocs\n- Contrôle direction assistée\n\n🔧 ÉCLAIRAGE\n- Contrôle tous feux\n- Réglage optiques si nécessaire\n\n🔧 ÉLECTRICITÉ\n- Test batterie\n- Contrôle alternateur\n\n🔧 SÉCURITÉ\n- Contrôle essuie-glaces\n- Contrôle klaxon\n- Contrôle ceintures\n\n📋 Remise d'un rapport de contrôle",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 120,
+    "estimatedCost": 250,
+    "tags": [
+      "révision",
+      "entretien",
+      "vidange",
+      "contrôle général"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:20.169Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:20.169Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9c00aa02e3df6a8c761"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9c00aa02e3df6a8c75f"
+    },
+    "name": "Contrôle technique (véhicule < 3,5T non VASP)",
+    "type": "test",
+    "priority": "critical",
+    "difficulty": "professional",
+    "recurrence": {
+      "time": {
+        "value": 2,
+        "unit": "years"
+      }
+    },
+    "conditions": [
+      "Véhicule de tourisme ou utilitaire < 3,5T",
+      "Non homologué VASP",
+      "4 ans pour véhicule neuf puis tous les 2 ans"
+    ],
+    "description": "Contrôle technique réglementaire pour véhicules de tourisme et utilitaires légers < 3,5T non homologués VASP.",
+    "instructions": "⚠️ OBLIGATION LÉGALE\n\nCalendrier :\n- Véhicule neuf : 1er CT à 4 ans\n- Puis tous les 2 ans\n\nPréparer le véhicule :\n1. Nettoyer le véhicule\n2. Vérifier tous les feux\n3. Contrôler les niveaux\n4. Tester klaxon et essuie-glaces\n5. Vérifier pression pneus\n6. Rassembler les documents :\n   - Carte grise\n   - Précédent CT si < 6 mois\n\nPoints contrôlés (133 points) :\n- Freinage\n- Direction\n- Visibilité\n- Éclairage\n- Liaison au sol\n- Structure et carrosserie\n- Équipements\n- Organes mécaniques\n- Pollution\n- Installation GPL/GNV si équipé\n\nRésultats possibles :\n✅ Favorable : OK\n⚠️ Défaillances mineures : OK mais points à surveiller\n❌ Défaillances majeures : Contre-visite sous 2 mois\n\n💡 Conseil : Faire réviser le véhicule avant le CT",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 45,
+    "estimatedCost": 80,
+    "tags": [
+      "contrôle technique",
+      "réglementaire",
+      "obligatoire",
+      "sécurité"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:20.306Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:20.306Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9c00aa02e3df6a8c765"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9c00aa02e3df6a8c763"
+    },
+    "name": "Contrôle du niveau d'huile moteur",
+    "type": "inspection",
+    "priority": "critical",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Avant long trajet",
+      "Tous les 1000 km"
+    ],
+    "description": "Vérification du niveau d'huile moteur.",
+    "instructions": "⚠️ Moteur froid ou après 5 min d'arrêt\n⚠️ Véhicule sur terrain plat\n\n1. Localiser la jauge d'huile\n2. Retirer et essuyer la jauge\n3. Réinsérer complètement\n4. Retirer et lire le niveau\n5. Le niveau doit être entre MIN et MAX\n6. Si nécessaire, ajouter de l'huile (même type)\n7. Attendre et revérifier\n8. Ne jamais dépasser MAX\n\n⚠️ Consommation excessive = problème moteur",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 5,
+    "estimatedCost": 0,
+    "tags": [
+      "huile",
+      "moteur",
+      "niveau",
+      "mensuel"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:20.425Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:20.425Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4b9c00aa02e3df6a8c767"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9c00aa02e3df6a8c763"
+    },
+    "name": "Vidange huile moteur",
+    "type": "drain",
+    "priority": "critical",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "years"
+      },
+      "kilometers": 15000
+    },
+    "conditions": [
+      "Usage urbain intensif : tous les 10 000 km",
+      "Huile minérale : 7500 km",
+      "Huile synthèse : 15 000-20 000 km"
+    ],
+    "description": "Vidange complète de l'huile moteur et remplacement du filtre.",
+    "instructions": "⚠️ Moteur chaud (huile plus fluide)\n\nMatériel nécessaire :\n- Bac de récupération\n- Clé pour bouchon de vidange\n- Clé pour filtre à huile\n- Huile neuve (quantité selon manuel)\n- Filtre à huile neuf\n- Joint de bouchon neuf\n- Entonnoir\n\nProcédure :\n1. Soulever le véhicule\n2. Placer le bac sous le carter\n3. Dévisser le bouchon de vidange (attention chaud)\n4. Laisser couler complètement (10-15 min)\n5. Remplacer le joint du bouchon\n6. Revisser le bouchon au couple\n7. Remplacer le filtre à huile\n8. Remplir avec huile neuve (quantité selon manuel)\n9. Démarrer 1 min et couper\n10. Attendre 5 min et vérifier le niveau\n11. Compléter si nécessaire\n12. Vérifier l'absence de fuites\n13. Noter dans carnet d'entretien\n\n♻️ Apporter l'huile usagée en déchetterie",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 45,
+    "estimatedCost": 60,
+    "tags": [
+      "vidange",
+      "huile",
+      "moteur",
+      "filtre",
+      "entretien"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T10:13:20.486Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:13:20.486Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4bcf56bc4f77caa0f2adf"
+    },
+    "equipmentId": {
+      "$oid": "68f4bc786bc4f77caa0f2ab6"
+    },
+    "name": "Nettoyage du quartz",
+    "type": "cleaning",
+    "priority": "important",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "time": {
+        "value": 6,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Qualité d'eau calcaire"
+    ],
+    "description": "Nettoyage du quartz pour éviter l'accumulation de calcaire.",
+    "instructions": "1. Couper l’alimentation d’eau.\n2. Débrancher l’alimentation électrique du système.\n3. Débrancher les tuyaux de raccordement.\n4. Débrancher le débitmètre.\n5. Dévisser les raccords d’arrivée et de sortie du réacteur.\n6. Dévisser l’ensemble réacteur + support de fixation du mur.\n7. Bouchonner une des deux extrémités hydrauliques.\n8. Verser une solution d’isopropyle alcool jusqu’à remplir de moitié le réacteur.\n9. Bouchonner l’autre extrémité.\n10. Laisser reposer 10 minutes.\n11. Secouer vigoureusement.\n12. Vider et rincer à l’eau claire.\n13. Remplacer les raccords usagés par des raccords neufs si besoin.\n14. Remonter l’ensemble des éléments démontés.",
+    "photos": [],
+    "videos": [],
+    "parts": [
+      {
+        "name": "Solution d'isopropyle alcool",
+        "reference": "N/A",
+        "quantity": 1,
+        "estimatedCost": 10,
+        "_id": {
+          "$oid": "68f4bcf56bc4f77caa0f2ae0"
+        }
+      }
+    ],
+    "estimatedDuration": 60,
+    "estimatedCost": 10,
+    "tags": [
+      "Entretien",
+      "Performance"
+    ],
+    "isOfficial": true,
+    "source": "Notice technique",
+    "isUserContributed": false,
+    "status": "approved",
+    "createdAt": {
+      "$date": "2025-10-19T10:27:01.105Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:27:01.105Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4bcf56bc4f77caa0f2ae5"
+    },
+    "equipmentId": {
+      "$oid": "68f4bc786bc4f77caa0f2ab6"
+    },
+    "name": "Vérification des câbles électriques",
+    "type": "inspection",
+    "priority": "important",
+    "difficulty": "easy",
+    "recurrence": {
+      "time": {
+        "value": 6,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "À chaque maintenance"
+    ],
+    "description": "Vérification des câbles électriques pour s'assurer qu'il n'y a pas de coupure.",
+    "instructions": "1. Vérifier les branchements électriques du système.\n2. S'assurer qu'il n'y a pas de coupure du câble.\n3. Remplacer le câble si nécessaire en contactant le distributeur.",
+    "photos": [],
+    "videos": [],
+    "parts": [],
+    "estimatedDuration": 15,
+    "estimatedCost": 0,
+    "tags": [
+      "Sécurité"
+    ],
+    "isOfficial": true,
+    "source": "Notice technique",
+    "isUserContributed": false,
+    "status": "approved",
+    "createdAt": {
+      "$date": "2025-10-19T10:27:01.529Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:27:01.529Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f4bcf56bc4f77caa0f2ae9"
+    },
+    "equipmentId": {
+      "$oid": "68f4bc786bc4f77caa0f2ab6"
+    },
+    "name": "Changement de filtre",
+    "type": "replacement",
+    "priority": "important",
+    "difficulty": "intermediate",
+    "recurrence": {
+      "time": {
+        "value": 3,
+        "unit": "months"
+      }
+    },
+    "conditions": [
+      "Qualité d'eau"
+    ],
+    "description": "Remplacement du filtre pour maintenir l'efficacité de la filtration.",
+    "instructions": "1. Couper l’alimentation d’eau.\n2. Débrancher l’alimentation électrique du système.\n3. Desserrer le carter à l’aide de la clé de serrage et vider l’eau.\n4. Retirer l’ancien filtre et le remplacer par le nouveau.\n5. Vérifier l’état du joint, le changer si besoin.\n6. Resserrer le carter à l’aide de la clé de serrage.\n7. Dévisser la vis de purge du filtre.\n8. Ouvrir l’alimentation d’eau et remplir le filtre jusqu’à ce que l’eau sorte par la vis de purge.\n9. Resserrer la vis de purge et laisser couler pendant 5 minutes.\n10. Rebrancher l’alimentation électrique du système.",
+    "photos": [],
+    "videos": [],
+    "parts": [
+      {
+        "name": "Cartouche de filtration",
+        "reference": "N/A",
+        "quantity": 1,
+        "estimatedCost": 20,
+        "_id": {
+          "$oid": "68f4bcf56bc4f77caa0f2aea"
+        }
+      }
+    ],
+    "estimatedDuration": 30,
+    "estimatedCost": 20,
+    "tags": [
+      "Entretien",
+      "Performance"
+    ],
+    "isOfficial": true,
+    "source": "Notice technique",
+    "isUserContributed": false,
+    "status": "approved",
+    "createdAt": {
+      "$date": "2025-10-19T10:27:01.963Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T10:27:01.963Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f5106cc54d9223b4edb"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9c00aa02e3df6a8c75f"
+    },
+    "name": "Contrôle technique (véhicule > 3,5T)",
+    "type": "test",
+    "priority": "critical",
+    "difficulty": "professional",
+    "recurrence": {
+      "time": {
+        "value": 1,
+        "unit": "years"
+      }
+    },
+    "conditions": [
+      "Obligatoire légalement",
+      "Véhicule > 3,5T",
+      "1 an pour véhicule neuf puis tous les ans"
+    ],
+    "description": "Contrôle technique réglementaire pour véhicules lourds > 3,5T (camping-cars, fourgons aménagés CTTE > 3,5T).",
+    "instructions": "⚠️ OBLIGATION LÉGALE - VÉHICULE LOURD\n\nCalendrier SPÉCIFIQUE :\n- Véhicule neuf : 1er CT à 1 an\n- Puis tous les ANS (plus strict que < 3,5T)\n\n⚠️ Contrôle plus approfondi que véhicules légers\n\nPréparer le véhicule :\n1. Nettoyer complètement le véhicule\n2. Vérifier tous les feux (gabarit, stop additionnels)\n3. Contrôler les niveaux\n4. Tester klaxon et essuie-glaces\n5. Vérifier pression pneus + roue de secours\n6. Vérifier la charge maximale et répartition\n7. Rassembler les documents :\n   - Carte grise (catégorie CTTE)\n   - Précédent CT si < 6 mois\n   - Certificat d'homologation CTTE\n\nPoints contrôlés supplémentaires :\n- Système de freinage renforcé\n- Essieux et suspension adaptés\n- Éclairage de gabarit\n- Dispositifs de sécurité spécifiques\n- Contrôle antipollution renforcé\n\nRésultats possibles :\n✅ Favorable : OK\n⚠️ Défaillances mineures : OK mais points à surveiller\n❌ Défaillances majeures : Contre-visite sous 2 mois\n\n💡 Conseil : Entretien rigoureux nécessaire (CT annuel)",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 60,
+    "estimatedCost": 100,
+    "tags": [
+      "contrôle technique",
+      "réglementaire",
+      "obligatoire",
+      "poids lourd",
+      "annuel"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T16:23:08.711Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T16:23:08.714Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f5106c3dd09caa62f77"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9c00aa02e3df6a8c75f"
+    },
+    "name": "Contrôle VASP (véhicule homologué VASP)",
+    "type": "test",
+    "priority": "critical",
+    "difficulty": "professional",
+    "recurrence": {
+      "time": {
+        "value": 5,
+        "unit": "years"
+      }
+    },
+    "conditions": [
+      "Obligatoire légalement",
+      "Véhicule homologué VASP",
+      "6 mois après transformation puis tous les 5 ans"
+    ],
+    "description": "Contrôle spécifique VASP (Véhicule Automoteur Spécialisé) pour vérifier la conformité de l'aménagement du camping-car.",
+    "instructions": "⚠️ OBLIGATION LÉGALE - VÉHICULE VASP\n\nQu'est-ce qu'un VASP ?\n- Véhicule Automoteur Spécialisé\n- Camping-car, fourgon aménagé homologué\n- Catégorie carte grise : VASP\n\nCalendrier VASP :\n- Véhicule neuf transformé : 1er contrôle à 6 MOIS\n- Puis tous les 5 ANS\n\n⚠️ Ce contrôle est EN PLUS du CT classique\n\nPoints contrôlés SPÉCIFIQUES à l'aménagement :\n✅ Installation GAZ :\n   - Détendeur et régulateur\n   - Tuyauterie gaz\n   - Ventilation haute et basse\n   - Robinets et raccords\n   - Étanchéité complète\n\n✅ Installation ÉLECTRIQUE 12V/230V :\n   - Tableau électrique\n   - Disjoncteurs et protections\n   - Câblage\n   - Prises et interrupteurs\n   - Mise à la terre\n\n✅ AMÉNAGEMENT intérieur :\n   - Fixations des meubles\n   - Points d'ancrage des sièges\n   - Ceintures de sécurité arrière\n   - Vitrage\n   - Issues de secours\n\n✅ STRUCTURE :\n   - Surélévation de toit\n   - Fixations équipements\n   - Répartition des charges\n\nDocuments nécessaires :\n- Carte grise mentionnant VASP\n- Certificat de conformité VASP\n- Plan d'aménagement homologué\n- Précédent contrôle VASP\n\n⚠️ Centre agréé VASP OBLIGATOIRE\n\nEn cas de non-conformité :\n- Interdiction de circuler possible\n- Obligation de mise en conformité\n- Contre-visite obligatoire\n\n💡 Conseil : Vérifier soi-même l'installation gaz et électrique avant",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 90,
+    "estimatedCost": 150,
+    "tags": [
+      "VASP",
+      "homologation",
+      "réglementaire",
+      "obligatoire",
+      "aménagement",
+      "gaz",
+      "électricité"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T16:23:08.714Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T16:23:08.714Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f5106ce5385e3b4a59e"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9c00aa02e3df6a8c75b"
+    },
+    "name": "Révision majeure / 30 000 km",
+    "type": "service",
+    "priority": "critical",
+    "difficulty": "professional",
+    "recurrence": {
+      "time": {
+        "value": 2,
+        "unit": "years"
+      },
+      "kilometers": 30000
+    },
+    "conditions": [],
+    "description": "Révision majeure complète du véhicule incluant tous les points de la révision annuelle plus des contrôles approfondis.",
+    "instructions": "⚠️ INTERVENTION PROFESSIONNELLE RECOMMANDÉE\n\n📋 INCLUT TOUS LES POINTS DE LA RÉVISION ANNUELLE +\n\n🔧 MOTEUR - Approfondis\n- Vidange huile moteur\n- Remplacement filtre à huile\n- Remplacement filtre à air\n- Remplacement filtre à carburant\n- Nettoyage vanne EGR (diesel)\n- Contrôle turbo (diesel)\n- Contrôle courroie de distribution\n- Contrôle courroie accessoires\n- Décalaminage si nécessaire\n- Contrôle niveau liquides\n\n🔧 FREINAGE - Complet\n- Remplacement plaquettes si < 4mm\n- Contrôle disques (mesure épaisseur)\n- Remplacement liquide de frein\n- Contrôle étriers et pistons\n- Contrôle flexibles\n- Nettoyage et graissage mécanisme frein à main\n\n🔧 TRANSMISSION\n- Vidange boîte de vitesses (selon préco)\n- Contrôle embrayage\n- Contrôle cardans et soufflets\n- Contrôle différentiel\n\n🔧 SUSPENSION/DIRECTION\n- Contrôle amortisseurs (test banc)\n- Contrôle rotules et silentblocs\n- Contrôle direction assistée\n- Vidange direction assistée si hydraulique\n- Contrôle géométrie (parallélisme)\n\n🔧 CLIMATISATION\n- Contrôle étanchéité circuit\n- Recharge gaz si nécessaire\n- Désinfection habitacle\n\n🔧 PNEUMATIQUES\n- Permutation des pneus\n- Équilibrage\n- Contrôle usure et pression\n\n🔧 REFROIDISSEMENT\n- Remplacement liquide de refroidissement\n- Contrôle radiateur et durites\n- Test thermostat\n\n🔧 ÉCHAPPEMENT\n- Contrôle étanchéité complète\n- Contrôle catalyseur\n- Contrôle FAP (diesel)\n\n🔧 ÉLECTRICITÉ\n- Test batterie et alternateur\n- Contrôle démarreur\n- Vérification cosses et câbles\n- Mise à jour calculateurs si nécessaire\n\n🔧 SÉCURITÉ\n- Contrôle tous éclairages\n- Réglage phares\n- Remplacement essuie-glaces\n- Contrôle ceintures\n- Diagnostic électronique complet\n\n📋 Remise d'un rapport de contrôle détaillé\n\n💡 Cette révision est essentielle pour la longévité du véhicule",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 240,
+    "estimatedCost": 500,
+    "tags": [
+      "révision majeure",
+      "entretien complet",
+      "30000 km",
+      "contrôle approfondi"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T16:23:08.714Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T16:23:08.714Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": {
+      "$oid": "68f5106c7527c55b9ed7"
+    },
+    "equipmentId": {
+      "$oid": "68f4b9c00aa02e3df6a8c75b"
+    },
+    "name": "Révision complète / 60 000 km",
+    "type": "service",
+    "priority": "critical",
+    "difficulty": "professional",
+    "recurrence": {
+      "time": {
+        "value": 4,
+        "unit": "years"
+      },
+      "kilometers": 60000
+    },
+    "conditions": [
+      "Selon préconisations constructeur"
+    ],
+    "description": "Révision complète très approfondie du véhicule avec remplacement préventif de nombreux éléments d'usure.",
+    "instructions": "⚠️ INTERVENTION PROFESSIONNELLE OBLIGATOIRE\n\n📋 INCLUT TOUS LES POINTS DES RÉVISIONS ANNUELLE ET MAJEURE +\n\n🔧 REMPLACEMENTS PRÉVENTIFS\n\nMOTEUR :\n- Remplacement courroie de distribution + kit complet\n- Remplacement pompe à eau\n- Remplacement courroie accessoires\n- Remplacement tous les filtres\n- Décalaminage moteur\n- Nettoyage injecteurs\n\nFREINAGE :\n- Remplacement plaquettes avant et arrière\n- Remplacement disques si usure > 70%\n- Remplacement liquide de frein\n- Révision étriers (joints)\n\nTRANSMISSION :\n- Vidange boîte de vitesses\n- Remplacement embrayage si signes d'usure\n- Contrôle pont et différentiel\n\nSUSPENSION :\n- Remplacement amortisseurs si > 80 000 km\n- Remplacement silent-blocs usés\n- Contrôle et réglage géométrie complète\n\nREFROIDISSEMENT :\n- Remplacement liquide de refroidissement\n- Remplacement durites si anciennes\n- Détartrage circuit\n- Test pression radiateur\n\nAUTRES ÉLÉMENTS :\n- Remplacement batterie si > 4 ans\n- Remplacement bougies d'allumage (essence)\n- Remplacement bougies de préchauffage (diesel)\n- Nettoyage vanne EGR et admission\n- Nettoyage papillon motorisé\n- Contrôle turbo et wastegate\n- Remplacement filtre particules si colmaté\n\nCARROSSERIE CAMPING-CAR :\n- Contrôle étanchéité complète\n- Réfection joints si nécessaire\n- Contrôle cellule et structure\n- Contrôle fixations équipements\n\nINSTALLATIONS SPÉCIFIQUES :\n- Révision installation gaz\n- Contrôle installation électrique 12V/230V\n- Contrôle réservoir eaux usées/propres\n- Désinfection circuit d'eau\n\nDIAGNOSTIC :\n- Diagnostic électronique complet tous calculateurs\n- Mise à jour logiciels si disponibles\n- Vérification historique codes défauts\n- Test complet tous systèmes\n\n📋 Remise d'un rapport de contrôle très détaillé\n📋 Carnet d'entretien à jour\n📋 Recommandations pour les 60 000 km suivants\n\n💰 Budget à prévoir : 800-1500€ selon travaux nécessaires\n\n💡 Cette révision majeure garantit la fiabilité du véhicule pour les années à venir",
+    "photos": [],
+    "videos": [],
+    "estimatedDuration": 360,
+    "estimatedCost": 1000,
+    "tags": [
+      "révision complète",
+      "grande révision",
+      "60000 km",
+      "entretien majeur",
+      "préventif"
+    ],
+    "isOfficial": true,
+    "isUserContributed": false,
+    "status": "approved",
+    "parts": [],
+    "createdAt": {
+      "$date": "2025-10-19T16:23:08.714Z"
+    },
+    "updatedAt": {
+      "$date": "2025-10-19T16:23:08.714Z"
+    },
+    "__v": 0
+  }
+]

@@ -24,6 +24,8 @@ interface VehicleEquipment {
 interface VehicleMaintenancesCardProps {
   vehicleId: string;
   equipments: VehicleEquipment[];
+  preSelectedEquipmentId?: string | null;
+  onEquipmentModalClose?: () => void;
 }
 
 interface MaintenanceData {
@@ -158,6 +160,8 @@ const STATUS_COLORS: Record<string, string> = {
 export default function VehicleMaintenancesCard({
   vehicleId,
   equipments,
+  preSelectedEquipmentId,
+  onEquipmentModalClose,
 }: VehicleMaintenancesCardProps) {
   const [maintenances, setMaintenances] = useState<MaintenanceSchedule[]>([]);
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
@@ -297,7 +301,7 @@ export default function VehicleMaintenancesCard({
     if (schedule.vehicleEquipmentId?.customData) {
       return schedule.vehicleEquipmentId.customData.name;
     }
-    return "Équipement";
+    return "Contrôle/Équipement";
   };
 
   const getEquipmentPhoto = (schedule: MaintenanceSchedule): string | null => {
@@ -313,9 +317,19 @@ export default function VehicleMaintenancesCard({
   const handleMaintenanceSuccess = () => {
     setSelectedEquipmentId(null);
     setShowEquipmentSelector(false);
+    if (onEquipmentModalClose) {
+      onEquipmentModalClose();
+    }
     fetchMaintenances();
     fetchRecommendations();
   };
+
+  // Effect to handle pre-selected equipment
+  useEffect(() => {
+    if (preSelectedEquipmentId) {
+      setSelectedEquipmentId(preSelectedEquipmentId);
+    }
+  }, [preSelectedEquipmentId]);
 
   const handleAddMaintenance = () => {
     if (equipments.length === 0) {
@@ -331,10 +345,10 @@ export default function VehicleMaintenancesCard({
 
   const getEquipmentNameById = (id: string) => {
     const equipment = equipments.find((e) => e._id === id);
-    if (!equipment) return "Équipement";
+    if (!equipment) return "Contrôle/Équipement";
     return equipment.isCustom
-      ? equipment.customData?.name || "Équipement"
-      : equipment.equipmentId?.name || "Équipement";
+      ? equipment.customData?.name || "Contrôle/Équipement"
+      : equipment.equipmentId?.name || "Contrôle/Équipement";
   };
 
   // Calcul du temps restant avant l'échéance
@@ -472,8 +486,8 @@ export default function VehicleMaintenancesCard({
     <div className="bg-white rounded-3xl shadow-lg p-4 sm:p-6">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-black">Entretiens 📋</h2>
-          <p className="text-gray text-sm sm:text-base">Planification et recommandations</p>
+          <h2 className="text-xl sm:text-2xl font-bold text-black">Entretiens & Rappels 📋</h2>
+          <p className="text-gray text-sm sm:text-base">Ne manquez aucune échéance</p>
         </div>
         <button
           onClick={handleAddMaintenance}
@@ -481,7 +495,7 @@ export default function VehicleMaintenancesCard({
           className="inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-orange to-orange-light text-white font-bold text-sm sm:text-base rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           title={
             equipments.length === 0
-              ? "Ajoutez d'abord un équipement"
+              ? "Ajoutez d'abord un contrôle ou équipement"
               : "Ajouter un entretien"
           }
         >
@@ -525,10 +539,10 @@ export default function VehicleMaintenancesCard({
             </svg>
           </div>
           <h3 className="text-lg font-semibold text-black mb-2">
-            Ajoutez d&apos;abord un équipement
+            Ajoutez d&apos;abord un contrôle ou équipement
           </h3>
           <p className="text-gray text-sm mb-4">
-            Pour créer des entretiens, vous devez d&apos;abord ajouter au moins un équipement à votre véhicule
+            Pour créer des entretiens, vous devez d&apos;abord ajouter au moins un contrôle ou équipement à suivre
           </p>
         </div>
       ) : (
@@ -829,11 +843,11 @@ export default function VehicleMaintenancesCard({
                   />
                 </svg>
                 <h3 className="text-lg font-bold text-black">
-                  Entretiens recommandés ({recommendations.reduce((acc, r) => acc + r.maintenances.length, 0)})
+                  Entretiens proposés ({recommendations.reduce((acc, r) => acc + r.maintenances.length, 0)})
                 </h3>
               </div>
               <p className="text-sm text-gray mb-4">
-                Basés sur vos équipements, ajoutez-les en un clic !
+                Basés sur vos contrôles et équipements, ajoutez-les en un clic !
               </p>
 
               <div className="space-y-3">
@@ -874,7 +888,7 @@ export default function VehicleMaintenancesCard({
                               {rec.equipment.name}
                             </h4>
                             <p className="text-xs text-gray">
-                              {rec.maintenances.length} entretien{rec.maintenances.length > 1 ? "s" : ""} recommandé{rec.maintenances.length > 1 ? "s" : ""}
+                              {rec.maintenances.length} entretien{rec.maintenances.length > 1 ? "s" : ""} proposé{rec.maintenances.length > 1 ? "s" : ""}
                             </p>
                           </div>
                         </div>
@@ -958,7 +972,7 @@ export default function VehicleMaintenancesCard({
           ) : maintenances.length === 0 ? (
             <div className="text-center py-6 bg-blue-50 rounded-2xl">
               <p className="text-sm text-blue-700">
-                💡 Ajoutez des équipements pour voir les entretiens recommandés
+                💡 Ajoutez des contrôles ou équipements pour voir les entretiens proposés
               </p>
             </div>
           ) : null}
@@ -986,7 +1000,7 @@ export default function VehicleMaintenancesCard({
               <div className="p-4 sm:p-6 border-b border-gray-200">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg sm:text-2xl font-bold text-black">
-                    Sélectionner un équipement
+                    Sélectionner un contrôle ou équipement
                   </h3>
                   <button
                     onClick={() => setShowEquipmentSelector(false)}
@@ -1008,7 +1022,7 @@ export default function VehicleMaintenancesCard({
                   </button>
                 </div>
                 <p className="text-gray text-xs sm:text-sm mt-2">
-                  Choisissez l&apos;équipement pour lequel vous souhaitez ajouter un entretien
+                  Choisissez le contrôle ou équipement pour lequel vous souhaitez ajouter un entretien
                 </p>
               </div>
 
@@ -1032,7 +1046,7 @@ export default function VehicleMaintenancesCard({
                           {photo ? (
                             <Image
                               src={photo}
-                              alt={name || "Équipement"}
+                              alt={name || "Contrôle/Équipement"}
                               fill
                               className="object-cover"
                             />
@@ -1080,7 +1094,12 @@ export default function VehicleMaintenancesCard({
             vehicleId={vehicleId}
             vehicleEquipmentId={selectedEquipmentId}
             equipmentName={getEquipmentNameById(selectedEquipmentId)}
-            onClose={() => setSelectedEquipmentId(null)}
+            onClose={() => {
+              setSelectedEquipmentId(null);
+              if (onEquipmentModalClose) {
+                onEquipmentModalClose();
+              }
+            }}
             onSuccess={handleMaintenanceSuccess}
           />
         )}

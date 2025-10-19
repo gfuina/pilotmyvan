@@ -54,12 +54,14 @@ interface VehicleEquipmentListProps {
   vehicleId: string;
   equipments: VehicleEquipment[];
   onRefresh: () => void;
+  onAddMaintenanceForEquipment?: (equipmentId: string) => void;
 }
 
 export default function VehicleEquipmentList({
   vehicleId,
   equipments,
   onRefresh,
+  onAddMaintenanceForEquipment,
 }: VehicleEquipmentListProps) {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -436,6 +438,29 @@ export default function VehicleEquipmentList({
                   <p className="text-xs text-gray line-clamp-2 mb-2">
                     {equipment.description}
                   </p>
+                )}
+
+                {/* Info: No maintenances */}
+                {maintenanceStatus && maintenanceStatus.maintenancesCount === 0 && (
+                  <div className="mb-2 p-1.5 bg-orange-50 border border-orange-200 rounded-lg">
+                    <button
+                      onClick={() => {
+                        if (onAddMaintenanceForEquipment) {
+                          onAddMaintenanceForEquipment(item._id);
+                          // Scroll to maintenance section after a small delay
+                          setTimeout(() => {
+                            document.getElementById('maintenances-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }, 100);
+                        }
+                      }}
+                      className="w-full flex items-center gap-1.5 text-[10px] text-orange-700 hover:text-orange-800 font-medium group text-left"
+                    >
+                      <svg className="w-3 h-3 text-orange-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                      <span>Aucun entretien • <span className="underline group-hover:no-underline">Ajouter →</span></span>
+                    </button>
+                  </div>
                 )}
 
                 {/* Actions */}

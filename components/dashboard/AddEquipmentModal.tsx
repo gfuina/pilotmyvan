@@ -32,11 +32,20 @@ interface Equipment {
   }>;
 }
 
+interface VehicleEquipment {
+  _id: string;
+  equipmentId?: {
+    _id: string;
+  };
+  isCustom: boolean;
+}
+
 interface AddEquipmentModalProps {
   vehicleId: string;
   vehicleMake: string;
   onClose: () => void;
   onSuccess: () => void;
+  existingEquipments: VehicleEquipment[];
 }
 
 export default function AddEquipmentModal({
@@ -44,6 +53,7 @@ export default function AddEquipmentModal({
   vehicleMake,
   onClose,
   onSuccess,
+  existingEquipments,
 }: AddEquipmentModalProps) {
   const [activeTab, setActiveTab] = useState<"library" | "custom">("library");
   
@@ -122,9 +132,22 @@ export default function AddEquipmentModal({
     }
   };
 
+  // IDs of recommended equipments
+  const RECOMMENDED_IDS = [
+    "68f4b9c00aa02e3df6a8c75f", // Contrôle technique périodique
+    "68f4b9c00aa02e3df6a8c75b", // Révision complète du véhicule
+  ];
+
   // Real-time client-side filtering for ultra-smooth UX
   const filteredEquipments = useMemo(() => {
     let filtered = [...equipments];
+
+    // Exclude already added equipments
+    const existingEquipmentIds = existingEquipments
+      .filter(eq => !eq.isCustom && eq.equipmentId?._id)
+      .map(eq => eq.equipmentId!._id);
+    
+    filtered = filtered.filter(eq => !existingEquipmentIds.includes(eq._id));
 
     // Text search
     if (searchText.trim()) {
@@ -166,7 +189,14 @@ export default function AddEquipmentModal({
     }
 
     return filtered;
-  }, [equipments, searchText, selectedVehicleBrand, selectedEquipmentBrand, selectedCategory, categories]);
+  }, [equipments, searchText, selectedVehicleBrand, selectedEquipmentBrand, selectedCategory, categories, existingEquipments]);
+
+  // Separate recommended and regular equipments
+  const { recommendedEquipments, regularEquipments } = useMemo(() => {
+    const recommended = filteredEquipments.filter(eq => RECOMMENDED_IDS.includes(eq._id));
+    const regular = filteredEquipments.filter(eq => !RECOMMENDED_IDS.includes(eq._id));
+    return { recommendedEquipments: recommended, regularEquipments: regular };
+  }, [filteredEquipments]);
 
   const handleAddEquipment = async (equipmentId: string) => {
     setIsAdding(true);
@@ -269,7 +299,7 @@ export default function AddEquipmentModal({
         <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
           <div>
             <h2 className="text-2xl font-bold text-black">
-              Ajouter un équipement
+              Ajouter un contrôle ou équipement
             </h2>
             <p className="text-sm text-gray">Pour votre {vehicleMake}</p>
           </div>
@@ -343,7 +373,7 @@ export default function AddEquipmentModal({
                       type="text"
                       value={searchText}
                       onChange={(e) => setSearchText(e.target.value)}
-                      placeholder="Rechercher un équipement..."
+                      placeholder="Rechercher un contrôle ou équipement..."
                       className="w-full px-12 py-3 rounded-2xl border-2 border-gray-200 focus:border-orange focus:outline-none transition-colors"
                     />
                     <svg
@@ -469,7 +499,7 @@ export default function AddEquipmentModal({
                         </svg>
                       </div>
                       <h3 className="text-lg font-semibold text-black mb-2">
-                        Aucun équipement trouvé
+                        Aucun élément trouvé
                       </h3>
                       <p className="text-gray text-sm">
                         Essayez de modifier vos filtres ou créez votre propre
@@ -477,88 +507,183 @@ export default function AddEquipmentModal({
                       </p>
                     </div>
                   ) : (
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                      {filteredEquipments.map((equipment, index) => (
-                        <motion.div
-                          key={equipment._id}
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: index * 0.05 }}
-                          className="bg-white border-2 border-gray-200 hover:border-orange rounded-2xl p-4 transition-all duration-300 hover:shadow-lg"
-                        >
-                          <div className="flex gap-4">
-                            {/* Photo */}
-                            <div className="relative w-24 h-24 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0">
-                              {equipment.photos[0] ? (
-                                <Image
-                                  src={equipment.photos[0]}
-                                  alt={equipment.name}
-                                  fill
-                                  className="object-cover"
-                                />
-                              ) : (
-                                <div className="absolute inset-0 flex items-center justify-center text-3xl">
-                                  🔧
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Info */}
-                            <div className="flex-1 min-w-0">
-                              <h4 className="font-bold text-black mb-1 truncate">
-                                {equipment.name}
-                              </h4>
-                              <p className="text-xs text-gray mb-2">
-                                {equipment.categoryId?.name}
-                              </p>
-                              {equipment.description && (
-                                <p className="text-sm text-gray line-clamp-2 mb-2">
-                                  {equipment.description}
-                                </p>
-                              )}
-                              <div className="flex flex-wrap gap-1">
-                                {equipment.equipmentBrands.slice(0, 2).map((brand) => (
-                                  <span
-                                    key={brand._id}
-                                    className="px-2 py-0.5 bg-purple-50 text-purple-700 text-xs font-medium rounded-full"
-                                  >
-                                    {brand.name}
-                                  </span>
-                                ))}
-                                {equipment.manuals.length > 0 && (
-                                  <span className="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full">
-                                    📄 {equipment.manuals.length}
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-
-                            {/* Add Button */}
-                            <div className="flex items-center">
-                              <button
-                                onClick={() => handleAddEquipment(equipment._id)}
-                                disabled={isAdding}
-                                className="px-4 py-2 bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 disabled:opacity-50 flex items-center gap-2"
-                              >
-                                <svg
-                                  className="w-4 h-4"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 24 24"
-                                >
-                                  <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M12 4v16m8-8H4"
-                                  />
-                                </svg>
-                                Ajouter
-                              </button>
+                    <div className="space-y-6">
+                      {/* Recommended Section */}
+                      {recommendedEquipments.length > 0 && (
+                        <div>
+                          <div className="flex items-center gap-2 mb-4">
+                            <div className="flex items-center gap-2 px-3 py-1.5 bg-gradient-to-r from-orange to-orange-light text-white font-bold text-sm rounded-full">
+                              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                              </svg>
+                              Recommandé pour tous
                             </div>
                           </div>
-                        </motion.div>
-                      ))}
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+                            {recommendedEquipments.map((equipment, index) => (
+                              <motion.div
+                                key={equipment._id}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.05 }}
+                                className="bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-300 rounded-2xl p-4 shadow-md"
+                              >
+                                <div className="flex gap-4">
+                                  {/* Photo */}
+                                  <div className="relative w-24 h-24 bg-white rounded-xl overflow-hidden flex-shrink-0">
+                                    {equipment.photos[0] ? (
+                                      <Image
+                                        src={equipment.photos[0]}
+                                        alt={equipment.name}
+                                        fill
+                                        className="object-cover"
+                                      />
+                                    ) : (
+                                      <div className="absolute inset-0 flex items-center justify-center text-3xl">
+                                        📋
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  {/* Info */}
+                                  <div className="flex-1 min-w-0">
+                                    <h4 className="font-bold text-black mb-1 truncate">
+                                      {equipment.name}
+                                    </h4>
+                                    <p className="text-xs text-gray-700 mb-2">
+                                      {equipment.categoryId?.name}
+                                    </p>
+                                    {equipment.description && (
+                                      <p className="text-sm text-gray-700 line-clamp-2 mb-2">
+                                        {equipment.description}
+                                      </p>
+                                    )}
+                                  </div>
+
+                                  {/* Add Button */}
+                                  <div className="flex items-center">
+                                    <button
+                                      onClick={() => handleAddEquipment(equipment._id)}
+                                      disabled={isAdding}
+                                      className="px-4 py-2 bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 disabled:opacity-50 flex items-center gap-2"
+                                    >
+                                      <svg
+                                        className="w-4 h-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M12 4v16m8-8H4"
+                                        />
+                                      </svg>
+                                      Ajouter
+                                    </button>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Regular Equipment Section */}
+                      {regularEquipments.length > 0 && (
+                        <div>
+                          {recommendedEquipments.length > 0 && (
+                            <div className="flex items-center gap-2 mb-4">
+                              <h3 className="text-sm font-semibold text-gray-700">Tous les contrôles & équipements</h3>
+                              <div className="flex-1 h-px bg-gray-200"></div>
+                            </div>
+                          )}
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            {regularEquipments.map((equipment, index) => (
+                              <motion.div
+                                key={equipment._id}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: (index + recommendedEquipments.length) * 0.05 }}
+                                className="bg-white border-2 border-gray-200 hover:border-orange rounded-2xl p-4 transition-all duration-300 hover:shadow-lg"
+                              >
+                                <div className="flex gap-4">
+                                  {/* Photo */}
+                                  <div className="relative w-24 h-24 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0">
+                                    {equipment.photos[0] ? (
+                                      <Image
+                                        src={equipment.photos[0]}
+                                        alt={equipment.name}
+                                        fill
+                                        className="object-cover"
+                                      />
+                                    ) : (
+                                      <div className="absolute inset-0 flex items-center justify-center text-3xl">
+                                        🔧
+                                      </div>
+                                    )}
+                                  </div>
+
+                                  {/* Info */}
+                                  <div className="flex-1 min-w-0">
+                                    <h4 className="font-bold text-black mb-1 truncate">
+                                      {equipment.name}
+                                    </h4>
+                                    <p className="text-xs text-gray mb-2">
+                                      {equipment.categoryId?.name}
+                                    </p>
+                                    {equipment.description && (
+                                      <p className="text-sm text-gray line-clamp-2 mb-2">
+                                        {equipment.description}
+                                      </p>
+                                    )}
+                                    <div className="flex flex-wrap gap-1">
+                                      {equipment.equipmentBrands.slice(0, 2).map((brand) => (
+                                        <span
+                                          key={brand._id}
+                                          className="px-2 py-0.5 bg-purple-50 text-purple-700 text-xs font-medium rounded-full"
+                                        >
+                                          {brand.name}
+                                        </span>
+                                      ))}
+                                      {equipment.manuals.length > 0 && (
+                                        <span className="px-2 py-0.5 bg-green-50 text-green-700 text-xs font-medium rounded-full">
+                                          📄 {equipment.manuals.length}
+                                        </span>
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  {/* Add Button */}
+                                  <div className="flex items-center">
+                                    <button
+                                      onClick={() => handleAddEquipment(equipment._id)}
+                                      disabled={isAdding}
+                                      className="px-4 py-2 bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 disabled:opacity-50 flex items-center gap-2"
+                                    >
+                                      <svg
+                                        className="w-4 h-4"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                      >
+                                        <path
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                          strokeWidth={2}
+                                          d="M12 4v16m8-8H4"
+                                        />
+                                      </svg>
+                                      Ajouter
+                                    </button>
+                                  </div>
+                                </div>
+                              </motion.div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
@@ -566,7 +691,7 @@ export default function AddEquipmentModal({
                 {/* Results Count */}
                 <div className="p-4 border-t border-gray-200 bg-gray-50">
                   <p className="text-sm text-gray text-center">
-                    {filteredEquipments.length} équipement
+                    {filteredEquipments.length} élément
                     {filteredEquipments.length > 1 ? "s" : ""} trouvé
                     {filteredEquipments.length > 1 ? "s" : ""}
                     {activeFiltersCount > 0 && ` (${equipments.length} au total)`}

@@ -178,7 +178,7 @@ export default function EquipmentMaintenancesModal({
         <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0 bg-white">
           <div>
             <h2 className="text-2xl font-bold text-black">
-              Entretiens recommandés
+              Entretiens proposés
             </h2>
             <p className="text-gray">Pour: {equipment.name}</p>
           </div>
