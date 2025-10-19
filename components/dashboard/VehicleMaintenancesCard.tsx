@@ -469,8 +469,8 @@ export default function VehicleMaintenancesCard({
     const kmRemaining = calculateKmRemaining(schedule);
 
     // Prendre le critère le plus urgent entre jours et km
-    let worstDays = daysRemaining ?? Infinity;
-    let worstKm = kmRemaining ?? Infinity;
+    const worstDays = daysRemaining ?? Infinity;
+    const worstKm = kmRemaining ?? Infinity;
 
     // En retard
     if (worstDays < 0 || worstKm < 0) {

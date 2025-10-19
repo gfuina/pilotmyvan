@@ -10,19 +10,18 @@ import Maintenance from "@/models/Maintenance";
 import { sendEmail } from "@/lib/email";
 import { generateMaintenanceReminderEmail } from "@/lib/emailTemplates";
 
-// Sécurité: vérifier que la requête vient bien de Vercel Cron
 export async function GET(request: NextRequest) {
   try {
-    // Vérifier l'authentification du cron (utiliser CRON_SECRET en production)
+    // Vérification CRON_SECRET (sécurité Vercel Cron)
     const authHeader = request.headers.get("authorization");
     if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
     await connectDB();
+
+    // Forcer l'enregistrement des modèles Mongoose (nécessaire pour .populate() en serverless)
+    [VehicleEquipment, Equipment, Maintenance].forEach(m => m.modelName);
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
