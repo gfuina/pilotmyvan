@@ -84,15 +84,16 @@ export async function GET(request: NextRequest) {
               }
 
               // Préparer les données de l'email
-              const maintenance = schedule.isCustom
+              const maintenance: any = schedule.isCustom
                 ? schedule.customData
                 : schedule.maintenanceId;
 
               if (!maintenance) continue;
 
-              const equipmentName = schedule.vehicleEquipmentId?.isCustom
-                ? schedule.vehicleEquipmentId.customData?.name
-                : schedule.vehicleEquipmentId?.equipmentId?.name;
+              const vehicleEquipment: any = schedule.vehicleEquipmentId;
+              const equipmentName = vehicleEquipment?.isCustom
+                ? vehicleEquipment.customData?.name
+                : vehicleEquipment?.equipmentId?.name;
 
               const emailData = {
                 userName: user.name,
