@@ -56,7 +56,7 @@ export default function AddEquipmentModal({
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [vehicleBrands, setVehicleBrands] = useState<Array<{ _id: string; name: string }>>([]);
   const [equipmentBrands, setEquipmentBrands] = useState<Array<{ _id: string; name: string }>>([]);
-  const [categories, setCategories] = useState<Array<{ _id: string; name: string; level: number; children?: unknown[] }>>([]);
+  const [categories, setCategories] = useState<Array<{ _id: string; name: string; level: number; parentId?: string; children?: unknown[] }>>([]);
   
   // Add equipment state
   const [isAdding, setIsAdding] = useState(false);
@@ -103,14 +103,14 @@ export default function AddEquipmentModal({
 
       if (catRes.ok) {
         const data = await catRes.json();
-        // Flatten categories
-        type CategoryItem = { _id: string; name: string; level: number; children?: CategoryItem[] };
-        const flattenCategories = (cats: CategoryItem[], level = 1): CategoryItem[] => {
+        // Flatten categories with parent info
+        type CategoryItem = { _id: string; name: string; level: number; parentId?: string; children?: CategoryItem[] };
+        const flattenCategories = (cats: CategoryItem[], level = 1, parentId?: string): CategoryItem[] => {
           let result: CategoryItem[] = [];
           for (const cat of cats) {
-            result.push({ ...cat, level });
+            result.push({ ...cat, level, parentId });
             if (cat.children && cat.children.length > 0) {
-              result = result.concat(flattenCategories(cat.children, level + 1));
+              result = result.concat(flattenCategories(cat.children, level + 1, cat._id));
             }
           }
           return result;
@@ -151,13 +151,22 @@ export default function AddEquipmentModal({
       );
     }
 
-    // Category filter
+    // Category filter - recursively get ALL descendants
     if (selectedCategory) {
-      filtered = filtered.filter((eq) => eq.categoryId?._id === selectedCategory);
+      // Recursive function to get all descendant IDs
+      const getAllDescendants = (catId: string): string[] => {
+        const children = categories.filter(c => c.parentId === catId);
+        const childIds = children.map(c => c._id);
+        const grandChildIds = children.flatMap(c => getAllDescendants(c._id));
+        return [...childIds, ...grandChildIds];
+      };
+
+      const allIds = [selectedCategory, ...getAllDescendants(selectedCategory)];
+      filtered = filtered.filter((eq) => allIds.includes(eq.categoryId?._id));
     }
 
     return filtered;
-  }, [equipments, searchText, selectedVehicleBrand, selectedEquipmentBrand, selectedCategory]);
+  }, [equipments, searchText, selectedVehicleBrand, selectedEquipmentBrand, selectedCategory, categories]);
 
   const handleAddEquipment = async (equipmentId: string) => {
     setIsAdding(true);
@@ -230,6 +239,22 @@ export default function AddEquipmentModal({
     selectedEquipmentBrand,
     selectedCategory,
   ].filter(Boolean).length;
+
+  // Organize categories for better display - handle all levels
+  const organizedCategories = useMemo(() => {
+    const level1 = categories.filter(cat => cat.level === 1);
+    return level1.map(parent => {
+      const level2Children = categories.filter(cat => cat.parentId === parent._id);
+      const allChildren = level2Children.flatMap(l2 => {
+        const level3Children = categories.filter(cat => cat.parentId === l2._id);
+        return [l2, ...level3Children];
+      });
+      return {
+        ...parent,
+        subcategories: allChildren
+      };
+    });
+  }, [categories]);
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -393,12 +418,18 @@ export default function AddEquipmentModal({
                       className="px-4 py-2 rounded-xl border border-gray-200 focus:border-orange focus:outline-none text-sm"
                     >
                       <option value="">📂 Toutes catégories</option>
-                      {categories.map((cat) => (
-                        <option key={cat._id} value={cat._id}>
-                          {"  ".repeat(cat.level - 1)}
-                          {cat.level > 1 ? "└─ " : ""}
-                          {cat.name}
-                        </option>
+                      {organizedCategories.map((parent) => (
+                        <optgroup key={parent._id} label={parent.name}>
+                          <option value={parent._id}>
+                            Tous les {parent.name.toLowerCase()}
+                          </option>
+                          {parent.subcategories.map((sub) => (
+                            <option key={sub._id} value={sub._id}>
+                              {sub.level === 3 ? "    " : ""}
+                              {sub.name}
+                            </option>
+                          ))}
+                        </optgroup>
                       ))}
                     </select>
 
