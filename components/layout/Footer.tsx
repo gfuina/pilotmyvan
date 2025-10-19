@@ -33,7 +33,7 @@ export function Footer() {
               </span>
             </div>
             <p className="text-white/70 text-sm">
-              Gérez l&apos;entretien de votre van en toute simplicité. Ne manquez
+              Gérez l&'entretien de votre van en toute simplicité. Ne manquez
               plus jamais une révision importante.
             </p>
           </div>

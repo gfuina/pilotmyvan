@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { AnimatePresence } from "framer-motion";
 import EquipmentMaintenanceHistoryModal from "./EquipmentMaintenanceHistoryModal";
@@ -37,6 +37,19 @@ interface VehicleEquipment {
   createdAt: string;
 }
 
+interface MaintenanceSchedule {
+  _id: string;
+  nextDueDate?: string;
+  nextDueKilometers?: number;
+}
+
+interface EquipmentMaintenanceStatus {
+  equipmentId: string;
+  maintenancesCount: number;
+  urgencyState: "overdue" | "urgent" | "warning" | "ok" | "none";
+  nextDueText?: string;
+}
+
 interface VehicleEquipmentListProps {
   vehicleId: string;
   equipments: VehicleEquipment[];
@@ -54,6 +67,170 @@ export default function VehicleEquipmentList({
     id: string;
     name: string;
   } | null>(null);
+  const [maintenanceStatuses, setMaintenanceStatuses] = useState<Record<string, EquipmentMaintenanceStatus>>({});
+  const [vehicle, setVehicle] = useState<{ currentMileage: number } | null>(null);
+
+  // Récupérer les informations du véhicule
+  useEffect(() => {
+    const fetchVehicle = async () => {
+      try {
+        const response = await fetch(`/api/vehicles/${vehicleId}`);
+        if (response.ok) {
+          const data = await response.json();
+          setVehicle(data.vehicle);
+        }
+      } catch (error) {
+        console.error("Error fetching vehicle:", error);
+      }
+    };
+    fetchVehicle();
+  }, [vehicleId]);
+
+  // Récupérer les maintenances pour chaque équipement
+  useEffect(() => {
+    const fetchMaintenances = async () => {
+      try {
+        const response = await fetch(`/api/vehicles/${vehicleId}/maintenances`);
+        if (response.ok) {
+          const data = await response.json();
+          const maintenances = data.maintenances;
+
+          // Calculer le statut pour chaque équipement
+          const statuses: Record<string, EquipmentMaintenanceStatus> = {};
+
+          equipments.forEach((equipment) => {
+            const equipmentMaintenances = maintenances.filter(
+              (m: any) => m.vehicleEquipmentId?._id === equipment._id
+            );
+
+            if (equipmentMaintenances.length === 0) {
+              statuses[equipment._id] = {
+                equipmentId: equipment._id,
+                maintenancesCount: 0,
+                urgencyState: "none",
+              };
+              return;
+            }
+
+            // Trouver la maintenance la plus urgente
+            let mostUrgent: any = null;
+            let highestUrgency = -1;
+
+            equipmentMaintenances.forEach((m: any) => {
+              const urgency = calculateUrgency(m);
+              if (urgency > highestUrgency) {
+                highestUrgency = urgency;
+                mostUrgent = m;
+              }
+            });
+
+            const urgencyState = getUrgencyState(mostUrgent);
+            const nextDueText = formatNextDue(mostUrgent);
+
+            statuses[equipment._id] = {
+              equipmentId: equipment._id,
+              maintenancesCount: equipmentMaintenances.length,
+              urgencyState,
+              nextDueText,
+            };
+          });
+
+          setMaintenanceStatuses(statuses);
+        }
+      } catch (error) {
+        console.error("Error fetching maintenances:", error);
+      }
+    };
+
+    if (equipments.length > 0) {
+      fetchMaintenances();
+    }
+  }, [vehicleId, equipments]);
+
+  const calculateDaysRemaining = (schedule: MaintenanceSchedule): number | null => {
+    if (!schedule.nextDueDate) return null;
+    const now = new Date().getTime();
+    const dueDate = new Date(schedule.nextDueDate).getTime();
+    return Math.ceil((dueDate - now) / (1000 * 60 * 60 * 24));
+  };
+
+  const calculateKmRemaining = (schedule: MaintenanceSchedule): number | null => {
+    if (!schedule.nextDueKilometers || !vehicle?.currentMileage) return null;
+    return schedule.nextDueKilometers - vehicle.currentMileage;
+  };
+
+  const calculateUrgency = (schedule: any): number => {
+    const daysRemaining = calculateDaysRemaining(schedule);
+    const kmRemaining = calculateKmRemaining(schedule);
+
+    let urgency = 0;
+
+    if (daysRemaining !== null) {
+      if (daysRemaining < 0) urgency += 50;
+      else if (daysRemaining <= 7) urgency += 45;
+      else if (daysRemaining <= 30) urgency += 35;
+      else if (daysRemaining <= 90) urgency += 20;
+      else urgency += 10;
+    }
+
+    if (kmRemaining !== null) {
+      if (kmRemaining < 0) urgency += 50;
+      else if (kmRemaining <= 500) urgency += 45;
+      else if (kmRemaining <= 2000) urgency += 35;
+      else if (kmRemaining <= 5000) urgency += 20;
+      else urgency += 10;
+    }
+
+    return Math.min(urgency, 100);
+  };
+
+  const getUrgencyState = (schedule: any): "overdue" | "urgent" | "warning" | "ok" => {
+    const daysRemaining = calculateDaysRemaining(schedule);
+    const kmRemaining = calculateKmRemaining(schedule);
+
+    if ((daysRemaining !== null && daysRemaining < 0) || (kmRemaining !== null && kmRemaining < 0)) {
+      return "overdue";
+    }
+
+    if ((daysRemaining !== null && daysRemaining <= 7) || (kmRemaining !== null && kmRemaining <= 500)) {
+      return "urgent";
+    }
+
+    if ((daysRemaining !== null && daysRemaining <= 30) || (kmRemaining !== null && kmRemaining <= 2000)) {
+      return "warning";
+    }
+
+    return "ok";
+  };
+
+  const formatNextDue = (schedule: any): string => {
+    const daysRemaining = calculateDaysRemaining(schedule);
+    const kmRemaining = calculateKmRemaining(schedule);
+
+    const parts = [];
+
+    if (daysRemaining !== null) {
+      if (daysRemaining < 0) {
+        parts.push(`${Math.abs(daysRemaining)}j retard`);
+      } else if (daysRemaining === 0) {
+        parts.push("Aujourd'hui");
+      } else if (daysRemaining <= 7) {
+        parts.push(`${daysRemaining}j`);
+      } else if (daysRemaining <= 30) {
+        parts.push(`${Math.floor(daysRemaining / 7)}sem`);
+      }
+    }
+
+    if (kmRemaining !== null) {
+      if (kmRemaining < 0) {
+        parts.push(`-${Math.abs(kmRemaining)}km`);
+      } else if (kmRemaining <= 2000) {
+        parts.push(`${kmRemaining}km`);
+      }
+    }
+
+    return parts.length > 0 ? parts.join(" • ") : "OK";
+  };
 
   const handleDelete = async (equipmentId: string) => {
     if (!confirm("Êtes-vous sûr de vouloir retirer cet équipement ?")) {
@@ -89,18 +266,68 @@ export default function VehicleEquipmentList({
     return null;
   }
 
+  // Récupérer les couleurs d'urgence
+  const getUrgencyColors = (state: string) => {
+    switch (state) {
+      case "overdue":
+        return {
+          bg: "bg-red-100",
+          text: "text-red-700",
+          border: "border-red-300",
+          dot: "bg-red-600",
+          label: "EN RETARD",
+          animate: true,
+        };
+      case "urgent":
+        return {
+          bg: "bg-orange-100",
+          text: "text-orange-700",
+          border: "border-orange-300",
+          dot: "bg-orange-600",
+          label: "URGENT",
+          animate: true,
+        };
+      case "warning":
+        return {
+          bg: "bg-yellow-100",
+          text: "text-yellow-700",
+          border: "border-yellow-300",
+          dot: "bg-yellow-600",
+          label: "BIENTÔT",
+          animate: false,
+        };
+      case "ok":
+        return {
+          bg: "bg-green-100",
+          text: "text-green-700",
+          border: "border-green-300",
+          dot: "bg-green-600",
+          label: "OK",
+          animate: false,
+        };
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="space-y-3 sm:space-y-4">
       {equipments.map((item) => {
         const equipment = item.isCustom ? item.customData : item.equipmentId;
         const isExpanded = expandedId === item._id;
+        const maintenanceStatus = maintenanceStatuses[item._id];
+        const urgencyColors = maintenanceStatus ? getUrgencyColors(maintenanceStatus.urgencyState) : null;
 
         if (!equipment) return null;
 
         return (
           <div
             key={item._id}
-            className="bg-white rounded-xl sm:rounded-2xl border-2 border-gray-200 overflow-hidden hover:border-orange transition-colors"
+            className={`bg-white rounded-xl sm:rounded-2xl border-2 overflow-hidden transition-all ${
+              urgencyColors && maintenanceStatus.urgencyState !== "none" && maintenanceStatus.urgencyState !== "ok"
+                ? urgencyColors.border
+                : "border-gray-200 hover:border-orange"
+            }`}
           >
             {/* Equipment Header */}
             <div className="p-3 sm:p-4">
@@ -119,9 +346,22 @@ export default function VehicleEquipmentList({
                       🔧
                     </div>
                   )}
+                  
+                  {/* Badge Custom */}
                   {item.isCustom && (
                     <div className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1 px-1 sm:px-1.5 py-0.5 bg-blue-600 text-white text-[10px] sm:text-xs font-bold rounded">
                       Custom
+                    </div>
+                  )}
+                  
+                  {/* Badge Urgence Maintenance */}
+                  {maintenanceStatus && urgencyColors && (maintenanceStatus.urgencyState === "overdue" || maintenanceStatus.urgencyState === "urgent") && (
+                    <div className={`absolute bottom-0.5 left-0.5 sm:bottom-1 sm:left-1 w-6 h-6 sm:w-7 sm:h-7 ${urgencyColors.bg} border-2 ${urgencyColors.border} rounded-full flex items-center justify-center shadow-lg`}>
+                      {/* Animation ping pour overdue */}
+                      {maintenanceStatus.urgencyState === "overdue" && (
+                        <span className="absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75 animate-ping" />
+                      )}
+                      <div className={`relative w-3 h-3 sm:w-4 sm:h-4 rounded-full ${urgencyColors.dot} ${urgencyColors.animate ? "animate-pulse" : ""}`} />
                     </div>
                   )}
                 </div>
@@ -148,6 +388,23 @@ export default function VehicleEquipmentList({
                     </p>
                   )}
                   <div className="flex flex-wrap gap-1 sm:gap-2">
+                    {/* Badge de maintenance urgent */}
+                    {maintenanceStatus && urgencyColors && maintenanceStatus.urgencyState !== "none" && (
+                      <span
+                        className={`px-2 sm:px-2.5 py-0.5 sm:py-1 ${urgencyColors.bg} ${urgencyColors.text} border ${urgencyColors.border} text-[10px] sm:text-xs font-bold rounded-full flex items-center gap-1.5 ${urgencyColors.animate ? "animate-pulse" : ""}`}
+                      >
+                        <span className={`w-2 h-2 rounded-full ${urgencyColors.dot}`} />
+                        <span className="hidden sm:inline">{urgencyColors.label}</span>
+                        {maintenanceStatus.nextDueText && (
+                          <>
+                            <span className="hidden sm:inline">•</span>
+                            <span>{maintenanceStatus.nextDueText}</span>
+                          </>
+                        )}
+                        <span className="ml-0.5">({maintenanceStatus.maintenancesCount})</span>
+                      </span>
+                    )}
+                    
                     {!item.isCustom &&
                       item.equipmentId?.equipmentBrands.slice(0, 2).map((brand, idx) => (
                         <span

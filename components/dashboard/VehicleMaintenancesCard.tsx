@@ -53,8 +53,8 @@ interface MaintenanceSchedule {
   lastCompletedAt?: string;
   lastCompletedMileage?: number;
   vehicleEquipmentId?: {
-    equipmentId?: { name?: string };
-    customData?: { name?: string };
+    equipmentId?: { name?: string; photos?: string[] };
+    customData?: { name?: string; photos?: string[] };
   };
   [key: string]: unknown;
 }
@@ -79,18 +79,73 @@ interface Recommendation {
   }>;
 }
 
-const PRIORITY_COLORS: Record<string, string> = {
-  critical: "bg-red-100 text-red-700 border-red-300",
-  important: "bg-orange-100 text-orange-700 border-orange-300",
-  recommended: "bg-yellow-100 text-yellow-700 border-yellow-300",
-  optional: "bg-gray-100 text-gray-700 border-gray-300",
+const PRIORITY_ORDER: Record<string, number> = {
+  critical: 4,
+  important: 3,
+  recommended: 2,
+  optional: 1,
 };
 
-const PRIORITY_ICONS: Record<string, string> = {
-  critical: "🔴",
-  important: "🟠",
-  recommended: "🟡",
-  optional: "⚪",
+const PRIORITY_COLORS: Record<string, { bg: string; text: string; border: string; gradient: string }> = {
+  critical: {
+    bg: "bg-red-50",
+    text: "text-red-700",
+    border: "border-red-300",
+    gradient: "from-red-500 to-red-600",
+  },
+  important: {
+    bg: "bg-orange-50",
+    text: "text-orange-700",
+    border: "border-orange-300",
+    gradient: "from-orange-500 to-orange-600",
+  },
+  recommended: {
+    bg: "bg-yellow-50",
+    text: "text-yellow-700",
+    border: "border-yellow-300",
+    gradient: "from-yellow-500 to-yellow-600",
+  },
+  optional: {
+    bg: "bg-gray-50",
+    text: "text-gray-700",
+    border: "border-gray-300",
+    gradient: "from-gray-500 to-gray-600",
+  },
+};
+
+// Couleurs basées sur l'urgence de l'échéance
+const URGENCY_COLORS: Record<string, { bg: string; text: string; border: string; shadow: string }> = {
+  overdue: {
+    bg: "bg-red-50",
+    text: "text-red-900",
+    border: "border-red-400",
+    shadow: "shadow-red-200",
+  },
+  urgent: {
+    bg: "bg-orange-50",
+    text: "text-orange-900",
+    border: "border-orange-400",
+    shadow: "shadow-orange-200",
+  },
+  warning: {
+    bg: "bg-yellow-50",
+    text: "text-yellow-900",
+    border: "border-yellow-300",
+    shadow: "shadow-yellow-200",
+  },
+  ok: {
+    bg: "bg-blue-50",
+    text: "text-blue-900",
+    border: "border-blue-300",
+    shadow: "shadow-blue-200",
+  },
+};
+
+const PRIORITY_LABELS: Record<string, string> = {
+  critical: "Critique",
+  important: "Important",
+  recommended: "Recommandé",
+  optional: "Optionnel",
 };
 
 const STATUS_COLORS: Record<string, string> = {
@@ -244,6 +299,16 @@ export default function VehicleMaintenancesCard({
     return "Équipement";
   };
 
+  const getEquipmentPhoto = (schedule: MaintenanceSchedule): string | null => {
+    if (schedule.vehicleEquipmentId?.equipmentId?.photos?.[0]) {
+      return schedule.vehicleEquipmentId.equipmentId.photos[0];
+    }
+    if (schedule.vehicleEquipmentId?.customData?.photos?.[0]) {
+      return schedule.vehicleEquipmentId.customData.photos[0];
+    }
+    return null;
+  };
+
   const handleMaintenanceSuccess = () => {
     setSelectedEquipmentId(null);
     setShowEquipmentSelector(false);
@@ -286,40 +351,87 @@ export default function VehicleMaintenancesCard({
     return schedule.nextDueKilometers - vehicle.currentMileage;
   };
 
+  // Calcul du pourcentage d'urgence (0-100, 100 = le plus urgent)
+  const calculateUrgencyPercentage = (schedule: MaintenanceSchedule): number => {
+    const daysRemaining = calculateDaysRemaining(schedule);
+    const kmRemaining = calculateKmRemaining(schedule);
+
+    let urgency = 0;
+
+    // Urgence basée sur le temps (sur 50%)
+    if (daysRemaining !== null) {
+      if (daysRemaining < 0) urgency += 50;
+      else if (daysRemaining <= 7) urgency += 45;
+      else if (daysRemaining <= 30) urgency += 35;
+      else if (daysRemaining <= 90) urgency += 20;
+      else urgency += 10;
+    }
+
+    // Urgence basée sur le kilométrage (sur 50%)
+    if (kmRemaining !== null) {
+      if (kmRemaining < 0) urgency += 50;
+      else if (kmRemaining <= 500) urgency += 45;
+      else if (kmRemaining <= 2000) urgency += 35;
+      else if (kmRemaining <= 5000) urgency += 20;
+      else urgency += 10;
+    }
+
+    return Math.min(urgency, 100);
+  };
+
+  // Détermine l'état d'urgence pour les couleurs de la card
+  const getUrgencyState = (schedule: MaintenanceSchedule): string => {
+    const daysRemaining = calculateDaysRemaining(schedule);
+    const kmRemaining = calculateKmRemaining(schedule);
+
+    // En retard sur au moins un critère
+    if ((daysRemaining !== null && daysRemaining < 0) || (kmRemaining !== null && kmRemaining < 0)) {
+      return "overdue";
+    }
+
+    // Urgent : moins de 7 jours OU moins de 500km
+    if ((daysRemaining !== null && daysRemaining <= 7) || (kmRemaining !== null && kmRemaining <= 500)) {
+      return "urgent";
+    }
+
+    // Attention : moins de 30 jours OU moins de 2000km
+    if ((daysRemaining !== null && daysRemaining <= 30) || (kmRemaining !== null && kmRemaining <= 2000)) {
+      return "warning";
+    }
+
+    // OK : plus de 30 jours et plus de 2000km
+    return "ok";
+  };
+
   // Trier les maintenances par urgence (le plus proche en premier)
   const getSortedMaintenances = () => {
     return [...maintenances].sort((a, b) => {
-      const aDays = calculateDaysRemaining(a);
-      const aKm = calculateKmRemaining(a);
-      const bDays = calculateDaysRemaining(b);
-      const bKm = calculateKmRemaining(b);
+      const urgencyA = calculateUrgencyPercentage(a);
+      const urgencyB = calculateUrgencyPercentage(b);
 
-      // Si les deux ont une date, comparer par date
-      if (aDays !== null && bDays !== null) {
-        if (aDays !== bDays) return aDays - bDays;
+      // D'abord par urgence (les plus urgents en premier)
+      if (urgencyA !== urgencyB) {
+        return urgencyB - urgencyA;
       }
 
-      // Sinon, comparer par kilométrage
-      if (aKm !== null && bKm !== null) {
-        return aKm - bKm;
-      }
-
-      // Si un a une date et pas l'autre, celui avec date en premier
-      if (aDays !== null && bDays === null) return -1;
-      if (aDays === null && bDays !== null) return 1;
-
-      return 0;
+      // En cas d'égalité, par priorité
+      const maintenance1 = a.isCustom ? a.customData : a.maintenanceId;
+      const maintenance2 = b.isCustom ? b.customData : b.maintenanceId;
+      const priorityA = PRIORITY_ORDER[maintenance1?.priority || "optional"];
+      const priorityB = PRIORITY_ORDER[maintenance2?.priority || "optional"];
+      return priorityB - priorityA;
     });
   };
 
   const formatDaysRemaining = (days: number): string => {
     if (days < 0) return `En retard de ${Math.abs(days)}j`;
-    if (days === 0) return "Aujourd'hui !";
+    if (days === 0) return "Aujourd'hui";
     if (days === 1) return "Demain";
     if (days <= 7) return `Dans ${days}j`;
-    if (days <= 30) return `Dans ${Math.floor(days / 7)} semaines`;
+    if (days <= 30) return `Dans ${Math.floor(days / 7)} sem`;
+    if (days <= 90) return `Dans ${Math.floor(days / 30)} mois`;
     if (days <= 365) return `Dans ${Math.floor(days / 30)} mois`;
-    return `Dans ${Math.floor(days / 365)} an${days >= 730 ? "s" : ""}`;
+    return `Dans ${Math.floor(days / 365)} an`;
   };
 
   const formatKmRemaining = (km: number): string => {
@@ -445,154 +557,251 @@ export default function VehicleMaintenancesCard({
               </p>
             </div>
           ) : (
-            <div className="space-y-3 mb-8">
-              {getSortedMaintenances().map((schedule) => {
-            const maintenance = schedule.isCustom
-              ? schedule.customData
-              : schedule.maintenanceId;
-            const isExpanded = expandedId === schedule._id;
-            const daysRemaining = calculateDaysRemaining(schedule);
-            const kmRemaining = calculateKmRemaining(schedule);
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-8">
+              {getSortedMaintenances().map((schedule, index) => {
+                const maintenance = schedule.isCustom
+                  ? schedule.customData
+                  : schedule.maintenanceId;
+                const daysRemaining = calculateDaysRemaining(schedule);
+                const kmRemaining = calculateKmRemaining(schedule);
+                const urgencyPercentage = calculateUrgencyPercentage(schedule);
+                const urgencyState = getUrgencyState(schedule);
+                const urgencyColors = URGENCY_COLORS[urgencyState];
+                const priorityColors = PRIORITY_COLORS[maintenance?.priority || "optional"];
 
-            if (!maintenance) return null;
+                if (!maintenance) return null;
 
-            return (
-              <div
-                key={schedule._id}
-                className="border-2 border-gray-200 rounded-2xl overflow-hidden bg-white hover:shadow-md transition-shadow"
-              >
-                <div className="p-3 sm:p-4">
-                  <div className="flex items-start gap-2 sm:gap-3 mb-3">
-                    {/* Priority Icon */}
-                    <div
-                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center text-lg sm:text-xl border-2 flex-shrink-0 ${
-                        PRIORITY_COLORS[maintenance.priority]
-                      }`}
-                    >
-                      {PRIORITY_ICONS[maintenance.priority]}
-                    </div>
+                return (
+                  <motion.div
+                    key={schedule._id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: index * 0.05 }}
+                    className={`border-3 ${urgencyColors.border} rounded-2xl sm:rounded-3xl overflow-hidden bg-gradient-to-br ${urgencyColors.bg} hover:shadow-xl hover:${urgencyColors.shadow} transition-all duration-300`}
+                  >
+                    <div className="p-3 sm:p-4 md:p-5">
+                      {/* En-tête avec priorité et équipement */}
+                      <div className="flex items-start gap-2 sm:gap-3 mb-3">
+                        {/* Equipment Photo */}
+                        {getEquipmentPhoto(schedule) ? (
+                          <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-xl overflow-hidden flex-shrink-0 bg-gray-100">
+                            <Image
+                              src={getEquipmentPhoto(schedule)!}
+                              alt={getEquipmentName(schedule) || "Équipement"}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        ) : (
+                          <div
+                            className={`relative w-14 h-14 sm:w-16 sm:h-16 rounded-lg sm:rounded-xl flex items-center justify-center border-2 ${urgencyColors.border} bg-white flex-shrink-0`}
+                          >
+                            {/* Cercle d'urgence avec animation ping pour overdue */}
+                            {urgencyState === "overdue" && (
+                              <span className="absolute inline-flex h-full w-full rounded-lg bg-red-400 opacity-75 animate-ping" />
+                            )}
+                            
+                            {/* Cercle principal */}
+                            <div className={`relative w-6 h-6 sm:w-8 sm:h-8 rounded-full ${urgencyState === "overdue" || urgencyState === "urgent" ? "animate-pulse" : ""}`}>
+                              <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${urgencyState === "overdue" ? "from-red-500 to-red-600" : urgencyState === "urgent" ? "from-orange-500 to-orange-600" : urgencyState === "warning" ? "from-yellow-500 to-yellow-600" : "from-green-500 to-green-600"} shadow-lg`} />
+                            </div>
+                          </div>
+                        )}
 
-                    {/* Info */}
-                    <div className="flex-1 min-w-0">
-                      <div className="mb-2">
-                        <h4 className="font-bold text-black text-base sm:text-lg leading-tight">
-                          {maintenance.name}
-                        </h4>
-                        <p className="text-xs text-gray-500 mt-0.5">
-                          {getEquipmentName(schedule)}
-                        </p>
+                        {/* Info - flex-1 occupe l'espace restant */}
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-start justify-between gap-2 mb-2">
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-center gap-1.5 mb-2 flex-wrap">
+                                <span
+                                  className={`inline-flex items-center gap-1.5 px-2.5 py-1 ${urgencyColors.bg} ${urgencyColors.text} text-[10px] sm:text-xs font-bold rounded-full border-2 ${urgencyColors.border} whitespace-nowrap ${urgencyState === "overdue" || urgencyState === "urgent" ? "animate-pulse" : ""}`}
+                                >
+                                  <span className={`w-2 h-2 rounded-full ${urgencyState === "overdue" ? "bg-red-600" : urgencyState === "urgent" ? "bg-orange-600" : urgencyState === "warning" ? "bg-yellow-600" : "bg-green-600"}`} />
+                                  {urgencyState === "overdue" ? "EN RETARD" : urgencyState === "urgent" ? "URGENT" : urgencyState === "warning" ? "BIENTÔT" : "OK"}
+                                </span>
+                                <span
+                                  className={`inline-flex items-center gap-1 px-2 py-0.5 ${priorityColors.bg} ${priorityColors.text} text-[9px] sm:text-[10px] font-semibold rounded-full border ${priorityColors.border} whitespace-nowrap`}
+                                >
+                                  <span className={`w-1.5 h-1.5 rounded-full ${maintenance.priority === "critical" ? "bg-red-600" : maintenance.priority === "important" ? "bg-orange-600" : maintenance.priority === "recommended" ? "bg-yellow-600" : "bg-gray-600"}`} />
+                                  {PRIORITY_LABELS[maintenance.priority]}
+                                </span>
+                              </div>
+                              
+                              <h3 className={`font-bold text-sm sm:text-base md:text-lg leading-tight ${urgencyColors.text}`}>
+                                {maintenance.name}
+                              </h3>
+                            </div>
+                            
+                            {/* Urgency score */}
+                            <div className="flex flex-col items-center gap-0.5 flex-shrink-0">
+                              <div className="relative w-12 h-12 sm:w-14 sm:h-14">
+                                <svg className="w-12 h-12 sm:w-14 sm:h-14 transform -rotate-90" viewBox="0 0 48 48">
+                                  <circle
+                                    cx="24"
+                                    cy="24"
+                                    r="20"
+                                    stroke="currentColor"
+                                    strokeWidth="4"
+                                    fill="none"
+                                    className="text-gray-200"
+                                  />
+                                  <circle
+                                    cx="24"
+                                    cy="24"
+                                    r="20"
+                                    stroke="currentColor"
+                                    strokeWidth="4"
+                                    fill="none"
+                                    strokeDasharray={`${2 * Math.PI * 20}`}
+                                    strokeDashoffset={`${2 * Math.PI * 20 * (1 - urgencyPercentage / 100)}`}
+                                    className={`${
+                                      urgencyPercentage >= 70
+                                        ? "text-red-500"
+                                        : urgencyPercentage >= 40
+                                        ? "text-orange-500"
+                                        : "text-green-500"
+                                    }`}
+                                    strokeLinecap="round"
+                                  />
+                                </svg>
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                  <span className="text-[10px] sm:text-xs font-bold text-black">
+                                    {urgencyPercentage}%
+                                  </span>
+                                </div>
+                              </div>
+                              <span className="text-[9px] sm:text-xs text-gray-500 font-medium text-center">Urgence</span>
+                            </div>
+                          </div>
+                          
+                          {/* Equipment */}
+                          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs sm:text-sm text-gray-600 mt-1.5">
+                            <span className="flex items-center gap-1.5 truncate">
+                              <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </svg>
+                              <span className="truncate">{getEquipmentName(schedule)}</span>
+                            </span>
+                          </div>
+                        </div>
                       </div>
 
-                      {/* Time/Distance remaining - RESPONSIVE */}
-                      <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                      {/* Échéances - grille responsive */}
+                      <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-1.5 sm:gap-2 mb-3">
                         {daysRemaining !== null && (
-                          <div className={`px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm ${
-                            daysRemaining < 0
-                              ? "bg-red-100 text-red-700"
-                              : daysRemaining <= 7
-                              ? "bg-orange-100 text-orange-700"
-                              : "bg-blue-100 text-blue-700"
-                          }`}>
-                            <span className="hidden sm:inline">📅 </span>
+                          <div
+                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-semibold text-xs sm:text-sm ${
+                              daysRemaining < 0
+                                ? "bg-red-50 text-red-700 border border-red-200"
+                                : daysRemaining <= 7
+                                ? "bg-orange-50 text-orange-700 border border-orange-200"
+                                : daysRemaining <= 30
+                                ? "bg-yellow-50 text-yellow-700 border border-yellow-200"
+                                : "bg-blue-50 text-blue-700 border border-blue-200"
+                            }`}
+                          >
+                            <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
                             {formatDaysRemaining(daysRemaining)}
                           </div>
                         )}
                         {kmRemaining !== null && (
-                          <div className={`px-2 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl font-bold text-xs sm:text-sm ${
-                            kmRemaining < 0
-                              ? "bg-red-100 text-red-700"
-                              : kmRemaining <= 1000
-                              ? "bg-orange-100 text-orange-700"
-                              : "bg-blue-100 text-blue-700"
-                          }`}>
-                            <span className="hidden sm:inline">🛣️ </span>
+                          <div
+                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-semibold text-xs sm:text-sm ${
+                              kmRemaining < 0
+                                ? "bg-red-50 text-red-700 border border-red-200"
+                                : kmRemaining <= 500
+                                ? "bg-orange-50 text-orange-700 border border-orange-200"
+                                : kmRemaining <= 2000
+                                ? "bg-yellow-50 text-yellow-700 border border-yellow-200"
+                                : "bg-blue-50 text-blue-700 border border-blue-200"
+                            }`}
+                          >
+                            <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                            </svg>
                             {formatKmRemaining(kmRemaining)}
+                          </div>
+                        )}
+                        {maintenance.estimatedDuration && (
+                          <div className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gray-50 text-gray-700 border border-gray-200 rounded-xl text-xs sm:text-sm font-semibold col-span-2 sm:col-span-1">
+                            <svg className="w-3.5 h-3.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            {maintenance.estimatedDuration}min
                           </div>
                         )}
                       </div>
 
-                      {/* Recurrence info - RESPONSIVE */}
-                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
-                        <span className="px-2 py-1 bg-purple-50 text-purple-700 text-xs font-medium rounded-lg">
-                          <span className="hidden sm:inline">Tous les </span>
-                          {formatRecurrence(maintenance.recurrence)}
-                        </span>
-                        {maintenance.estimatedDuration && (
-                          <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs font-medium rounded-lg">
-                            ⏱️ {maintenance.estimatedDuration}min
+                      {/* Actions - Design amélioré */}
+                      <div className="space-y-2">
+                        {/* Bouton principal - Action complète */}
+                        <button
+                          onClick={() =>
+                            setCompleteMaintenanceData({
+                              scheduleId: schedule._id,
+                              name: maintenance.name,
+                            })
+                          }
+                          className="w-full group relative overflow-hidden px-4 py-3 bg-gradient-to-r from-orange to-orange-light hover:from-orange-dark hover:to-orange text-white font-semibold rounded-xl shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2.5"
+                        >
+                          <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                          <svg className="w-4 h-4 sm:w-5 sm:h-5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span className="relative z-10 text-sm sm:text-base">
+                            {!schedule.lastCompletedAt ? "Définir dernière exécution" : "Marquer comme fait"}
                           </span>
-                        )}
-                        {schedule.lastCompletedAt && (
-                          <span className="px-2 py-1 bg-green-50 text-green-700 text-xs font-medium rounded-lg">
-                            ✓ <span className="hidden sm:inline">Dernier: </span>
-                            {new Date(schedule.lastCompletedAt).toLocaleDateString("fr-FR", {
-                              day: "2-digit",
-                              month: "2-digit"
-                            })}
-                          </span>
-                        )}
+                        </button>
+
+                        {/* Actions secondaires - Design subtil */}
+                        <div className="flex gap-2">
+                          {/* Instructions */}
+                          {maintenance.instructions && typeof maintenance.instructions === 'string' && (
+                            <button
+                              onClick={() =>
+                                setInstructionsData({
+                                  name: maintenance.name,
+                                  instructions: maintenance.instructions as string,
+                                  description: maintenance.description as string | undefined,
+                                  estimatedDuration: maintenance.estimatedDuration,
+                                  difficulty: maintenance.difficulty as string | undefined,
+                                  conditions: maintenance.conditions as string[] | undefined,
+                                })
+                              }
+                              className="flex-1 group relative overflow-hidden px-3 py-2.5 bg-white border-2 border-indigo-200 hover:border-indigo-400 text-indigo-600 hover:text-indigo-700 font-medium rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
+                            >
+                              <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                              </svg>
+                              <span className="text-xs sm:text-sm">Instructions</span>
+                            </button>
+                          )}
+                          
+                          {/* Supprimer */}
+                          <button
+                            onClick={() =>
+                              setDeleteMaintenanceData({
+                                scheduleId: schedule._id,
+                                name: maintenance.name,
+                              })
+                            }
+                            className="group relative overflow-hidden px-3 py-2.5 bg-white border-2 border-gray-200 hover:border-red-300 hover:bg-red-50 text-gray-500 hover:text-red-600 font-medium rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
+                            title="Supprimer l'entretien"
+                          >
+                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            <span className="text-xs sm:text-sm hidden sm:inline">Supprimer</span>
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-
-                  {/* Action buttons - RESPONSIVE */}
-                  <div className="flex flex-col sm:flex-row gap-2 pt-3 border-t border-gray-100">
-                    <button
-                      onClick={() =>
-                        setCompleteMaintenanceData({
-                          scheduleId: schedule._id,
-                          name: maintenance.name,
-                        })
-                      }
-                      className="flex-1 px-3 sm:px-4 py-2 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs sm:text-sm font-semibold rounded-xl hover:shadow-lg transition-all"
-                    >
-                      {!schedule.lastCompletedAt ? (
-                        <>
-                          <span className="sm:hidden">📝 Définir</span>
-                          <span className="hidden sm:inline">📝 Définir la dernière exécution</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="sm:hidden">✓ Fait</span>
-                          <span className="hidden sm:inline">✓ Marquer comme fait</span>
-                        </>
-                      )}
-                    </button>
-                    {maintenance.instructions && typeof maintenance.instructions === 'string' && (
-                      <button
-                        onClick={() =>
-                          setInstructionsData({
-                            name: maintenance.name,
-                            instructions: maintenance.instructions as string,
-                            description: maintenance.description as string | undefined,
-                            estimatedDuration: maintenance.estimatedDuration,
-                            difficulty: maintenance.difficulty as string | undefined,
-                            conditions: maintenance.conditions as string[] | undefined,
-                          })
-                        }
-                        className="flex-1 px-3 sm:px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-xs sm:text-sm font-semibold rounded-xl transition-all"
-                      >
-                        <span className="sm:hidden">📋</span>
-                        <span className="hidden sm:inline">📋 Instructions</span>
-                      </button>
-                    )}
-                    <button
-                      onClick={() =>
-                        setDeleteMaintenanceData({
-                          scheduleId: schedule._id,
-                          name: maintenance.name,
-                        })
-                      }
-                      className="flex-1 sm:w-auto px-3 sm:px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 text-xs sm:text-sm font-semibold rounded-xl transition-all"
-                    >
-                      <span className="sm:hidden">🗑️</span>
-                      <span className="hidden sm:inline">🗑️ Supprimer</span>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+                  </motion.div>
+                );
+              })}
             </div>
           )}
 
@@ -656,11 +865,11 @@ export default function VehicleMaintenancesCard({
                         >
                           <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                             <div
-                              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center text-base sm:text-lg border flex-shrink-0 ${
-                                PRIORITY_COLORS[maintenance.priority]
-                              }`}
+                              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center border flex-shrink-0 ${
+                                PRIORITY_COLORS[maintenance.priority].bg
+                              } ${PRIORITY_COLORS[maintenance.priority].text} ${PRIORITY_COLORS[maintenance.priority].border}`}
                             >
-                              {PRIORITY_ICONS[maintenance.priority]}
+                              <div className={`w-3 h-3 sm:w-4 sm:h-4 rounded-full ${maintenance.priority === "critical" ? "bg-red-600" : maintenance.priority === "important" ? "bg-orange-600" : maintenance.priority === "recommended" ? "bg-yellow-600" : "bg-gray-600"}`} />
                             </div>
 
                             <div className="flex-1 min-w-0">

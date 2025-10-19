@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "PilotMyVan - Gérez l&apos;entretien de votre van",
+    default: "PilotMyVan - Gérez l'entretien de votre van",
     template: "%s | PilotMyVan",
   },
   description:

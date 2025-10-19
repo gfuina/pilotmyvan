@@ -126,7 +126,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
                 Mes véhicules 🚐
               </h1>
               <p className="text-gray text-lg">
-                Gérez l&apos;entretien de vos maisons roulantes
+                Gérez l'entretien de vos maisons roulantes
               </p>
             </div>
             <button
