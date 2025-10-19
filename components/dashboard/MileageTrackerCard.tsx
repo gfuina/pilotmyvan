@@ -158,10 +158,8 @@ export default function MileageTrackerCard({
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-2xl shadow p-5">
-        <div className="flex justify-center items-center py-8">
-          <div className="w-8 h-8 border-4 border-orange border-t-transparent rounded-full animate-spin" />
-        </div>
+      <div className="bg-white rounded-3xl shadow-lg p-6 h-full flex items-center justify-center">
+        <div className="w-8 h-8 border-4 border-orange border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -171,7 +169,7 @@ export default function MileageTrackerCard({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="bg-white rounded-2xl shadow p-5"
+      className="bg-white rounded-3xl shadow-lg p-6 h-full flex flex-col"
     >
       {/* Header */}
       <div className="flex items-center gap-3 mb-5">

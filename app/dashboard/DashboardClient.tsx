@@ -8,6 +8,9 @@ import VehicleCard from "@/components/dashboard/VehicleCard";
 import AddVehicleModal from "@/components/dashboard/AddVehicleModal";
 import NotificationPreferencesCard from "@/components/dashboard/NotificationPreferencesCard";
 import MaintenancesOverviewCard from "@/components/dashboard/MaintenancesOverviewCard";
+import QuickActionsCard from "@/components/dashboard/QuickActionsCard";
+import QuickMileageUpdateModal from "@/components/dashboard/QuickMileageUpdateModal";
+import QuickFuelRecordModal from "@/components/dashboard/QuickFuelRecordModal";
 
 interface Vehicle {
   _id: string;
@@ -33,6 +36,9 @@ export default function DashboardClient({ user }: DashboardClientProps) {
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isMileageModalOpen, setIsMileageModalOpen] = useState(false);
+  const [isFuelModalOpen, setIsFuelModalOpen] = useState(false);
+  const [selectedVehicleId, setSelectedVehicleId] = useState<string>("");
   const [error, setError] = useState("");
 
   const fetchVehicles = async () => {
@@ -66,6 +72,20 @@ export default function DashboardClient({ user }: DashboardClientProps) {
 
   const handleSignOut = async () => {
     await signOut({ callbackUrl: "/" });
+  };
+
+  const handleMileageUpdateClick = (vehicleId: string) => {
+    setSelectedVehicleId(vehicleId);
+    setIsMileageModalOpen(true);
+  };
+
+  const handleFuelRecordClick = (vehicleId: string) => {
+    setSelectedVehicleId(vehicleId);
+    setIsFuelModalOpen(true);
+  };
+
+  const handleQuickActionSuccess = () => {
+    fetchVehicles();
   };
 
   return (
@@ -118,6 +138,16 @@ export default function DashboardClient({ user }: DashboardClientProps) {
         >
           {/* Maintenances Overview */}
           <MaintenancesOverviewCard />
+
+          {/* Quick Actions */}
+          {!isLoading && vehicles.length > 0 && (
+            <div className="mb-8">
+              <QuickActionsCard
+                onMileageUpdateClick={handleMileageUpdateClick}
+                onFuelRecordClick={handleFuelRecordClick}
+              />
+            </div>
+          )}
 
           {/* Header Section */}
           <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
@@ -247,6 +277,28 @@ export default function DashboardClient({ user }: DashboardClientProps) {
           <AddVehicleModal
             onClose={() => setIsAddModalOpen(false)}
             onSuccess={handleVehicleAdded}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Quick Mileage Update Modal */}
+      <AnimatePresence>
+        {isMileageModalOpen && selectedVehicleId && (
+          <QuickMileageUpdateModal
+            vehicleId={selectedVehicleId}
+            onClose={() => setIsMileageModalOpen(false)}
+            onSuccess={handleQuickActionSuccess}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Quick Fuel Record Modal */}
+      <AnimatePresence>
+        {isFuelModalOpen && selectedVehicleId && (
+          <QuickFuelRecordModal
+            vehicleId={selectedVehicleId}
+            onClose={() => setIsFuelModalOpen(false)}
+            onSuccess={handleQuickActionSuccess}
           />
         )}
       </AnimatePresence>

@@ -9,6 +9,7 @@ import AddEquipmentModal from "@/components/dashboard/AddEquipmentModal";
 import VehicleEquipmentList from "@/components/dashboard/VehicleEquipmentList";
 import VehicleMaintenancesCard from "@/components/dashboard/VehicleMaintenancesCard";
 import MileageTrackerCard from "@/components/dashboard/MileageTrackerCard";
+import FuelTrackerCard from "@/components/dashboard/FuelTrackerCard";
 
 interface Vehicle {
   _id: string;
@@ -29,6 +30,8 @@ interface Vehicle {
   licensePlate?: string;
   purchaseDate?: string;
   notes?: string;
+  fuelType?: "essence" | "diesel" | "électrique" | "hybride" | "gpl" | "autre";
+  fuelTankCapacity?: number;
   createdAt: string;
 }
 
@@ -269,42 +272,72 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
           </div>
         )}
 
-        {/* Details & Mileage Tracker */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Details */}
-          {/* {(vehicle.vin || vehicle.notes || vehicle.createdAt) && (
-            <div className="bg-white rounded-3xl shadow-lg p-6">
-              <h2 className="text-xl font-bold text-black mb-4">Détails</h2>
-              <div className="space-y-3">
-                {vehicle.vin && (
-                  <div>
-                    <p className="text-sm text-gray">N° de série (VIN)</p>
-                    <p className="font-semibold text-black">{vehicle.vin}</p>
-                  </div>
-                )}
-                {vehicle.notes && (
-                  <div>
-                    <p className="text-sm text-gray">Notes</p>
-                    <p className="text-black whitespace-pre-wrap">{vehicle.notes}</p>
-                  </div>
-                )}
-                <div>
-                  <p className="text-sm text-gray">Créé le</p>
-                  <p className="font-semibold text-black">
-                    {new Date(vehicle.createdAt).toLocaleDateString("fr-FR")}
-                  </p>
-                </div>
-              </div>
-            </div>
-          )} */}
-
+        {/* Mileage & Fuel Tracker */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
           {/* Mileage Tracker */}
-          <div className={vehicle.vin || vehicle.notes ? "" : "lg:col-span-2"}>
+          <div className="h-full">
             <MileageTrackerCard
               vehicleId={vehicleId}
               vehicleName={vehicle.name}
             />
           </div>
+
+          {/* Fuel Tracker */}
+          {vehicle.fuelType && vehicle.fuelTankCapacity ? (
+            <div className="h-full">
+              <FuelTrackerCard
+                vehicleId={vehicleId}
+                vehicleName={vehicle.name}
+                fuelType={vehicle.fuelType}
+                fuelTankCapacity={vehicle.fuelTankCapacity}
+              />
+            </div>
+          ) : (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-3xl shadow-lg p-6 h-full flex flex-col items-center justify-center text-center border-2 border-dashed border-orange-300"
+            >
+              <div className="w-16 h-16 bg-orange-200 rounded-full flex items-center justify-center mb-4">
+                <span className="text-4xl">⛽</span>
+              </div>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">
+                Suivi de carburant
+              </h3>
+              <p className="text-gray-600 text-sm mb-4 max-w-sm">
+                Activez le suivi des pleins pour obtenir des statistiques de consommation, suivre vos dépenses et l&apos;évolution des prix.
+              </p>
+              <div className="bg-white/80 backdrop-blur-sm rounded-xl p-3 mb-4 text-left text-xs text-gray-600 max-w-sm">
+                <p className="mb-1">📊 Consommation moyenne (L/100km)</p>
+                <p className="mb-1">💰 Dépenses en carburant</p>
+                <p className="mb-1">📈 Évolution du prix au litre</p>
+                <p>🔄 Mise à jour auto du kilométrage</p>
+              </div>
+              <button
+                onClick={() => setIsEditModalOpen(true)}
+                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange to-orange-light text-white font-bold rounded-xl hover:shadow-lg transition-all duration-300"
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                  />
+                </svg>
+                Activer le suivi
+              </button>
+              <p className="text-xs text-gray-500 mt-3">
+                Renseignez le type de carburant et la capacité du réservoir
+              </p>
+            </motion.div>
+          )}
         </div>
 
         {/* Equipments Section */}

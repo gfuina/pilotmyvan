@@ -51,6 +51,8 @@ export async function POST(request: NextRequest) {
       licensePlate,
       purchaseDate,
       notes,
+      fuelType,
+      fuelTankCapacity,
     } = body;
 
     // Validation
@@ -77,6 +79,8 @@ export async function POST(request: NextRequest) {
       licensePlate,
       purchaseDate,
       notes,
+      fuelType,
+      fuelTankCapacity,
     });
 
     return NextResponse.json({ vehicle }, { status: 201 });

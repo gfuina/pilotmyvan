@@ -24,6 +24,8 @@ interface Vehicle {
   licensePlate?: string;
   purchaseDate?: string;
   notes?: string;
+  fuelType?: "essence" | "diesel" | "électrique" | "hybride" | "gpl" | "autre";
+  fuelTankCapacity?: number;
 }
 
 interface EditVehicleModalProps {
@@ -50,6 +52,8 @@ export default function EditVehicleModal({
       ? new Date(vehicle.purchaseDate).toISOString().split("T")[0]
       : "",
     notes: vehicle.notes || "",
+    fuelType: vehicle.fuelType || "",
+    fuelTankCapacity: vehicle.fuelTankCapacity || 0,
   });
 
   const [mileageNote, setMileageNote] = useState("");
@@ -86,7 +90,7 @@ export default function EditVehicleModal({
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "year" || name === "currentMileage" ? Number(value) : value,
+      [name]: name === "year" || name === "currentMileage" || name === "fuelTankCapacity" ? Number(value) : value,
     }));
   };
 
@@ -345,7 +349,7 @@ export default function EditVehicleModal({
                   />
                 </div>
 
-                <div className="md:col-span-2">
+                <div>
                   <label className="block text-sm font-medium text-black mb-2">
                     Date d&apos;achat
                   </label>
@@ -356,6 +360,49 @@ export default function EditVehicleModal({
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange focus:border-transparent"
                   />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-black mb-2">
+                    Type de carburant
+                  </label>
+                  <select
+                    name="fuelType"
+                    value={formData.fuelType}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange focus:border-transparent"
+                  >
+                    <option value="">Non spécifié</option>
+                    <option value="essence">Essence</option>
+                    <option value="diesel">Diesel</option>
+                    <option value="électrique">Électrique</option>
+                    <option value="hybride">Hybride</option>
+                    <option value="gpl">GPL</option>
+                    <option value="autre">Autre</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-black mb-2">
+                    Capacité du réservoir
+                  </label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      name="fuelTankCapacity"
+                      value={formData.fuelTankCapacity || ""}
+                      onChange={handleChange}
+                      min="0"
+                      placeholder="Ex: 60"
+                      className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange focus:border-transparent"
+                    />
+                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray text-sm">
+                      L
+                    </span>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">
+                    Pour activer le suivi de carburant
+                  </p>
                 </div>
 
                 <div className="md:col-span-2">

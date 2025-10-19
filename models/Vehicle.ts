@@ -21,6 +21,8 @@ export interface IVehicle {
   licensePlate?: string;
   purchaseDate?: Date;
   notes?: string;
+  fuelType?: "essence" | "diesel" | "électrique" | "hybride" | "gpl" | "autre";
+  fuelTankCapacity?: number; // Capacité en litres
   createdAt: Date;
   updatedAt: Date;
 }
@@ -105,6 +107,14 @@ const VehicleSchema: Schema<IVehicle> = new Schema(
     notes: {
       type: String,
       trim: true,
+    },
+    fuelType: {
+      type: String,
+      enum: ["essence", "diesel", "électrique", "hybride", "gpl", "autre"],
+    },
+    fuelTankCapacity: {
+      type: Number,
+      min: 0,
     },
   },
   {
