@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import Maintenance from "@/models/Maintenance";
+import Equipment from "@/models/Equipment";
 import { isUserAdmin } from "@/lib/admin";
 
 // GET all maintenances (optionally filtered by equipmentId)

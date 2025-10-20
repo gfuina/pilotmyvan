@@ -156,7 +156,7 @@ export default function AIMaintenanceExtractor({
   const formatRecurrence = (recurrence?: { time?: { value: number; unit: string }; kilometers?: number }) => {
     const parts = [];
     if (recurrence?.time) {
-      const unitLabels: Record<string, string> = { days: "jour", months: "mois", years: "an" };
+      const unitLabels: Record<string, string> = { days: "jour", week: "semaine", weeks: "semaine", months: "mois", years: "an" };
       const unit = unitLabels[recurrence.time.unit] || recurrence.time.unit;
       
       // "mois" et "fois" ne prennent pas de "s" au pluriel

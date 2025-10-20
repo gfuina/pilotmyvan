@@ -21,7 +21,7 @@ export interface IMaintenance extends Document {
   recurrence: {
     time?: {
       value: number;
-      unit: "days" | "months" | "years";
+      unit: "days" | "week" | "weeks" | "months" | "years";
     };
     kilometers?: number;
   };
@@ -107,7 +107,7 @@ const MaintenanceSchema = new mongoose.Schema<IMaintenance>(
         value: Number,
         unit: {
           type: String,
-          enum: ["days", "months", "years"],
+          enum: ["days", "week", "weeks", "months", "years"],
         },
       },
       kilometers: Number,
