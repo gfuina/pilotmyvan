@@ -106,7 +106,8 @@ export default function MaintenanceList({
     setExpandedId(expandedId === id ? null : id);
   };
 
-  const formatRecurrence = (recurrence: { time?: { value: number; unit: string }; kilometers?: number }) => {
+  const formatRecurrence = (recurrence?: { time?: { value: number; unit: string }; kilometers?: number }) => {
+    if (!recurrence) return "Sur condition";
     const parts = [];
     if (recurrence.time) {
       const unitLabels: Record<string, string> = { days: "jour", months: "mois", years: "an" };
@@ -120,7 +121,7 @@ export default function MaintenanceList({
     if (recurrence.kilometers) {
       parts.push(`Tous les ${recurrence.kilometers.toLocaleString()} km`);
     }
-    return parts.join(" • ");
+    return parts.length > 0 ? parts.join(" • ") : "Sur condition";
   };
 
   return (

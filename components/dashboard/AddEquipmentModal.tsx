@@ -142,12 +142,14 @@ export default function AddEquipmentModal({
   const filteredEquipments = useMemo(() => {
     let filtered = [...equipments];
 
-    // Exclude already added equipments
-    const existingEquipmentIds = existingEquipments
+    // Exclude already added equipments - handle empty case
+    const existingEquipmentIds = (existingEquipments || [])
       .filter(eq => !eq.isCustom && eq.equipmentId?._id)
       .map(eq => eq.equipmentId!._id);
     
-    filtered = filtered.filter(eq => !existingEquipmentIds.includes(eq._id));
+    if (existingEquipmentIds.length > 0) {
+      filtered = filtered.filter(eq => !existingEquipmentIds.includes(eq._id));
+    }
 
     // Text search
     if (searchText.trim()) {
@@ -296,19 +298,19 @@ export default function AddEquipmentModal({
         className="bg-white rounded-3xl w-full max-w-6xl my-8 max-h-[90vh] flex flex-col shadow-2xl"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
-          <div>
-            <h2 className="text-2xl font-bold text-black">
-              Ajouter un contrôle ou équipement
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 flex-shrink-0">
+          <div className="flex-1 min-w-0 pr-2">
+            <h2 className="text-lg sm:text-2xl font-bold text-black">
+              Ajouter contrôle ou équipement
             </h2>
-            <p className="text-sm text-gray">Pour votre {vehicleMake}</p>
+            <p className="text-xs sm:text-sm text-gray">Pour votre {vehicleMake}</p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors flex-shrink-0"
           >
             <svg
-              className="w-6 h-6"
+              className="w-5 h-5 sm:w-6 sm:h-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -324,26 +326,26 @@ export default function AddEquipmentModal({
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 p-6 border-b border-gray-200">
+        <div className="flex gap-2 p-4 sm:p-6 border-b border-gray-200">
           <button
             onClick={() => setActiveTab("library")}
-            className={`flex-1 px-6 py-3 font-semibold rounded-2xl transition-all duration-300 ${
+            className={`flex-1 px-3 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold rounded-2xl transition-all duration-300 whitespace-nowrap ${
               activeTab === "library"
                 ? "bg-gradient-to-r from-orange to-orange-light text-white shadow-lg"
                 : "bg-gray-100 text-gray hover:bg-gray-200"
             }`}
           >
-            📚 Bibliothèque
+            <span className="hidden sm:inline">📚 </span>Bibliothèque
           </button>
           <button
             onClick={() => setActiveTab("custom")}
-            className={`flex-1 px-6 py-3 font-semibold rounded-2xl transition-all duration-300 ${
+            className={`flex-1 px-3 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold rounded-2xl transition-all duration-300 whitespace-nowrap ${
               activeTab === "custom"
                 ? "bg-gradient-to-r from-orange to-orange-light text-white shadow-lg"
                 : "bg-gray-100 text-gray hover:bg-gray-200"
             }`}
           >
-            ✏️ Créer le mien
+            <span className="hidden sm:inline">✏️ </span>Créer le mien
           </button>
         </div>
 
@@ -412,12 +414,12 @@ export default function AddEquipmentModal({
                   </div>
 
                   {/* Filter Pills */}
-                  <div className="flex flex-wrap gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2">
                     {/* Vehicle Brand */}
                     <select
                       value={selectedVehicleBrand}
                       onChange={(e) => setSelectedVehicleBrand(e.target.value)}
-                      className="px-4 py-2 rounded-xl border border-gray-200 focus:border-orange focus:outline-none text-sm"
+                      className="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-orange focus:outline-none text-sm"
                     >
                       <option value="">🚐 Toutes marques véhicule</option>
                       {vehicleBrands.map((brand) => (
@@ -431,7 +433,7 @@ export default function AddEquipmentModal({
                     <select
                       value={selectedEquipmentBrand}
                       onChange={(e) => setSelectedEquipmentBrand(e.target.value)}
-                      className="px-4 py-2 rounded-xl border border-gray-200 focus:border-orange focus:outline-none text-sm"
+                      className="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-orange focus:outline-none text-sm"
                     >
                       <option value="">🔧 Toutes marques équipement</option>
                       {equipmentBrands.map((brand) => (
@@ -445,7 +447,7 @@ export default function AddEquipmentModal({
                     <select
                       value={selectedCategory}
                       onChange={(e) => setSelectedCategory(e.target.value)}
-                      className="px-4 py-2 rounded-xl border border-gray-200 focus:border-orange focus:outline-none text-sm"
+                      className="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-orange focus:outline-none text-sm"
                     >
                       <option value="">📂 Toutes catégories</option>
                       {organizedCategories.map((parent) => (
@@ -467,7 +469,7 @@ export default function AddEquipmentModal({
                     {activeFiltersCount > 0 && (
                       <button
                         onClick={resetFilters}
-                        className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray text-sm font-medium rounded-xl transition-colors"
+                        className="w-full px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray text-sm font-medium rounded-xl transition-colors"
                       >
                         ✕ Réinitialiser ({activeFiltersCount})
                       </button>
@@ -519,18 +521,18 @@ export default function AddEquipmentModal({
                               Recommandé pour tous
                             </div>
                           </div>
-                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
+                          <div className="grid grid-cols-1 gap-3">
                             {recommendedEquipments.map((equipment, index) => (
                               <motion.div
                                 key={equipment._id}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.05 }}
-                                className="bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-300 rounded-2xl p-4 shadow-md"
+                                className="bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-300 rounded-2xl p-3 sm:p-4 shadow-md"
                               >
-                                <div className="flex gap-4">
+                                <div className="flex gap-3 items-start">
                                   {/* Photo */}
-                                  <div className="relative w-24 h-24 bg-white rounded-xl overflow-hidden flex-shrink-0">
+                                  <div className="relative w-16 h-16 sm:w-20 sm:h-20 bg-white rounded-xl overflow-hidden flex-shrink-0">
                                     {equipment.photos[0] ? (
                                       <Image
                                         src={equipment.photos[0]}
@@ -539,7 +541,7 @@ export default function AddEquipmentModal({
                                         className="object-cover"
                                       />
                                     ) : (
-                                      <div className="absolute inset-0 flex items-center justify-center text-3xl">
+                                      <div className="absolute inset-0 flex items-center justify-center text-2xl sm:text-3xl">
                                         📋
                                       </div>
                                     )}
@@ -547,42 +549,40 @@ export default function AddEquipmentModal({
 
                                   {/* Info */}
                                   <div className="flex-1 min-w-0">
-                                    <h4 className="font-bold text-black mb-1 truncate">
+                                    <h4 className="font-bold text-black mb-1 line-clamp-2">
                                       {equipment.name}
                                     </h4>
-                                    <p className="text-xs text-gray-700 mb-2">
+                                    <p className="text-xs text-gray-700 mb-1">
                                       {equipment.categoryId?.name}
                                     </p>
                                     {equipment.description && (
-                                      <p className="text-sm text-gray-700 line-clamp-2 mb-2">
+                                      <p className="text-sm text-gray-700 line-clamp-2 hidden sm:block">
                                         {equipment.description}
                                       </p>
                                     )}
                                   </div>
 
                                   {/* Add Button */}
-                                  <div className="flex items-center">
-                                    <button
-                                      onClick={() => handleAddEquipment(equipment._id)}
-                                      disabled={isAdding}
-                                      className="px-4 py-2 bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 disabled:opacity-50 flex items-center gap-2"
+                                  <button
+                                    onClick={() => handleAddEquipment(equipment._id)}
+                                    disabled={isAdding}
+                                    className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 disabled:opacity-50 flex items-center justify-center flex-shrink-0"
+                                    title="Ajouter à mon véhicule"
+                                  >
+                                    <svg
+                                      className="w-5 h-5 sm:w-6 sm:h-6"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
                                     >
-                                      <svg
-                                        className="w-4 h-4"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M12 4v16m8-8H4"
-                                        />
-                                      </svg>
-                                      Ajouter
-                                    </button>
-                                  </div>
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M12 4v16m8-8H4"
+                                      />
+                                    </svg>
+                                  </button>
                                 </div>
                               </motion.div>
                             ))}
@@ -599,18 +599,18 @@ export default function AddEquipmentModal({
                               <div className="flex-1 h-px bg-gray-200"></div>
                             </div>
                           )}
-                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                          <div className="grid grid-cols-1 gap-3">
                             {regularEquipments.map((equipment, index) => (
                               <motion.div
                                 key={equipment._id}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: (index + recommendedEquipments.length) * 0.05 }}
-                                className="bg-white border-2 border-gray-200 hover:border-orange rounded-2xl p-4 transition-all duration-300 hover:shadow-lg"
+                                className="bg-white border-2 border-gray-200 hover:border-orange rounded-2xl p-3 sm:p-4 transition-all duration-300 hover:shadow-lg"
                               >
-                                <div className="flex gap-4">
+                                <div className="flex gap-3 items-start">
                                   {/* Photo */}
-                                  <div className="relative w-24 h-24 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0">
+                                  <div className="relative w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-xl overflow-hidden flex-shrink-0">
                                     {equipment.photos[0] ? (
                                       <Image
                                         src={equipment.photos[0]}
@@ -619,7 +619,7 @@ export default function AddEquipmentModal({
                                         className="object-cover"
                                       />
                                     ) : (
-                                      <div className="absolute inset-0 flex items-center justify-center text-3xl">
+                                      <div className="absolute inset-0 flex items-center justify-center text-2xl sm:text-3xl">
                                         🔧
                                       </div>
                                     )}
@@ -627,14 +627,14 @@ export default function AddEquipmentModal({
 
                                   {/* Info */}
                                   <div className="flex-1 min-w-0">
-                                    <h4 className="font-bold text-black mb-1 truncate">
+                                    <h4 className="font-bold text-black mb-1 line-clamp-2">
                                       {equipment.name}
                                     </h4>
                                     <p className="text-xs text-gray mb-2">
                                       {equipment.categoryId?.name}
                                     </p>
                                     {equipment.description && (
-                                      <p className="text-sm text-gray line-clamp-2 mb-2">
+                                      <p className="text-sm text-gray line-clamp-2 mb-2 hidden sm:block">
                                         {equipment.description}
                                       </p>
                                     )}
@@ -656,28 +656,26 @@ export default function AddEquipmentModal({
                                   </div>
 
                                   {/* Add Button */}
-                                  <div className="flex items-center">
-                                    <button
-                                      onClick={() => handleAddEquipment(equipment._id)}
-                                      disabled={isAdding}
-                                      className="px-4 py-2 bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 disabled:opacity-50 flex items-center gap-2"
+                                  <button
+                                    onClick={() => handleAddEquipment(equipment._id)}
+                                    disabled={isAdding}
+                                    className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 disabled:opacity-50 flex items-center justify-center flex-shrink-0"
+                                    title="Ajouter à mon véhicule"
+                                  >
+                                    <svg
+                                      className="w-5 h-5 sm:w-6 sm:h-6"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
                                     >
-                                      <svg
-                                        className="w-4 h-4"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        viewBox="0 0 24 24"
-                                      >
-                                        <path
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                          strokeWidth={2}
-                                          d="M12 4v16m8-8H4"
-                                        />
-                                      </svg>
-                                      Ajouter
-                                    </button>
-                                  </div>
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M12 4v16m8-8H4"
+                                      />
+                                    </svg>
+                                  </button>
                                 </div>
                               </motion.div>
                             ))}

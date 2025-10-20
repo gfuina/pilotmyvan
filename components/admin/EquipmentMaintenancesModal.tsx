@@ -86,6 +86,12 @@ export default function EquipmentMaintenancesModal({
   const [editingMaintenance, setEditingMaintenance] = useState<MaintenanceForEdit | null>(null);
   const [isAIExtractorOpen, setIsAIExtractorOpen] = useState(false);
   const [fullEquipment, setFullEquipment] = useState<FullEquipment | null>(null);
+  const [isCopyMode, setIsCopyMode] = useState(false);
+  const [equipmentsList, setEquipmentsList] = useState<Equipment[]>([]);
+  const [selectedEquipmentId, setSelectedEquipmentId] = useState<string>("");
+  const [equipmentSearch, setEquipmentSearch] = useState("");
+  const [isCopying, setIsCopying] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const fetchEquipmentDetails = async () => {
     try {
@@ -96,6 +102,19 @@ export default function EquipmentMaintenancesModal({
       }
     } catch (error) {
       console.error("Error fetching equipment:", error);
+    }
+  };
+
+  const fetchAllEquipments = async () => {
+    try {
+      const response = await fetch("/api/admin/equipments");
+      if (response.ok) {
+        const data = await response.json();
+        // Filter out current equipment
+        setEquipmentsList(data.equipments.filter((e: Equipment) => e._id !== equipment._id));
+      }
+    } catch (error) {
+      console.error("Error fetching equipments:", error);
     }
   };
 
@@ -163,7 +182,60 @@ export default function EquipmentMaintenancesModal({
     fetchMaintenances();
   };
 
-  const hasManuals = fullEquipment?.manuals && fullEquipment.manuals.length > 0;
+  const handleCopyMaintenances = async () => {
+    if (!selectedEquipmentId) return;
+
+    setIsCopying(true);
+    try {
+      // Fetch maintenances from selected equipment
+      const response = await fetch(
+        `/api/admin/maintenances?equipmentId=${selectedEquipmentId}`
+      );
+      if (!response.ok) throw new Error("Failed to fetch maintenances");
+
+      const data = await response.json();
+      const sourceMaintenances = data.maintenances;
+
+      // Copy each maintenance
+      for (const maintenance of sourceMaintenances) {
+        try {
+          const { _id, equipmentId, createdAt, updatedAt, ...maintenanceData } = maintenance;
+          await fetch("/api/admin/maintenances", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              ...maintenanceData,
+              equipmentId: equipment._id,
+            }),
+          });
+        } catch (error) {
+          console.error("Error copying maintenance:", error);
+        }
+      }
+
+      // Reset state and refresh
+      setIsCopyMode(false);
+      setSelectedEquipmentId("");
+      setEquipmentSearch("");
+      setIsDropdownOpen(false);
+      fetchMaintenances();
+    } catch (error) {
+      console.error("Error copying maintenances:", error);
+    } finally {
+      setIsCopying(false);
+    }
+  };
+
+  const handleOpenCopyMode = () => {
+    setIsCopyMode(true);
+    fetchAllEquipments();
+  };
+
+  const filteredEquipments = equipmentsList.filter((eq) =>
+    eq.name.toLowerCase().includes(equipmentSearch.toLowerCase())
+  );
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 overflow-y-auto">
@@ -183,27 +255,44 @@ export default function EquipmentMaintenancesModal({
             <p className="text-gray">Pour: {equipment.name}</p>
           </div>
           <div className="flex items-center gap-3">
-            {hasManuals && (
-              <button
-                onClick={() => setIsAIExtractorOpen(true)}
-                className="px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2"
+            <button
+              onClick={handleOpenCopyMode}
+              className="px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
               >
-                <svg
-                  className="w-5 h-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
-                Extraction IA
-              </button>
-            )}
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
+                />
+              </svg>
+              Copier depuis
+            </button>
+            <button
+              onClick={() => setIsAIExtractorOpen(true)}
+              className="px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white font-semibold rounded-xl hover:shadow-lg transition-all duration-300 flex items-center gap-2"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 10V3L4 14h7v7l9-11h-7z"
+                />
+              </svg>
+              Extraction IA
+            </button>
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-full transition-colors"
@@ -224,6 +313,107 @@ export default function EquipmentMaintenancesModal({
             </button>
           </div>
         </div>
+
+        {/* Copy Mode Panel */}
+        <AnimatePresence>
+          {isCopyMode && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: "auto", opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="border-b border-gray-200 bg-blue-50 overflow-hidden"
+            >
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                  Copier les maintenances de :
+                </h3>
+                <div className="flex flex-col gap-4">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={equipmentSearch}
+                      onChange={(e) => {
+                        setEquipmentSearch(e.target.value);
+                        setIsDropdownOpen(true);
+                      }}
+                      onFocus={() => setIsDropdownOpen(true)}
+                      placeholder="Rechercher un équipement..."
+                      className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                    {equipmentSearch && isDropdownOpen && (
+                      <div className="absolute z-10 w-full mt-2 bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto">
+                        {filteredEquipments.length > 0 ? (
+                          filteredEquipments.map((eq) => (
+                            <button
+                              key={eq._id}
+                              onClick={() => {
+                                setSelectedEquipmentId(eq._id);
+                                setEquipmentSearch(eq.name);
+                                setIsDropdownOpen(false);
+                              }}
+                              className="w-full px-4 py-3 text-left hover:bg-blue-50 transition-colors"
+                            >
+                              <div className="font-medium text-gray-900">
+                                {eq.name}
+                              </div>
+                            </button>
+                          ))
+                        ) : (
+                          <div className="px-4 py-3 text-gray-500 text-center">
+                            Aucun équipement trouvé
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex gap-3">
+                    <button
+                      onClick={handleCopyMaintenances}
+                      disabled={!selectedEquipmentId || isCopying}
+                      className="flex-1 px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed transition-all duration-300 flex items-center justify-center gap-2"
+                    >
+                      {isCopying ? (
+                        <>
+                          <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          Copie en cours...
+                        </>
+                      ) : (
+                        <>
+                          <svg
+                            className="w-5 h-5"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                          Copier les maintenances
+                        </>
+                      )}
+                    </button>
+                    <button
+                      onClick={() => {
+                        setIsCopyMode(false);
+                        setSelectedEquipmentId("");
+                        setEquipmentSearch("");
+                        setIsDropdownOpen(false);
+                      }}
+                      className="px-6 py-3 bg-gray-200 text-gray-700 font-semibold rounded-xl hover:bg-gray-300 transition-all duration-300"
+                    >
+                      Annuler
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Content */}
         <div className="p-6 overflow-y-auto flex-1">
@@ -261,11 +451,11 @@ export default function EquipmentMaintenancesModal({
 
       {/* AI Maintenance Extractor */}
       <AnimatePresence>
-        {isAIExtractorOpen && fullEquipment && (
+        {isAIExtractorOpen && (
           <AIMaintenanceExtractor
             equipmentId={equipment._id}
             equipmentName={equipment.name}
-            manuals={fullEquipment.manuals || []}
+            manuals={fullEquipment?.manuals}
             onExtracted={handleAIExtracted}
             onClose={() => setIsAIExtractorOpen(false)}
           />

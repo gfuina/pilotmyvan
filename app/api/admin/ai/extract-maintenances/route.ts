@@ -18,21 +18,23 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { equipmentName, manuals, manualText } = body;
 
-    if (!manuals || manuals.length === 0) {
+    if (!equipmentName || equipmentName.trim().length === 0) {
       return NextResponse.json(
-        { error: "Aucun manuel fourni" },
+        { error: "Nom de l'équipement requis" },
         { status: 400 }
       );
     }
 
     // Prepare context for AI
     console.log(`📄 Preparing analysis for ${equipmentName}...`);
-    console.log(`   Manuals: ${manuals.length}`);
+    console.log(`   Manuals: ${manuals?.length || 0}`);
     console.log(`   Manual text provided: ${manualText ? `${manualText.length} characters` : 'No'}`);
     
-    const manualsInfo = manuals.map((m: { title: string; url: string; isExternal: boolean }, i: number) => 
-      `${i + 1}. "${m.title}"`
-    ).join('\n');
+    const manualsInfo = manuals && manuals.length > 0 
+      ? manuals.map((m: { title: string; url: string; isExternal: boolean }, i: number) => 
+          `${i + 1}. "${m.title}"`
+        ).join('\n')
+      : "Aucun manuel fourni - génération basée sur le texte fourni ou connaissances standards";
 
     // Call OpenAI to extract maintenance recommendations
     const completion = await openai.chat.completions.create({

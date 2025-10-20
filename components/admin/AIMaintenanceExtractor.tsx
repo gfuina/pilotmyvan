@@ -20,7 +20,7 @@ interface Maintenance {
 interface AIMaintenanceExtractorProps {
   equipmentId: string;
   equipmentName: string;
-  manuals: Array<{
+  manuals?: Array<{
     title: string;
     url: string;
     isExternal: boolean;
@@ -55,7 +55,7 @@ export default function AIMaintenanceExtractor({
         },
         body: JSON.stringify({
           equipmentName,
-          manuals,
+          manuals: manuals || [],
           manualText: manualText.trim(),
         }),
       });
@@ -64,7 +64,7 @@ export default function AIMaintenanceExtractor({
         const data = await response.json();
         
         if (!data.maintenances || data.maintenances.length === 0) {
-          setError("Aucun entretien n&apos;a été trouvé dans les manuels fournis.");
+          setError("Aucun entretien n'a pu être généré. Essayez de fournir plus de détails dans le texte du manuel.");
           return;
         }
         
@@ -199,8 +199,10 @@ export default function AIMaintenanceExtractor({
               Extraction IA des entretiens
             </h2>
             <p className="text-purple-100 text-sm mt-1">
-              Pour: {equipmentName} • {manuals.length} manuel
-              {manuals.length > 1 ? "s" : ""}
+              Pour: {equipmentName}
+              {manuals && manuals.length > 0 && (
+                <> • {manuals.length} manuel{manuals.length > 1 ? "s" : ""}</>
+              )}
             </p>
           </div>
           <button
@@ -252,9 +254,9 @@ export default function AIMaintenanceExtractor({
                       💡 Que faire ?
                     </p>
                     <ul className="text-xs text-red-700 space-y-1 list-disc list-inside">
-                      <li>Réessayez dans quelques instants</li>
+                      <li>Collez du texte du manuel dans la zone ci-dessous</li>
                       <li>Vérifiez que le nom de l&apos;équipement est précis</li>
-                      <li>Ajoutez les entretiens manuellement si nécessaire</li>
+                      <li>Sinon, ajoutez les entretiens manuellement</li>
                     </ul>
                   </div>
                 </div>
@@ -282,55 +284,58 @@ export default function AIMaintenanceExtractor({
               </div>
 
               <h3 className="text-2xl font-bold text-black mb-4">
-                Prêt à analyser votre équipement
+                Prêt à générer les entretiens
               </h3>
               <p className="text-gray mb-6 max-w-2xl mx-auto">
-                L&apos;IA va analyser le contenu du manuel si fourni, ou générer des entretiens
+                L&apos;IA va analyser le texte du manuel si vous en collez un, ou générer des entretiens
                 standards pour ce type d&apos;équipement ({equipmentName}).
               </p>
               <p className="text-sm text-orange-600 mb-6 max-w-2xl mx-auto bg-orange-50 p-3 rounded-xl">
-                💡 Conseil: Copiez-collez le texte du manuel ci-dessous pour une extraction précise des entretiens spécifiques recommandés par le constructeur.
+                💡 Pour des entretiens précis: Copiez-collez le texte du manuel ci-dessous<br/>
+                💡 Pour des entretiens standards: Laissez vide et cliquez sur Générer
               </p>
 
-              <div className="bg-purple-50 rounded-2xl p-6 mb-8 max-w-2xl mx-auto text-left">
-                <h4 className="font-semibold text-black mb-3 flex items-center gap-2">
-                  <svg
-                    className="w-5 h-5 text-purple-600"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                    />
-                  </svg>
-                  Manuels à analyser:
-                </h4>
-                <ul className="space-y-2">
-                  {manuals.map((manual, index) => (
-                    <li
-                      key={index}
-                      className="flex items-center gap-2 text-sm text-gray-700"
+              {manuals && manuals.length > 0 && (
+                <div className="bg-purple-50 rounded-2xl p-6 mb-8 max-w-2xl mx-auto text-left">
+                  <h4 className="font-semibold text-black mb-3 flex items-center gap-2">
+                    <svg
+                      className="w-5 h-5 text-purple-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
                     >
-                      <svg
-                        className="w-4 h-4 text-purple-600 flex-shrink-0"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                      />
+                    </svg>
+                    Manuels disponibles:
+                  </h4>
+                  <ul className="space-y-2">
+                    {manuals.map((manual, index) => (
+                      <li
+                        key={index}
+                        className="flex items-center gap-2 text-sm text-gray-700"
                       >
-                        <path
-                          fillRule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                      {manual.title}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+                        <svg
+                          className="w-4 h-4 text-purple-600 flex-shrink-0"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        {manual.title}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               {/* Zone de texte pour copier-coller le manuel */}
               <div className="bg-blue-50 rounded-2xl p-6 mb-8 max-w-2xl mx-auto">
