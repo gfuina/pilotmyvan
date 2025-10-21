@@ -74,9 +74,12 @@ export default function AddEquipmentModal({
   const [isCreatingEquipment, setIsCreatingEquipment] = useState(false);
 
   useEffect(() => {
+    // Force fetch à chaque ouverture de la modal
+    setIsLoading(true);
+    setError("");
     fetchEquipments();
     fetchFilters();
-  }, []);
+  }, [vehicleId]); // Re-fetch quand le vehicleId change (nouvelle modal)
 
   const fetchEquipments = async () => {
     setIsLoading(true);
@@ -217,7 +220,9 @@ export default function AddEquipmentModal({
       });
 
       if (response.ok) {
-        onSuccess();
+        setIsAdding(false);
+        onSuccess(); // Hors du try/catch pour éviter faux message d'erreur
+        return;
       } else {
         const data = await response.json();
         setError(data.error || "Erreur lors de l'ajout");
@@ -246,7 +251,9 @@ export default function AddEquipmentModal({
       });
 
       if (response.ok) {
-        onSuccess();
+        setIsCreatingEquipment(false);
+        onSuccess(); // Hors du try/catch pour éviter faux message d'erreur
+        return;
       } else {
         const result = await response.json();
         setError(result.error || "Erreur lors de la création");
