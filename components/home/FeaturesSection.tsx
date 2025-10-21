@@ -229,7 +229,7 @@ export function FeaturesSection() {
                 <div className="absolute inset-0 bg-gradient-to-br from-orange/20 to-orange-light/20 z-10 pointer-events-none" />
                 <Image
                   src="/images/app-screenshot.png"
-                  alt="Aperçu de l'application PilotMyVan"
+                  alt="Capture d'écran de PilotMyVan montrant le tableau de bord de suivi d'entretien avec rappels automatiques"
                   fill
                   className="object-cover object-left"
                 />

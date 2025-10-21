@@ -24,7 +24,7 @@ export function HeroSection() {
       <div className="absolute inset-0 z-0">
         <Image
           src="/images/hero-van-dashboard.jpg"
-          alt="Dashboard PilotMyVan"
+          alt="Interface de gestion d'entretien pour van et camping-car avec rappels automatiques"
           fill
           className="object-cover opacity-40"
           priority

@@ -40,14 +40,11 @@ export function Header() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="relative z-10 flex items-center gap-3 group">
-            <div className="flex flex-col">
-              <span className="text-2xl font-bold text-white leading-none">
-                P<span className="text-orange">M</span>V
-              </span>
-              <span className="text-[10px] text-white/70 font-medium leading-none mt-0.5">
-                PilotMyVan
-              </span>
-            </div>
+            <img
+              src="/images/logo/logo-icon-text-white.png"
+              alt="PilotMyVan"
+              className="h-10 w-auto"
+            />
             <span className="px-2 py-0.5 bg-orange/20 border border-orange/40 text-orange text-[10px] font-bold rounded-full">
               BÉTA
             </span>

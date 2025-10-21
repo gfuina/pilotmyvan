@@ -95,13 +95,12 @@ export default function DashboardClient({ user }: DashboardClientProps) {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between py-4">
             {/* Logo */}
-            <Link href="/" className="flex flex-col">
-              <span className="text-2xl font-bold text-black leading-none">
-                P<span className="text-orange">M</span>V
-              </span>
-              <span className="text-[10px] text-gray font-medium leading-none mt-0.5">
-                PilotMyVan
-              </span>
+            <Link href="/" className="flex items-center">
+              <img
+                src="/images/logo/logo-icon-text-orange.png"
+                alt="PilotMyVan"
+                className="h-10 w-auto"
+              />
             </Link>
 
             {/* User Menu */}
