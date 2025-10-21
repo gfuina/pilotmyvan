@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "test:notifications": "node scripts/test-notifications.mjs",
+    "test:push-setup": "node scripts/test-push-setup.mjs",
     "generate-vapid": "node scripts/generate-vapid-keys.mjs"
   },
   "dependencies": {
