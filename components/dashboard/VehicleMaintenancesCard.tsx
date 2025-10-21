@@ -1090,13 +1090,18 @@ export default function VehicleMaintenancesCard({
               onClick={(e) => e.stopPropagation()}
             >
               <div className="p-4 sm:p-6 border-b border-gray-200">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-lg sm:text-2xl font-bold text-black">
-                    Sélectionner un contrôle ou équipement
-                  </h3>
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-base sm:text-2xl font-bold text-black">
+                      Sélectionner équipement
+                    </h3>
+                    <p className="text-gray text-xs sm:text-sm mt-1">
+                      Pour ajouter un entretien
+                    </p>
+                  </div>
                   <button
                     onClick={() => setShowEquipmentSelector(false)}
-                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                    className="p-2 hover:bg-gray-100 rounded-full transition-colors flex-shrink-0"
                   >
                     <svg
                       className="w-5 h-5 sm:w-6 sm:h-6"
@@ -1113,9 +1118,6 @@ export default function VehicleMaintenancesCard({
                     </svg>
                   </button>
                 </div>
-                <p className="text-gray text-xs sm:text-sm mt-2">
-                  Choisissez le contrôle ou équipement pour lequel vous souhaitez ajouter un entretien
-                </p>
               </div>
 
               <div className="p-4 sm:p-6 overflow-y-auto max-h-[calc(90vh-120px)] sm:max-h-[calc(80vh-140px)]">

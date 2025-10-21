@@ -231,19 +231,19 @@ export default function AddMaintenanceScheduleModal({
         className="bg-white rounded-3xl w-full max-w-5xl my-8 max-h-[90vh] flex flex-col shadow-2xl"
       >
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 flex-shrink-0">
-          <div>
-            <h2 className="text-2xl font-bold text-black">
-              Ajouter des entretiens
+        <div className="flex items-center justify-between p-4 sm:p-6 border-b border-gray-200 flex-shrink-0">
+          <div className="flex-1 min-w-0 pr-2">
+            <h2 className="text-lg sm:text-2xl font-bold text-black">
+              Ajouter entretiens
             </h2>
-            <p className="text-sm text-gray">Pour: {equipmentName}</p>
+            <p className="text-xs sm:text-sm text-gray truncate">Pour: {equipmentName}</p>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+            className="p-2 hover:bg-gray-100 rounded-full transition-colors flex-shrink-0"
           >
             <svg
-              className="w-6 h-6"
+              className="w-5 h-5 sm:w-6 sm:h-6"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -259,26 +259,26 @@ export default function AddMaintenanceScheduleModal({
         </div>
 
         {/* Tabs */}
-        <div className="flex gap-2 p-6 border-b border-gray-200">
+        <div className="flex gap-2 p-4 sm:p-6 border-b border-gray-200">
           <button
             onClick={() => setActiveTab("recommended")}
-            className={`flex-1 px-6 py-3 font-semibold rounded-2xl transition-all duration-300 ${
+            className={`flex-1 px-3 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold rounded-2xl transition-all duration-300 whitespace-nowrap ${
               activeTab === "recommended"
                 ? "bg-gradient-to-r from-orange to-orange-light text-white shadow-lg"
                 : "bg-gray-100 text-gray hover:bg-gray-200"
             }`}
           >
-            ⭐ Recommandés
+            <span className="hidden sm:inline">⭐ </span>Recommandés
           </button>
           <button
             onClick={() => setActiveTab("custom")}
-            className={`flex-1 px-6 py-3 font-semibold rounded-2xl transition-all duration-300 ${
+            className={`flex-1 px-3 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold rounded-2xl transition-all duration-300 whitespace-nowrap ${
               activeTab === "custom"
                 ? "bg-gradient-to-r from-orange to-orange-light text-white shadow-lg"
                 : "bg-gray-100 text-gray hover:bg-gray-200"
             }`}
           >
-            ✏️ Créer le mien
+            <span className="hidden sm:inline">✏️ </span>Créer le mien
           </button>
         </div>
 
@@ -302,9 +302,9 @@ export default function AddMaintenanceScheduleModal({
               >
                 {/* Actions bar */}
                 {maintenances.length > 0 && (
-                  <div className="p-6 border-b border-gray-200 bg-gray-50 flex-shrink-0">
-                    <div className="flex items-center justify-between">
-                      <div className="text-sm">
+                  <div className="p-3 sm:p-6 border-b border-gray-200 bg-gray-50 flex-shrink-0">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+                      <div className="text-xs sm:text-sm">
                         <span className="font-bold text-black">
                           {selectedMaintenances.size}
                         </span>
@@ -314,19 +314,19 @@ export default function AddMaintenanceScheduleModal({
                           {selectedMaintenances.size > 1 ? "s" : ""}
                         </span>
                       </div>
-                      <div className="flex gap-3">
+                      <div className="flex gap-2">
                         <button
                           onClick={selectAll}
-                          className="px-4 py-2 bg-white text-black text-sm font-semibold rounded-xl hover:bg-gray-100 transition-colors border border-gray-200"
+                          className="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-white text-black text-xs sm:text-sm font-semibold rounded-xl hover:bg-gray-100 transition-colors border border-gray-200"
                         >
                           Tout sélectionner
                         </button>
                         {selectedMaintenances.size > 0 && (
                           <button
                             onClick={deselectAll}
-                            className="px-4 py-2 bg-white text-black text-sm font-semibold rounded-xl hover:bg-gray-100 transition-colors border border-gray-200"
+                            className="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-white text-black text-xs sm:text-sm font-semibold rounded-xl hover:bg-gray-100 transition-colors border border-gray-200"
                           >
-                            Tout désélectionner
+                            Désélectionner
                           </button>
                         )}
                       </div>
@@ -335,7 +335,7 @@ export default function AddMaintenanceScheduleModal({
                 )}
 
                 {/* Maintenances List */}
-                <div className="p-6">
+                <div className="p-3 sm:p-6">
                   {isLoading ? (
                     <div className="flex justify-center items-center py-20">
                       <div className="w-12 h-12 border-4 border-orange border-t-transparent rounded-full animate-spin" />
@@ -376,26 +376,26 @@ export default function AddMaintenanceScheduleModal({
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.03 }}
                             onClick={() => toggleSelection(maintenance._id)}
-                            className={`border-2 rounded-2xl p-4 transition-all cursor-pointer ${
+                            className={`border-2 rounded-2xl p-3 sm:p-4 transition-all cursor-pointer ${
                               isSelected
                                 ? "border-orange bg-orange/5"
                                 : "border-gray-200 bg-white hover:border-orange/50"
                             }`}
                           >
-                            <div className="flex items-start gap-4">
+                            <div className="flex items-start gap-2 sm:gap-4">
                               {/* Checkbox */}
-                              <div className="pt-1">
+                              <div className="pt-1 flex-shrink-0">
                                 <input
                                   type="checkbox"
                                   checked={isSelected}
                                   onChange={() => toggleSelection(maintenance._id)}
-                                  className="w-5 h-5 text-orange rounded"
+                                  className="w-4 h-4 sm:w-5 sm:h-5 text-orange rounded"
                                 />
                               </div>
 
                               {/* Priority Icon */}
                               <div
-                                className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl border-2 flex-shrink-0 ${
+                                className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center text-xl sm:text-2xl border-2 flex-shrink-0 ${
                                   PRIORITY_COLORS[maintenance.priority]
                                 }`}
                               >
@@ -404,8 +404,8 @@ export default function AddMaintenanceScheduleModal({
 
                               {/* Content */}
                               <div className="flex-1 min-w-0">
-                                <div className="flex items-start justify-between gap-4 mb-2">
-                                  <h4 className="font-bold text-black text-lg">
+                                <div className="flex items-start justify-between gap-2 sm:gap-4 mb-2">
+                                  <h4 className="font-bold text-black text-sm sm:text-lg">
                                     {maintenance.name}
                                   </h4>
                                   {maintenance.isOfficial && (
@@ -477,24 +477,22 @@ export default function AddMaintenanceScheduleModal({
 
         {/* Footer Actions */}
         {activeTab === "recommended" && maintenances.length > 0 && (
-          <div className="flex gap-4 p-6 border-t border-gray-200 flex-shrink-0">
+          <div className="flex gap-2 sm:gap-4 p-3 sm:p-6 border-t border-gray-200 flex-shrink-0">
             <button
               onClick={onClose}
               disabled={isAdding}
-              className="flex-1 px-6 py-3 bg-gray-100 text-black font-semibold rounded-2xl hover:bg-gray-200 transition-all duration-300 disabled:opacity-50"
+              className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-gray-100 text-black text-sm sm:text-base font-semibold rounded-2xl hover:bg-gray-200 transition-all duration-300 disabled:opacity-50"
             >
               Annuler
             </button>
             <button
               onClick={handleAdd}
               disabled={isAdding || selectedMaintenances.size === 0}
-              className="flex-1 px-6 py-3 bg-gradient-to-r from-orange to-orange-light text-white font-bold rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:hover:scale-100"
+              className="flex-1 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-orange to-orange-light text-white text-sm sm:text-base font-bold rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300 disabled:opacity-50 disabled:hover:scale-100"
             >
               {isAdding
-                ? "Ajout en cours..."
-                : `Ajouter ${selectedMaintenances.size} entretien${
-                    selectedMaintenances.size > 1 ? "s" : ""
-                  }`}
+                ? "Ajout..."
+                : `Ajouter ${selectedMaintenances.size > 0 ? selectedMaintenances.size : ""}`}
             </button>
           </div>
         )}

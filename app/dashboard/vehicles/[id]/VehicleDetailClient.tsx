@@ -343,18 +343,18 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
 
         {/* Equipments Section */}
         <div className="mt-6 bg-white rounded-3xl shadow-lg p-4 sm:p-6">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
-            <div>
-              <h2 className="text-xl sm:text-2xl font-bold text-black">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4 mb-6">
+            <div className="flex-1 min-w-0">
+              <h2 className="text-lg sm:text-2xl font-bold text-black">
                 Contrôles & Équipements 🔧
               </h2>
-              <p className="text-gray text-sm sm:text-base">
-                Suivez vos révisions, contrôles réglementaires, mécanique et équipements (chauffage, frigo...)
+              <p className="text-gray text-xs sm:text-sm">
+                Révisions, contrôles, mécanique, équipements
               </p>
             </div>
             <button
               onClick={() => setIsAddEquipmentModalOpen(true)}
-              className="inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-orange to-orange-light text-white font-bold text-sm sm:text-base rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300"
+              className="inline-flex items-center justify-center gap-2 px-4 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-orange to-orange-light text-white font-bold text-sm sm:text-base rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300 flex-shrink-0"
             >
               <svg
                 className="w-4 h-4 sm:w-5 sm:h-5"
@@ -369,8 +369,7 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
                   d="M12 4v16m8-8H4"
                 />
               </svg>
-              <span className="hidden sm:inline">Ajouter</span>
-              <span className="sm:hidden">Ajouter</span>
+              Ajouter
             </button>
           </div>
 
@@ -395,20 +394,16 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-semibold text-black mb-2">
+              <h3 className="text-base sm:text-lg font-semibold text-black mb-2">
                 Commencez par les essentiels
               </h3>
-              <p className="text-gray text-sm mb-2">
-                Ajoutez uniquement ce que <span className="font-semibold">vous</span> souhaitez suivre :
+              <p className="text-gray text-xs sm:text-sm mb-2">
+                Ajoutez ce que <span className="font-semibold">vous</span> souhaitez suivre :
               </p>
               <p className="text-gray text-xs mb-4">
-                📋 Contrôles : révision, contrôle technique, révision gaz...
+                📋 Contrôles • 🔩 Mécanique • 🏠 Équipements
                 <br />
-                🔩 Mécanique : pneus, freins, filtres, batterie, courroie...
-                <br />
-                🏠 Équipements : chauffage, frigo, pompe à eau, panneau solaire...
-                <br />
-                <span className="text-orange text-xs mt-1 block">💡 Vous choisissez ce qui est important pour vous !</span>
+                <span className="text-orange text-xs mt-1 block">💡 Vous choisissez !</span>
               </p>
               <button
                 onClick={() => setIsAddEquipmentModalOpen(true)}
@@ -427,8 +422,7 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
                     d="M12 4v16m8-8H4"
                   />
                 </svg>
-                <span className="hidden sm:inline">Commencer le suivi</span>
-                <span className="sm:hidden">Ajouter</span>
+                Commencer
               </button>
             </div>
           ) : (
@@ -441,32 +435,32 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
               />
               
               {/* Info: Next step - Add maintenance reminder */}
-              <div className="mt-6 p-4 bg-gradient-to-r from-orange-50 to-orange-100 border-2 border-orange-300 rounded-2xl">
-                <div className="flex items-start gap-3">
-                  <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="mt-6 p-3 sm:p-4 bg-gradient-to-r from-orange-50 to-orange-100 border-2 border-orange-300 rounded-2xl">
+                <div className="flex items-start gap-2 sm:gap-3">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-orange-500 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   </div>
-                  <div className="flex-1">
-                    <h3 className="font-bold text-orange-900 text-sm sm:text-base mb-1">
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-orange-900 text-xs sm:text-base mb-1">
                       Étape suivante : Planifiez vos entretiens 📅
                     </h3>
-                    <p className="text-orange-800 text-xs sm:text-sm mb-3">
-                      Maintenant que vous avez ajouté vos contrôles et équipements, planifiez leurs entretiens pour ne jamais oublier une échéance importante !
+                    <p className="text-orange-800 text-xs sm:text-sm mb-2 sm:mb-3">
+                      Planifiez leurs entretiens pour ne jamais oublier !
                     </p>
                     <a
                       href="#maintenances-section"
-                      className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange to-orange-light hover:from-orange-dark hover:to-orange text-white text-sm font-semibold rounded-xl transition-all duration-300 hover:shadow-lg"
+                      className="inline-flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-r from-orange to-orange-light hover:from-orange-dark hover:to-orange text-white text-xs sm:text-sm font-semibold rounded-xl transition-all duration-300 hover:shadow-lg"
                       onClick={(e) => {
                         e.preventDefault();
                         document.getElementById('maintenances-section')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
                       }}
                     >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                       </svg>
-                      Ajouter des entretiens
+                      Ajouter entretiens
                     </a>
                   </div>
                 </div>
