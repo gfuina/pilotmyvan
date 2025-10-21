@@ -3055,4 +3055,22 @@
     "$date": "2025-10-18T08:31:03.958Z"
   },
   "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f6963be25b971605f1ef12"
+  },
+  "name": "Lave-vaisselle",
+  "level": 3,
+  "parentId": {
+    "$oid": "68f35041be04ebdaad786b30"
+  },
+  "order": 67,
+  "createdAt": {
+    "$date": "2025-10-20T20:06:19.897Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-20T20:06:19.897Z"
+  },
+  "__v": 0
 }]
