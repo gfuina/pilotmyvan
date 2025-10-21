@@ -1,6 +1,6 @@
 {
   "name": "PilotMyVan - Gérez l'entretien de votre van",
-  "short_name": "PilotMyVan",
+  "short_name": "PMV",
   "description": "Gérez l'entretien de votre van et camping-car. Rappels automatiques, suivi kilométrique et historique complet.",
   "start_url": "/dashboard",
   "display": "standalone",
@@ -10,15 +10,21 @@
   "icons": [
     {
       "src": "/icon.png",
-      "sizes": "192x192",
+      "sizes": "192x192 512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "/apple-icon.png",
-      "sizes": "512x512",
+      "sizes": "180x180 192x192 512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ],
   "categories": ["lifestyle", "utilities", "productivity"],

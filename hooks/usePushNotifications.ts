@@ -99,11 +99,21 @@ export function usePushNotifications(): UsePushNotificationsReturn {
 
       // Récupérer la clé publique VAPID
       const response = await fetch("/api/user/push-subscription");
-      const { publicKey } = await response.json();
+      
+      if (!response.ok) {
+        console.error("Erreur lors de la récupération de la clé VAPID:", response.status);
+        throw new Error("Les notifications push ne sont pas configurées sur le serveur");
+      }
+      
+      const data = await response.json();
+      const { publicKey } = data;
 
       if (!publicKey) {
+        console.error("Clé publique VAPID manquante dans la réponse");
         throw new Error("Clé publique VAPID non disponible");
       }
+      
+      console.log("Clé VAPID récupérée avec succès");
 
       // Enregistrer le service worker s'il n'est pas déjà enregistré
       let registration = await navigator.serviceWorker.getRegistration();
@@ -117,11 +127,15 @@ export function usePushNotifications(): UsePushNotificationsReturn {
       let subscription = await registration.pushManager.getSubscription();
       
       if (!subscription) {
+        console.log("Création d'une nouvelle subscription push...");
         // Créer une nouvelle subscription
         subscription = await registration.pushManager.subscribe({
           userVisibleOnly: true,
           applicationServerKey: urlBase64ToUint8Array(publicKey),
         });
+        console.log("Subscription créée:", subscription.endpoint.substring(0, 50) + "...");
+      } else {
+        console.log("Subscription existante trouvée");
       }
 
       // Envoyer la subscription au serveur
@@ -137,13 +151,17 @@ export function usePushNotifications(): UsePushNotificationsReturn {
       });
 
       if (!saveResponse.ok) {
-        throw new Error("Erreur lors de l'enregistrement de la subscription");
+        const errorData = await saveResponse.json();
+        console.error("Erreur serveur lors de l'enregistrement:", errorData);
+        throw new Error(errorData.error || "Erreur lors de l'enregistrement de la subscription");
       }
 
+      console.log("✅ Subscription enregistrée avec succès sur le serveur");
       setIsSubscribed(true);
       return true;
     } catch (error) {
-      console.error("Erreur lors de l'abonnement:", error);
+      console.error("❌ Erreur lors de l'abonnement:", error);
+      alert(`Erreur: ${error instanceof Error ? error.message : "Impossible d'activer les notifications push"}`);
       return false;
     } finally {
       setIsLoading(false);

@@ -51,7 +51,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "PilotMyVan",
+    title: "PMV",
   },
   openGraph: {
     type: "website",
