@@ -39,12 +39,17 @@ export function Header() {
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="relative z-10 flex flex-col group">
-            <span className="text-2xl font-bold text-white leading-none">
-              P<span className="text-orange">M</span>V
-            </span>
-            <span className="text-[10px] text-white/70 font-medium leading-none mt-0.5">
-              PilotMyVan
+          <Link href="/" className="relative z-10 flex items-center gap-3 group">
+            <div className="flex flex-col">
+              <span className="text-2xl font-bold text-white leading-none">
+                P<span className="text-orange">M</span>V
+              </span>
+              <span className="text-[10px] text-white/70 font-medium leading-none mt-0.5">
+                PilotMyVan
+              </span>
+            </div>
+            <span className="px-2 py-0.5 bg-orange/20 border border-orange/40 text-orange text-[10px] font-bold rounded-full">
+              BÉTA
             </span>
           </Link>
 
@@ -96,7 +101,7 @@ export function Header() {
                   href="/signup"
                   className="px-6 py-2.5 bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-2xl hover:shadow-lg hover:scale-105 transition-all duration-300"
                 >
-                  Essai gratuit
+                  Rejoindre la béta
                 </Link>
               </>
             )}
@@ -197,7 +202,7 @@ export function Header() {
                         onClick={() => setIsMenuOpen(false)}
                         className="block px-4 py-2 text-center bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-2xl hover:shadow-lg transition-all duration-300"
                       >
-                        Essai gratuit
+                        Rejoindre la béta
                       </Link>
                     </>
                   )}

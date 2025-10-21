@@ -11,37 +11,24 @@ export function PricingSection() {
 
   const plans = [
     {
-      name: "Gratuit",
+      name: "Testeur Béta",
       price: "0€",
-      period: "/mois",
-      description: "Pour commencer l'aventure",
+      period: "",
+      description: "Toutes les fonctionnalités, pour toujours",
       features: [
-        "1 véhicule",
-        "5 équipements maximum",
-        "Rappels par email",
-        "Historique complet",
-        "Support communautaire",
+        "Autant de véhicules que vous voulez",
+        "Tous vos équipements (frigo, chauffage, batterie...)",
+        "Rappels automatiques avant qu'il soit trop tard",
+        "Calcul auto de vos prochaines vidanges & révisions",
+        "Vos pleins et votre conso, pour budgétiser vos trips",
+        "Toutes vos factures et photos au même endroit",
+        "Base de maintenances par équipement",
+        "Mise à jour kilométrage ultra rapide",
       ],
-      cta: "Commencer gratuitement",
-      highlighted: false,
-    },
-    {
-      name: "Pro",
-      price: "2,99€",
-      period: "/mois",
-      description: "Pour les nomades confirmés",
-      features: [
-        "Véhicules illimités",
-        "Équipements illimités",
-        "Rappels intelligents",
-        "Historique complet",
-        "Export PDF",
-        "Statistiques avancées",
-        "Support prioritaire",
-      ],
-      cta: "Passer à Pro",
+      cta: "Je teste gratuitement",
       highlighted: true,
-      badge: "Recommandé",
+      badge: "100% Gratuit",
+      betaNote: "🎁 Vous gardez tout gratuitement, même après la béta !",
     },
   ];
 
@@ -58,49 +45,56 @@ export function PricingSection() {
             Tarifs
           </span>
           <h2 className="text-4xl lg:text-5xl font-bold text-black mb-6">
-            Un prix{" "}
+            Rejoignez l&apos;aventure{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange to-orange-light">
-              adapté à vos besoins
+              gratuitement
             </span>
           </h2>
           <p className="text-lg text-gray max-w-3xl mx-auto">
-            Commencez gratuitement, évoluez à votre rythme.
-            Parce que la liberté, c&apos;est aussi de choisir sans engagement.
+            On lance la béta et on a besoin de vous pour la tester. En échange de vos retours,
+            vous gardez gratuitement toutes les fonctionnalités à vie. Deal ?
           </p>
         </motion.div>
 
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        <div className="max-w-2xl mx-auto">
           {plans.map((plan, index) => (
             <motion.div
               key={index}
               {...animation}
               transition={{ delay: index * 0.1, duration: 0.6 }}
-              className={`relative bg-white rounded-3xl p-8 border-2 transition-all duration-300 ${
-                plan.highlighted
-                  ? "border-orange shadow-2xl scale-105 md:scale-110"
-                  : "border-gray-200 hover:border-orange/50 hover:shadow-xl"
-              }`}
+              className="relative bg-white rounded-3xl p-8 lg:p-10 border-2 border-orange shadow-2xl"
             >
               {plan.badge && (
                 <div className="absolute -top-4 left-1/2 -translate-x-1/2">
-                  <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-orange to-orange-light text-white font-bold text-xs rounded-full shadow-lg">
+                  <span className="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-to-r from-orange to-orange-light text-white font-bold text-xs rounded-full shadow-lg">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
+                    </span>
                     {plan.badge}
                   </span>
                 </div>
               )}
 
               <div className="text-center mb-6">
-                <h3 className="text-2xl font-bold text-black mb-2">
+                <h3 className="text-3xl font-bold text-black mb-2">
                   {plan.name}
                 </h3>
                 <p className="text-sm text-gray mb-4">{plan.description}</p>
-                <div className="flex items-baseline justify-center gap-1">
-                  <span className="text-5xl font-bold text-black">
+                <div className="flex items-baseline justify-center gap-1 mb-4">
+                  <span className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange to-orange-light">
                     {plan.price}
                   </span>
-                  <span className="text-gray">{plan.period}</span>
+                  {plan.period && <span className="text-gray">{plan.period}</span>}
                 </div>
+                {plan.betaNote && (
+                  <div className="inline-block px-4 py-2 bg-orange-50 border border-orange-200 rounded-xl">
+                    <p className="text-sm font-semibold text-orange-900">
+                      {plan.betaNote}
+                    </p>
+                  </div>
+                )}
               </div>
 
               <ul className="space-y-3 mb-8">
@@ -119,18 +113,14 @@ export function PricingSection() {
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
-                    <span className="text-sm text-gray">{feature}</span>
+                    <span className="text-sm text-gray font-medium">{feature}</span>
                   </li>
                 ))}
               </ul>
 
               <Link
                 href="/signup"
-                className={`block w-full py-3 px-6 text-center font-bold rounded-2xl transition-all duration-300 ${
-                  plan.highlighted
-                    ? "bg-gradient-to-r from-orange to-orange-light text-white hover:shadow-lg hover:scale-105"
-                    : "bg-black text-white hover:bg-gray-800"
-                }`}
+                className="block w-full py-4 px-6 text-center font-bold text-lg rounded-2xl bg-gradient-to-r from-orange to-orange-light text-white hover:shadow-lg hover:scale-105 transition-all duration-300"
               >
                 {plan.cta}
               </Link>
@@ -138,18 +128,38 @@ export function PricingSection() {
           ))}
         </div>
 
-        {/* FAQ Link */}
+        {/* Future Plans Notice */}
         <motion.div
           {...animation}
-          className="text-center mt-12"
+          className="mt-12 max-w-2xl mx-auto bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-6 border border-gray-200"
         >
-          <p className="text-gray">
-            Des questions sur nos tarifs ?{" "}
-            <a href="#faq" className="text-orange hover:text-orange-dark font-semibold">
-              Consultez notre FAQ
-            </a>
-          </p>
+          <div className="flex items-start gap-4">
+            <div className="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <svg
+                className="w-5 h-5 text-orange"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <div>
+              <h4 className="font-bold text-black mb-2">Et si un jour c&apos;est payant ?</h4>
+              <p className="text-sm text-gray">
+                On prévoit des abonnements pour financer les nouvelles fonctionnalités (mode hors-ligne, export PDF pour l&apos;assurance...).
+                Mais promis : <span className="font-semibold text-black">si vous rejoignez la béta aujourd&apos;hui, vous gardez tout gratuitement pour toujours</span>.
+                C&apos;est notre façon de dire merci aux premiers aventuriers.
+              </p>
+            </div>
+          </div>
         </motion.div>
+
       </div>
     </section>
   );

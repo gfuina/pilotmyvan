@@ -31,15 +31,14 @@ export function CTASection() {
           className="max-w-4xl mx-auto text-center"
         >
           <h2 className="text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6">
-            Prêt à rouler{" "}
+            Partez{" "}
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange to-orange-light">
               l&apos;esprit tranquille
-            </span>{" "}
-            ?
+            </span>
           </h2>
           <p className="text-lg lg:text-xl text-white/80 mb-10 max-w-2xl mx-auto">
-              Prenez soin de votre maison sur roues et concentrez-vous sur ce qui
-              compte vraiment : profiter de chaque kilomètre.
+              Plus jamais de panne évitable. Plus jamais de garantie perdue pour un entretien oublié.
+              Juste vous, la route, et votre maison qui roule nickel.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -85,6 +84,22 @@ export function CTASection() {
                   d="M5 13l4 4L19 7"
                 />
               </svg>
+              <span>100% gratuit en béta</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <svg
+                className="w-5 h-5 text-orange"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
               <span>Sans carte bancaire</span>
             </div>
             <div className="flex items-center gap-2">
@@ -101,23 +116,7 @@ export function CTASection() {
                   d="M5 13l4 4L19 7"
                 />
               </svg>
-              <span>Installation en 2 minutes</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <svg
-                className="w-5 h-5 text-orange"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-              <span>Annulation à tout moment</span>
+              <span>Avantages béta à vie</span>
             </div>
           </div>
         </motion.div>

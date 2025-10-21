@@ -33,8 +33,8 @@ export function Footer() {
               </span>
             </div>
             <p className="text-white/70 text-sm">
-              Gérez l&'entretien de votre van en toute simplicité. Ne manquez
-              plus jamais une révision importante.
+              Parce que votre maison roulante mérite autant d&apos;attention que celle qui ne bouge pas.
+              Ne perdez plus vos garanties, évitez les pannes, roulez sereinement.
             </p>
           </div>
 
@@ -56,14 +56,6 @@ export function Footer() {
                   className="text-white/70 hover:text-orange transition-colors"
                 >
                   Tarifs
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#faq"
-                  className="text-white/70 hover:text-orange transition-colors"
-                >
-                  FAQ
                 </a>
               </li>
               <li>

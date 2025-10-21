@@ -63,6 +63,8 @@ export default function EditVehicleModal({
   const [error, setError] = useState("");
   const [vehicleBrands, setVehicleBrands] = useState<VehicleBrand[]>([]);
   const [isLoadingBrands, setIsLoadingBrands] = useState(true);
+  const [licensePlateConsent, setLicensePlateConsent] = useState(!!vehicle.licensePlate);
+  const [vinConsent, setVinConsent] = useState(!!vehicle.vin);
 
   useEffect(() => {
     const fetchBrands = async () => {
@@ -97,6 +99,18 @@ export default function EditVehicleModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    // Validation des consentements RGPD
+    if (formData.licensePlate && !licensePlateConsent) {
+      setError("Vous devez consentir au traitement de la plaque d'immatriculation");
+      return;
+    }
+
+    if (formData.vin && !vinConsent) {
+      setError("Vous devez consentir au traitement du numéro de série (VIN)");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -118,6 +132,8 @@ export default function EditVehicleModal({
           coverImage,
           gallery,
           purchaseDate: formData.purchaseDate || undefined,
+          licensePlate: formData.licensePlate || undefined,
+          vin: formData.vin || undefined,
         }),
       });
 
@@ -323,7 +339,7 @@ export default function EditVehicleModal({
                 Informations complémentaires
               </h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
+                <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-black mb-2">
                     N° de série (VIN)
                   </label>
@@ -331,12 +347,33 @@ export default function EditVehicleModal({
                     type="text"
                     name="vin"
                     value={formData.vin}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      handleChange(e);
+                      if (!e.target.value) setVinConsent(false);
+                    }}
                     className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange focus:border-transparent"
                   />
+                  {formData.vin && (
+                    <div className="mt-3 p-3 bg-orange-50 border border-orange-200 rounded-xl">
+                      <label className="flex items-start gap-3 cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          checked={vinConsent}
+                          onChange={(e) => setVinConsent(e.target.checked)}
+                          className="mt-0.5 w-5 h-5 text-orange focus:ring-orange focus:ring-2 border-gray-300 rounded cursor-pointer"
+                        />
+                        <span className="text-xs text-gray-700 flex-1">
+                          Je consens au <strong>stockage et traitement de mon numéro VIN</strong> par PilotMyVan.
+                          Cette donnée est utilisée <strong>uniquement pour votre usage personnel</strong> et n&apos;est jamais partagée avec d&apos;autres utilisateurs.
+                          Vous pouvez retirer ce consentement à tout moment en supprimant cette information.
+                          <a href="/politique-confidentialite" target="_blank" className="text-orange hover:underline ml-1">En savoir plus</a>
+                        </span>
+                      </label>
+                    </div>
+                  )}
                 </div>
 
-                <div>
+                <div className="md:col-span-2">
                   <label className="block text-sm font-medium text-black mb-2">
                     Plaque d&apos;immatriculation
                   </label>
@@ -344,9 +381,30 @@ export default function EditVehicleModal({
                     type="text"
                     name="licensePlate"
                     value={formData.licensePlate}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                      handleChange(e);
+                      if (!e.target.value) setLicensePlateConsent(false);
+                    }}
                     className="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-orange focus:border-transparent"
                   />
+                  {formData.licensePlate && (
+                    <div className="mt-3 p-3 bg-orange-50 border border-orange-200 rounded-xl">
+                      <label className="flex items-start gap-3 cursor-pointer group">
+                        <input
+                          type="checkbox"
+                          checked={licensePlateConsent}
+                          onChange={(e) => setLicensePlateConsent(e.target.checked)}
+                          className="mt-0.5 w-5 h-5 text-orange focus:ring-orange focus:ring-2 border-gray-300 rounded cursor-pointer"
+                        />
+                        <span className="text-xs text-gray-700 flex-1">
+                          Je consens au <strong>stockage et traitement de ma plaque d&apos;immatriculation</strong> par PilotMyVan.
+                          Cette donnée est utilisée <strong>uniquement pour votre usage personnel</strong> et n&apos;est jamais partagée avec d&apos;autres utilisateurs.
+                          Vous pouvez retirer ce consentement à tout moment en supprimant cette information.
+                          <a href="/politique-confidentialite" target="_blank" className="text-orange hover:underline ml-1">En savoir plus</a>
+                        </span>
+                      </label>
+                    </div>
+                  )}
                 </div>
 
                 <div>

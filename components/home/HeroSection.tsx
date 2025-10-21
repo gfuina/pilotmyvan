@@ -46,6 +46,20 @@ export function HeroSection() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
+            {/* Beta Badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="inline-flex items-center gap-2 px-4 py-2 bg-orange/20 border-2 border-orange/40 text-orange text-sm font-bold rounded-full mb-6"
+            >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-orange" />
+              </span>
+              VERSION BÉTA • GRATUIT
+            </motion.div>
+
             {/* Main Heading */}
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -81,8 +95,9 @@ export function HeroSection() {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="text-lg md:text-xl text-white/80 mb-8 max-w-3xl mx-auto"
             >
-              Quand on vit sur la route, chaque entretien compte. PilotMyVan vous aide à
-              prendre soin de votre maison roulante pour voyager l&apos;esprit tranquille.
+              Votre maison roulante mérite autant d&apos;attention que votre chez-vous.
+              Ne perdez plus vos garanties, évitez les pannes et roulez sereinement.
+              On s&apos;occupe de vous rappeler quand il faut agir.
             </motion.p>
 
             {/* CTA Buttons */}
@@ -96,7 +111,7 @@ export function HeroSection() {
                 href="/signup"
                 className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gradient-to-r from-orange to-orange-light text-white font-bold text-lg rounded-2xl hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-orange/50"
               >
-                Démarrer gratuitement
+                Rejoindre la béta gratuite
                 <svg
                   className="w-5 h-5"
                   fill="none"
@@ -154,45 +169,15 @@ export function HeroSection() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth={2}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                    d="M5 13l4 4L19 7"
                   />
                 </svg>
-                <span>Gratuit pour commencer</span>
+                <span>100% gratuit en béta</span>
               </div>
             </motion.div>
           </motion.div>
         </div>
       </div>
-
-      {/* Scroll Indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-      >
-        <motion.div
-          animate={{ y: [0, 10, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          className="flex flex-col items-center text-white/50"
-        >
-          <span className="text-sm mb-2">Découvrir</span>
-          <svg
-            className="w-6 h-6"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M19 14l-7 7m0 0l-7-7m7 7V3"
-            />
-          </svg>
-        </motion.div>
-      </motion.div>
     </section>
   );
 }
-
