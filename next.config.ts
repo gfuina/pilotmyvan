@@ -17,8 +17,6 @@ export default withPWA({
   register: true,
   skipWaiting: true,
   disable: process.env.NODE_ENV === "development",
-  sw: "sw.js",
-  swSrc: "worker/index.js",
   runtimeCaching: [
     {
       urlPattern: /^https?.*/,
