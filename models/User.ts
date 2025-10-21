@@ -1,6 +1,16 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 import bcrypt from "bcryptjs";
 
+export interface IPushSubscription {
+  endpoint: string;
+  keys: {
+    p256dh: string;
+    auth: string;
+  };
+  userAgent?: string;
+  subscribedAt: Date;
+}
+
 export interface IUser extends Document {
   name: string;
   email: string;
@@ -11,6 +21,7 @@ export interface IUser extends Document {
   notificationPreferences: {
     daysBeforeMaintenance: number[]; // Jours avant l'entretien pour recevoir une notification
   };
+  pushSubscriptions: IPushSubscription[]; // Subscriptions pour les notifications push
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -53,6 +64,20 @@ const UserSchema: Schema<IUser> = new Schema(
         },
       },
       default: () => ({ daysBeforeMaintenance: [1] }),
+    },
+    pushSubscriptions: {
+      type: [
+        {
+          endpoint: { type: String, required: true },
+          keys: {
+            p256dh: { type: String, required: true },
+            auth: { type: String, required: true },
+          },
+          userAgent: { type: String },
+          subscribedAt: { type: Date, default: Date.now },
+        },
+      ],
+      default: [],
     },
   },
   {

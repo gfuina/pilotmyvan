@@ -11,6 +11,7 @@ import EquipmentList from "@/components/admin/EquipmentList";
 import AddEquipmentModal from "@/components/admin/AddEquipmentModal";
 import PendingEquipments from "@/components/admin/PendingEquipments";
 import PendingMaintenances from "@/components/admin/PendingMaintenances";
+import PushNotificationsManager from "@/components/admin/PushNotificationsManager";
 
 interface User {
   name?: string | null;
@@ -94,7 +95,7 @@ interface Equipment {
 
 export default function AdminDashboard({ user }: AdminDashboardProps) {
   const [activeTab, setActiveTab] = useState<
-    "stats" | "users" | "vehicles" | "vehicle-brands" | "equipment-brands" | "categories" | "equipments" | "pending-equipments" | "pending-maintenances"
+    "stats" | "users" | "vehicles" | "vehicle-brands" | "equipment-brands" | "categories" | "equipments" | "pending-equipments" | "pending-maintenances" | "push-notifications"
   >("stats");
   const [stats, setStats] = useState<Stats | null>(null);
   const [users, setUsers] = useState<UserData[]>([]);
@@ -376,6 +377,16 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
               >
                 ⏳ <span className="hidden sm:inline">Contributions Entretiens</span><span className="sm:hidden">Contrib. M.</span>
               </button>
+              <button
+                onClick={() => setActiveTab("push-notifications")}
+                className={`px-4 sm:px-6 py-2 sm:py-3 font-semibold rounded-2xl transition-all duration-300 text-xs sm:text-base whitespace-nowrap ${
+                  activeTab === "push-notifications"
+                    ? "bg-gradient-to-r from-orange to-orange-light text-white shadow-lg"
+                    : "bg-white text-gray hover:bg-gray-50"
+                }`}
+              >
+                📱 <span className="hidden sm:inline">Notifications Push</span><span className="sm:hidden">Push</span>
+              </button>
             </div>
           </div>
 
@@ -389,11 +400,16 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
             <PendingMaintenances />
           )}
 
-          {isLoading && activeTab !== "pending-equipments" && activeTab !== "pending-maintenances" ? (
+          {/* Push Notifications Tab - Always show */}
+          {activeTab === "push-notifications" && (
+            <PushNotificationsManager />
+          )}
+
+          {isLoading && activeTab !== "pending-equipments" && activeTab !== "pending-maintenances" && activeTab !== "push-notifications" ? (
             <div className="flex justify-center items-center py-20">
               <div className="w-12 h-12 border-4 border-orange border-t-transparent rounded-full animate-spin" />
             </div>
-          ) : activeTab !== "pending-equipments" && activeTab !== "pending-maintenances" ? (
+          ) : activeTab !== "pending-equipments" && activeTab !== "pending-maintenances" && activeTab !== "push-notifications" ? (
             <>
               {/* Stats Tab */}
               {activeTab === "stats" && stats && (

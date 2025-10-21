@@ -11,6 +11,8 @@ import MaintenancesOverviewCard from "@/components/dashboard/MaintenancesOvervie
 import QuickActionsCard from "@/components/dashboard/QuickActionsCard";
 import QuickMileageUpdateModal from "@/components/dashboard/QuickMileageUpdateModal";
 import QuickFuelRecordModal from "@/components/dashboard/QuickFuelRecordModal";
+import PWAInstallBanner from "@/components/dashboard/PWAInstallBanner";
+import PWAInstallListener from "@/components/dashboard/PWAInstallListener";
 
 interface Vehicle {
   _id: string;
@@ -90,6 +92,9 @@ export default function DashboardClient({ user }: DashboardClientProps) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* PWA Install Listener - Détecte l'installation et demande les notifs */}
+      <PWAInstallListener />
+      
       {/* Header */}
       <header className="bg-white shadow-sm sticky top-0 z-40">
         <div className="container mx-auto px-4 lg:px-8">
@@ -127,6 +132,9 @@ export default function DashboardClient({ user }: DashboardClientProps) {
           </div>
         </div>
       </header>
+
+      {/* PWA Install Banner */}
+      <PWAInstallBanner />
 
       {/* Main Content */}
       <main className="container mx-auto px-4 lg:px-8 py-8">

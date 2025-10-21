@@ -9,6 +9,10 @@ import Equipment from "@/models/Equipment";
 import Maintenance from "@/models/Maintenance";
 import { sendEmail } from "@/lib/email";
 import { generateOverdueMaintenanceEmail } from "@/lib/emailTemplates";
+import {
+  sendPushNotificationToMultiple,
+  generateOverdueMaintenancePushPayload,
+} from "@/lib/pushNotifications";
 
 export async function GET(request: NextRequest) {
   try {
@@ -32,6 +36,8 @@ export async function GET(request: NextRequest) {
       totalNotifications: 0,
       successfulEmails: 0,
       failedEmails: 0,
+      successfulPush: 0,
+      failedPush: 0,
       breakdown: {
         warning: 0,   // 1-6 jours de retard
         urgent: 0,    // 7-29 jours de retard
@@ -186,10 +192,8 @@ export async function GET(request: NextRequest) {
               // Marquer comme envoyé
               notificationHistory.emailSent = true;
               notificationHistory.emailSentAt = new Date();
-              await notificationHistory.save();
 
               results.successfulEmails++;
-              results.totalNotifications++;
 
               console.log(
                 `Email de retard [${urgencyLevel}] envoyé à ${user.email} pour ${maintenance.name} (${daysOverdue}j)`
@@ -197,10 +201,8 @@ export async function GET(request: NextRequest) {
             } catch (emailError: any) {
               // Enregistrer l'erreur
               notificationHistory.error = emailError.message;
-              await notificationHistory.save();
 
               results.failedEmails++;
-              results.totalNotifications++;
               results.errors.push(
                 `Failed to send overdue email to ${user.email}: ${emailError.message}`
               );
@@ -210,6 +212,48 @@ export async function GET(request: NextRequest) {
                 emailError
               );
             }
+
+            // Envoyer la notification push si l'utilisateur a des subscriptions
+            if (user.pushSubscriptions && user.pushSubscriptions.length > 0) {
+              try {
+                const pushPayload = generateOverdueMaintenancePushPayload({
+                  maintenanceName: maintenance.name,
+                  vehicleName: vehicle.name,
+                  daysOverdue,
+                  urgencyLevel,
+                  vehicleId: vehicle._id.toString(),
+                  maintenanceScheduleId: schedule._id.toString(),
+                });
+
+                const pushResults = await sendPushNotificationToMultiple(
+                  user.pushSubscriptions,
+                  pushPayload
+                );
+
+                results.successfulPush += pushResults.successful;
+                results.failedPush += pushResults.failed;
+
+                // Supprimer les subscriptions expirées
+                if (pushResults.expired.length > 0) {
+                  user.pushSubscriptions = user.pushSubscriptions.filter(
+                    (sub: any) => !pushResults.expired.includes(sub.endpoint)
+                  );
+                  await user.save();
+                }
+
+                console.log(
+                  `Push notifications overdue envoyées à ${user.email}: ${pushResults.successful} réussies, ${pushResults.failed} échouées`
+                );
+              } catch (pushError: any) {
+                console.error(
+                  `Erreur d'envoi de push notification overdue à ${user.email}:`,
+                  pushError
+                );
+              }
+            }
+
+            await notificationHistory.save();
+            results.totalNotifications++;
           }
         }
       } catch (userError: any) {

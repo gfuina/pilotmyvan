@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { usePushNotifications } from "@/hooks/usePushNotifications";
 
 export default function NotificationPreferencesCard() {
   const [daysBeforeMaintenance, setDaysBeforeMaintenance] = useState<number[]>(
@@ -12,6 +13,23 @@ export default function NotificationPreferencesCard() {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+
+  const {
+    isSupported: isPushSupported,
+    isSubscribed: isPushSubscribed,
+    isLoading: isPushLoading,
+    permission: pushPermission,
+    subscribe: subscribeToPush,
+    unsubscribe: unsubscribeFromPush,
+  } = usePushNotifications();
+
+  const [isPWA, setIsPWA] = useState(false);
+
+  // Détecter si on est en PWA
+  useEffect(() => {
+    const checkPWA = window.matchMedia("(display-mode: standalone)").matches;
+    setIsPWA(checkPWA);
+  }, []);
 
   // Charger les préférences actuelles
   useEffect(() => {
@@ -99,6 +117,26 @@ export default function NotificationPreferencesCard() {
     return `${days} jours avant`;
   };
 
+  const handlePushToggle = async () => {
+    if (isPushSubscribed) {
+      const success = await unsubscribeFromPush();
+      if (success) {
+        setSuccessMessage("Notifications push désactivées");
+        setTimeout(() => setSuccessMessage(""), 3000);
+      } else {
+        setError("Erreur lors de la désactivation des notifications push");
+      }
+    } else {
+      const success = await subscribeToPush();
+      if (success) {
+        setSuccessMessage("Notifications push activées !");
+        setTimeout(() => setSuccessMessage(""), 3000);
+      } else {
+        setError("Impossible d'activer les notifications push");
+      }
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="bg-white rounded-3xl shadow-lg p-6">
@@ -138,15 +176,69 @@ export default function NotificationPreferencesCard() {
             Notifications d&apos;entretien
           </h2>
           <p className="text-xs text-gray-500">
-            Recevez des rappels par email avant vos entretiens
+            {isPWA || isPushSupported
+              ? "Recevez des rappels par email et notifications push"
+              : "Recevez des rappels par email avant vos entretiens"}
           </p>
         </div>
       </div>
 
+      {/* Push Notifications Toggle (PWA) */}
+      {isPushSupported && (
+        <div className="mb-5 p-4 bg-gradient-to-r from-orange/5 to-orange-light/5 rounded-xl border border-orange/20">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <svg
+                className="w-5 h-5 text-orange"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
+                />
+              </svg>
+              <span className="text-sm font-semibold text-black">
+                Notifications push{isPWA ? " (PWA)" : ""}
+              </span>
+            </div>
+            <button
+              onClick={handlePushToggle}
+              disabled={isPushLoading || pushPermission === "denied"}
+              className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors ${
+                isPushSubscribed ? "bg-orange" : "bg-gray-300"
+              } ${
+                isPushLoading || pushPermission === "denied"
+                  ? "opacity-50 cursor-not-allowed"
+                  : "cursor-pointer"
+              }`}
+            >
+              <span
+                className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+                  isPushSubscribed ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+          </div>
+          <p className="text-xs text-gray-600">
+            {pushPermission === "denied"
+              ? "❌ Notifications bloquées dans les paramètres du navigateur"
+              : isPushSubscribed
+              ? "✅ Vous recevrez des notifications instantanées sur cet appareil"
+              : "Activez pour recevoir des notifications instantanées"}
+          </p>
+        </div>
+      )}
+
       {/* Current Preferences */}
       <div className="mb-5">
         <h3 className="text-xs font-semibold text-gray-700 mb-2">
-          Vous recevrez des notifications :
+          {isPWA || isPushSupported
+            ? "Rappels par email et push :"
+            : "Vous recevrez des notifications :"}
         </h3>
         <div className="space-y-2">
           <AnimatePresence>
