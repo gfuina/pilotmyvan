@@ -41,7 +41,7 @@ export function Header() {
           {/* Logo */}
           <Link href="/" className="relative z-10 flex items-center gap-3 group">
             <img
-              src="/images/logo/logo-icon-text-white.png"
+              src="/images/logo/logo-icon-text-slogan-white.png"
               alt="PilotMyVan"
               className="h-10 w-auto"
             />

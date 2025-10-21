@@ -102,7 +102,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
             {/* Logo */}
             <Link href="/" className="flex items-center">
               <img
-                src="/images/logo/logo-icon-text-orange.png"
+                src="/images/logo/logo-icon-text-slogan-orange.png"
                 alt="PilotMyVan"
                 className="h-10 w-auto"
               />
