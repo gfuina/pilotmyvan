@@ -5,12 +5,14 @@ import Equipment from "@/models/Equipment";
 import ManualChunk from "@/models/ManualChunk";
 import Category from "@/models/Category";
 import EquipmentBrand from "@/models/EquipmentBrand";
+import Vehicle from "@/models/Vehicle";
+import VehicleEquipment from "@/models/VehicleEquipment";
 
 export async function GET() {
   try {
     const session = await auth();
 
-    if (!session?.user) {
+    if (!session?.user?.id) {
       return NextResponse.json({ error: "Non authentifié" }, { status: 401 });
     }
 
@@ -20,8 +22,39 @@ export async function GET() {
     void Category;
     void EquipmentBrand;
 
-    // Récupérer tous les équipements approuvés avec des manuels
+    // Récupérer les véhicules de l'utilisateur
+    const vehicles = await Vehicle.find({ userId: session.user.id }).select("_id");
+    const vehicleIds = vehicles.map((v) => v._id);
+
+    if (vehicleIds.length === 0) {
+      return NextResponse.json({
+        equipments: [],
+        total: 0,
+      });
+    }
+
+    // Récupérer les équipements de ces véhicules
+    const vehicleEquipments = await VehicleEquipment.find({
+      vehicleId: { $in: vehicleIds },
+      isCustom: false, // On ne prend que les équipements standards (pas les custom sans manuels)
+    })
+      .select("equipmentId")
+      .lean();
+
+    const equipmentIds = vehicleEquipments
+      .map((ve) => ve.equipmentId)
+      .filter((id) => id != null);
+
+    if (equipmentIds.length === 0) {
+      return NextResponse.json({
+        equipments: [],
+        total: 0,
+      });
+    }
+
+    // Récupérer les détails des équipements qui ont des manuels
     const equipments = await Equipment.find({
+      _id: { $in: equipmentIds },
       status: "approved",
       manuals: { $exists: true, $not: { $size: 0 } },
     })
