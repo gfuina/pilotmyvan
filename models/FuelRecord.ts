@@ -9,6 +9,7 @@ export interface IFuelRecord extends Document {
   pricePerLiter?: number; // Prix au litre (calculé ou saisi)
   isFull: boolean; // Si c'est un plein complet ou non
   fuelType?: string; // Type de carburant (si différent du véhicule)
+  country?: string; // Pays où le plein a été effectué
   note?: string;
   recordedAt: Date;
   createdAt: Date;
@@ -51,6 +52,9 @@ const FuelRecordSchema: Schema<IFuelRecord> = new Schema(
       default: true,
     },
     fuelType: {
+      type: String,
+    },
+    country: {
       type: String,
     },
     note: {

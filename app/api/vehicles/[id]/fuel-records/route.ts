@@ -71,7 +71,7 @@ export async function POST(
     }
 
     const body = await req.json();
-    const { mileage, amountPaid, liters, pricePerLiter, isFull, note } = body;
+    const { mileage, amountPaid, liters, pricePerLiter, isFull, country, note } = body;
 
     // Validation
     if (!mileage || mileage < 0) {
@@ -135,6 +135,7 @@ export async function POST(
       pricePerLiter: calculatedPricePerLiter || undefined,
       isFull: isFull !== undefined ? isFull : true,
       fuelType: vehicle.fuelType,
+      country: country || undefined,
       note,
       recordedAt: new Date(),
     });

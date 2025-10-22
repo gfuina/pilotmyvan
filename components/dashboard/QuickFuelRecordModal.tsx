@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import CountrySelect from "./CountrySelect";
 
 interface Vehicle {
   _id: string;
@@ -30,6 +31,7 @@ export default function QuickFuelRecordModal({
   const [liters, setLiters] = useState("");
   const [pricePerLiter, setPricePerLiter] = useState("");
   const [isFull, setIsFull] = useState(true);
+  const [country, setCountry] = useState("France");
   const [note, setNote] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -37,6 +39,7 @@ export default function QuickFuelRecordModal({
 
   useEffect(() => {
     fetchVehicle();
+    fetchLastCountry();
   }, [vehicleId]);
 
   const fetchVehicle = async () => {
@@ -49,6 +52,20 @@ export default function QuickFuelRecordModal({
       }
     } catch (error) {
       console.error("Error fetching vehicle:", error);
+    }
+  };
+
+  const fetchLastCountry = async () => {
+    try {
+      const response = await fetch(`/api/vehicles/${vehicleId}/fuel-records`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.fuelRecords.length > 0 && data.fuelRecords[0].country) {
+          setCountry(data.fuelRecords[0].country);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching last country:", error);
     }
   };
 
@@ -101,6 +118,7 @@ export default function QuickFuelRecordModal({
           liters: litersValue,
           pricePerLiter: pricePerLiterValue,
           isFull,
+          country: country || undefined,
           note: note || undefined,
         }),
       });
@@ -176,7 +194,7 @@ export default function QuickFuelRecordModal({
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto">
+        <form onSubmit={handleSubmit} className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
           {successMessage && (
             <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-xl">
               <p className="text-green-600 text-sm font-medium">
@@ -320,6 +338,14 @@ export default function QuickFuelRecordModal({
               <label htmlFor="isFull" className="text-sm text-gray-700 cursor-pointer">
                 Plein complet
               </label>
+            </div>
+
+            {/* Pays */}
+            <div>
+              <label className="block text-xs font-medium text-gray-600 mb-1">
+                Pays
+              </label>
+              <CountrySelect value={country} onChange={setCountry} />
             </div>
 
             {/* Note */}

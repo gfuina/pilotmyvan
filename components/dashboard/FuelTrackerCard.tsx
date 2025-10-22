@@ -13,6 +13,7 @@ import {
   BarChart,
   Bar,
 } from "recharts";
+import CountrySelect from "./CountrySelect";
 
 interface FuelRecord {
   _id: string;
@@ -21,6 +22,7 @@ interface FuelRecord {
   liters?: number;
   pricePerLiter?: number;
   isFull: boolean;
+  country?: string;
   note?: string;
   recordedAt: string;
 }
@@ -63,6 +65,7 @@ export default function FuelTrackerCard({
   const [liters, setLiters] = useState("");
   const [pricePerLiter, setPricePerLiter] = useState("");
   const [isFull, setIsFull] = useState(true);
+  const [country, setCountry] = useState("France");
   const [note, setNote] = useState("");
 
   useEffect(() => {
@@ -96,6 +99,10 @@ export default function FuelTrackerCard({
         const data = await response.json();
         setRecords(data.fuelRecords);
         setStats(data.stats);
+        // Définir le pays par défaut basé sur le dernier plein
+        if (data.fuelRecords.length > 0 && data.fuelRecords[0].country) {
+          setCountry(data.fuelRecords[0].country);
+        }
       }
     } catch (error) {
       console.error("Erreur lors du chargement des pleins:", error);
@@ -141,6 +148,7 @@ export default function FuelTrackerCard({
           liters: litersValue,
           pricePerLiter: pricePerLiterValue,
           isFull,
+          country: country || undefined,
           note: note || undefined,
         }),
       });
@@ -584,6 +592,14 @@ export default function FuelTrackerCard({
           </label>
         </div>
 
+        {/* Pays */}
+        <div className="mb-4">
+          <label className="text-xs font-medium text-gray-600 block mb-1">
+            Pays
+          </label>
+          <CountrySelect value={country} onChange={setCountry} />
+        </div>
+
         {/* Note */}
         <div className="mb-4">
           <label className="text-xs font-medium text-gray-600 block mb-1">
@@ -654,6 +670,7 @@ export default function FuelTrackerCard({
                   </p>
                   <p className="text-xs text-gray-500">
                     {new Date(record.recordedAt).toLocaleDateString("fr-FR")}
+                    {record.country && ` • ${record.country}`}
                   </p>
                 </div>
                 <div className="text-right">
