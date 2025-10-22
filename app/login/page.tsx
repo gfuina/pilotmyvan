@@ -60,13 +60,12 @@ export default function LoginPage() {
       >
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8">
           {/* Logo */}
-          <Link href="/" className="flex flex-col items-center mb-8">
-            <span className="text-4xl font-bold text-black leading-none">
-              P<span className="text-orange">M</span>V
-            </span>
-            <span className="text-xs text-gray font-medium leading-none mt-1">
-              PilotMyVan
-            </span>
+          <Link href="/" className="flex justify-center mb-8">
+            <img
+              src="/images/logo/logo-icon-text-slogan-orange.png"
+              alt="PilotMyVan"
+              className="h-16 w-auto"
+            />
           </Link>
 
           <h1 className="text-2xl font-bold text-black text-center mb-2">

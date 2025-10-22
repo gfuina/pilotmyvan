@@ -67,6 +67,15 @@ function VerifyEmailContent() {
         className="w-full max-w-md mx-4 relative z-10"
       >
         <div className="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl p-8 text-center">
+          {/* Logo */}
+          <Link href="/" className="flex justify-center mb-8">
+            <img
+              src="/images/logo/logo-icon-text-slogan-orange.png"
+              alt="PilotMyVan"
+              className="h-16 w-auto"
+            />
+          </Link>
+
           {status === "loading" && (
             <>
               <div className="w-16 h-16 border-4 border-orange border-t-transparent rounded-full animate-spin mx-auto mb-6" />

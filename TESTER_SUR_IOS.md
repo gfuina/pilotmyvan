@@ -148,3 +148,4 @@ Puis recharge l'app.
 
 **TL;DR** : Sur iPhone, ça ne marchera qu'en HTTPS. Le plus simple = push sur Vercel et teste directement en prod.
 
+

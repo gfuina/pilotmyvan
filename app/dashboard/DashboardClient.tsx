@@ -1,9 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { signOut } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
-import Link from "next/link";
 import VehicleCard from "@/components/dashboard/VehicleCard";
 import AddVehicleModal from "@/components/dashboard/AddVehicleModal";
 import NotificationPreferencesCard from "@/components/dashboard/NotificationPreferencesCard";
@@ -13,6 +11,7 @@ import QuickMileageUpdateModal from "@/components/dashboard/QuickMileageUpdateMo
 import QuickFuelRecordModal from "@/components/dashboard/QuickFuelRecordModal";
 import PWAInstallBanner from "@/components/dashboard/PWAInstallBanner";
 import PWAInstallListener from "@/components/dashboard/PWAInstallListener";
+import DashboardHeader from "@/components/layout/DashboardHeader";
 
 interface Vehicle {
   _id: string;
@@ -72,10 +71,6 @@ export default function DashboardClient({ user }: DashboardClientProps) {
     fetchVehicles();
   };
 
-  const handleSignOut = async () => {
-    await signOut({ callbackUrl: "/" });
-  };
-
   const handleMileageUpdateClick = (vehicleId: string) => {
     setSelectedVehicleId(vehicleId);
     setIsMileageModalOpen(true);
@@ -96,42 +91,7 @@ export default function DashboardClient({ user }: DashboardClientProps) {
       <PWAInstallListener />
       
       {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-40">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between py-4">
-            {/* Logo */}
-            <Link href="/" className="flex items-center">
-              <img
-                src="/images/logo/logo-icon-text-slogan-orange.png"
-                alt="PilotMyVan"
-                className="h-10 w-auto"
-              />
-            </Link>
-
-            {/* User Menu */}
-            <div className="flex items-center gap-4">
-              <div className="text-right hidden sm:block">
-                <p className="text-sm font-medium text-black">{user.name}</p>
-                <p className="text-xs text-gray">{user.email}</p>
-              </div>
-              {user.isAdmin && (
-                <Link
-                  href="/administration"
-                  className="px-4 py-2 bg-orange hover:bg-orange-dark text-white font-semibold rounded-2xl transition-all duration-300"
-                >
-                  Admin
-                </Link>
-              )}
-              <button
-                onClick={handleSignOut}
-                className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-black font-semibold rounded-2xl transition-all duration-300"
-              >
-                Déconnexion
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <DashboardHeader user={user} />
 
       {/* PWA Install Banner */}
       <PWAInstallBanner />
