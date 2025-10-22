@@ -213,7 +213,6 @@ export default function GlobalChatbot() {
                   width={100}
                   height={100}
                   className="drop-shadow-2xl h-[80px] md:h-[100px] w-auto object-contain"
-                  style={{ filter: 'drop-shadow(0 10px 25px rgba(0,0,0,0.3))' }}
                 />
               </div>
 
@@ -378,7 +377,7 @@ export default function GlobalChatbot() {
                       onChange={(e) => setInput(e.target.value)}
                       onKeyPress={handleKeyPress}
                       placeholder="Posez votre question..."
-                      className="flex-1 resize-none rounded-xl border-2 border-gray-200 px-3 md:px-4 py-2 md:py-3 text-xs md:text-sm focus:border-orange focus:outline-none focus:ring-2 focus:ring-orange/20 transition-all shadow-sm"
+                      className="flex-1 resize-none rounded-xl border-2 border-gray-200 px-3 md:px-4 py-2 md:py-3 text-base md:text-sm focus:border-orange focus:outline-none focus:ring-2 focus:ring-orange/20 transition-all shadow-sm"
                       rows={2}
                       disabled={isLoading}
                     />
