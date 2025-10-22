@@ -37,7 +37,7 @@ export async function POST() {
         const manualResults = await Promise.allSettled(
           equipment.manuals.map((manual) =>
             indexManual(
-              equipment._id.toString(),
+              String(equipment._id),
               manual.title,
               manual.url,
               manual.isExternal

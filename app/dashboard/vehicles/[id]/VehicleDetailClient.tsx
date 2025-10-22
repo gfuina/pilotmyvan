@@ -10,6 +10,7 @@ import VehicleEquipmentList from "@/components/dashboard/VehicleEquipmentList";
 import VehicleMaintenancesCard from "@/components/dashboard/VehicleMaintenancesCard";
 import MileageTrackerCard from "@/components/dashboard/MileageTrackerCard";
 import FuelTrackerCard from "@/components/dashboard/FuelTrackerCard";
+import GlobalChatbot from "@/components/dashboard/GlobalChatbot";
 
 interface Vehicle {
   _id: string;
@@ -503,6 +504,9 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
           />
         )}
       </AnimatePresence>
+
+      {/* Global AI Chatbot */}
+      <GlobalChatbot />
     </>
   );
 }

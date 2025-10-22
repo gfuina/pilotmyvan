@@ -12,6 +12,7 @@ import QuickFuelRecordModal from "@/components/dashboard/QuickFuelRecordModal";
 import PWAInstallBanner from "@/components/dashboard/PWAInstallBanner";
 import PWAInstallListener from "@/components/dashboard/PWAInstallListener";
 import DashboardHeader from "@/components/layout/DashboardHeader";
+import GlobalChatbot from "@/components/dashboard/GlobalChatbot";
 
 interface Vehicle {
   _id: string;
@@ -269,6 +270,9 @@ export default function DashboardClient({ user }: DashboardClientProps) {
           />
         )}
       </AnimatePresence>
+
+      {/* Global AI Chatbot */}
+      <GlobalChatbot />
     </div>
   );
 }
