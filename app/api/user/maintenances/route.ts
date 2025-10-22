@@ -6,6 +6,7 @@ import Vehicle from "@/models/Vehicle";
 import Maintenance from "@/models/Maintenance";
 import VehicleEquipment from "@/models/VehicleEquipment";
 import Equipment from "@/models/Equipment";
+import Category from "@/models/Category";
 
 export async function GET() {
   try {

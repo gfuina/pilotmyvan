@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
 
     // Import models after DB connection
     const Equipment = (await import("@/models/Equipment")).default;
+    await import("@/models/Category");
     await import("@/models/VehicleBrand");
     await import("@/models/EquipmentBrand");
 

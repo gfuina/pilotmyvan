@@ -84,6 +84,12 @@ export async function POST(
 
     const Vehicle = (await import("@/models/Vehicle")).default;
     const VehicleEquipment = (await import("@/models/VehicleEquipment")).default;
+    
+    // Import models to ensure they're registered for populate
+    await import("@/models/Equipment");
+    await import("@/models/Category");
+    await import("@/models/VehicleBrand");
+    await import("@/models/EquipmentBrand");
 
     // Verify vehicle belongs to user
     const vehicle = await Vehicle.findOne({
