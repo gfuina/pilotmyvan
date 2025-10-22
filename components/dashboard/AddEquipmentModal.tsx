@@ -64,6 +64,9 @@ export default function AddEquipmentModal({
   const [selectedVehicleBrand, setSelectedVehicleBrand] = useState<string>("");
   const [selectedEquipmentBrand, setSelectedEquipmentBrand] = useState<string>("");
   const [selectedCategory, setSelectedCategory] = useState<string>("");
+  const [selectedCategoryL1, setSelectedCategoryL1] = useState<string>("");
+  const [selectedCategoryL2, setSelectedCategoryL2] = useState<string>("");
+  const [selectedCategoryL3, setSelectedCategoryL3] = useState<string>("");
   const [vehicleBrands, setVehicleBrands] = useState<Array<{ _id: string; name: string }>>([]);
   const [equipmentBrands, setEquipmentBrands] = useState<Array<{ _id: string; name: string }>>([]);
   const [categories, setCategories] = useState<Array<{ _id: string; name: string; level: number; parentId?: string; children?: unknown[] }>>([]);
@@ -270,6 +273,21 @@ export default function AddEquipmentModal({
     setSelectedVehicleBrand("");
     setSelectedEquipmentBrand("");
     setSelectedCategory("");
+    setSelectedCategoryL1("");
+    setSelectedCategoryL2("");
+    setSelectedCategoryL3("");
+  };
+
+  // Handle category level changes with cascade reset
+  const handleCategoryL1Change = (value: string) => {
+    setSelectedCategoryL1(value);
+    setSelectedCategoryL2(""); // Reset level 2
+    setSelectedCategoryL3(""); // Reset level 3
+  };
+
+  const handleCategoryL2Change = (value: string) => {
+    setSelectedCategoryL2(value);
+    setSelectedCategoryL3(""); // Reset level 3
   };
 
   const activeFiltersCount = [
@@ -279,21 +297,34 @@ export default function AddEquipmentModal({
     selectedCategory,
   ].filter(Boolean).length;
 
-  // Organize categories for better display - handle all levels
-  const organizedCategories = useMemo(() => {
-    const level1 = categories.filter(cat => cat.level === 1);
-    return level1.map(parent => {
-      const level2Children = categories.filter(cat => cat.parentId === parent._id);
-      const allChildren = level2Children.flatMap(l2 => {
-        const level3Children = categories.filter(cat => cat.parentId === l2._id);
-        return [l2, ...level3Children];
-      });
-      return {
-        ...parent,
-        subcategories: allChildren
-      };
-    });
+  // Filter categories by level for cascade navigation
+  const categoriesL1 = useMemo(() => {
+    return categories.filter(cat => cat.level === 1);
   }, [categories]);
+
+  const categoriesL2 = useMemo(() => {
+    if (!selectedCategoryL1) return [];
+    return categories.filter(cat => cat.level === 2 && cat.parentId === selectedCategoryL1);
+  }, [categories, selectedCategoryL1]);
+
+  const categoriesL3 = useMemo(() => {
+    if (!selectedCategoryL2) return [];
+    return categories.filter(cat => cat.level === 3 && cat.parentId === selectedCategoryL2);
+  }, [categories, selectedCategoryL2]);
+
+  // Update selectedCategory based on cascade selection
+  useEffect(() => {
+    // Use the most specific level selected
+    if (selectedCategoryL3) {
+      setSelectedCategory(selectedCategoryL3);
+    } else if (selectedCategoryL2) {
+      setSelectedCategory(selectedCategoryL2);
+    } else if (selectedCategoryL1) {
+      setSelectedCategory(selectedCategoryL1);
+    } else {
+      setSelectedCategory("");
+    }
+  }, [selectedCategoryL1, selectedCategoryL2, selectedCategoryL3]);
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -450,28 +481,6 @@ export default function AddEquipmentModal({
                       ))}
                     </select>
 
-                    {/* Category */}
-                    <select
-                      value={selectedCategory}
-                      onChange={(e) => setSelectedCategory(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-orange focus:outline-none text-sm"
-                    >
-                      <option value="">📂 Toutes catégories</option>
-                      {organizedCategories.map((parent) => (
-                        <optgroup key={parent._id} label={parent.name}>
-                          <option value={parent._id}>
-                            Tous les {parent.name.toLowerCase()}
-                          </option>
-                          {parent.subcategories.map((sub) => (
-                            <option key={sub._id} value={sub._id}>
-                              {sub.level === 3 ? "    " : ""}
-                              {sub.name}
-                            </option>
-                          ))}
-                        </optgroup>
-                      ))}
-                    </select>
-
                     {/* Reset Button */}
                     {activeFiltersCount > 0 && (
                       <button
@@ -480,6 +489,95 @@ export default function AddEquipmentModal({
                       >
                         ✕ Réinitialiser ({activeFiltersCount})
                       </button>
+                    )}
+                  </div>
+
+                  {/* Category Cascade Navigation */}
+                  <div className="space-y-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      {/* Level 1 Categories */}
+                      <select
+                        value={selectedCategoryL1}
+                        onChange={(e) => handleCategoryL1Change(e.target.value)}
+                        className="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-orange focus:outline-none text-sm"
+                      >
+                        <option value="">📂 Catégorie principale</option>
+                        {categoriesL1.map((cat) => (
+                          <option key={cat._id} value={cat._id}>
+                            {cat.name}
+                          </option>
+                        ))}
+                      </select>
+
+                      {/* Level 2 Categories - Only show if L1 is selected */}
+                      {selectedCategoryL1 && (
+                        <motion.select
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.2 }}
+                          value={selectedCategoryL2}
+                          onChange={(e) => handleCategoryL2Change(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-orange focus:outline-none text-sm"
+                        >
+                          <option value="">📁 Sous-catégorie</option>
+                          {categoriesL2.map((cat) => (
+                            <option key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </option>
+                          ))}
+                        </motion.select>
+                      )}
+
+                      {/* Level 3 Categories - Only show if L2 is selected */}
+                      {selectedCategoryL2 && categoriesL3.length > 0 && (
+                        <motion.select
+                          initial={{ opacity: 0, x: -10 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.2 }}
+                          value={selectedCategoryL3}
+                          onChange={(e) => setSelectedCategoryL3(e.target.value)}
+                          className="w-full px-3 py-2 rounded-xl border border-gray-200 focus:border-orange focus:outline-none text-sm"
+                        >
+                          <option value="">📄 Détail</option>
+                          {categoriesL3.map((cat) => (
+                            <option key={cat._id} value={cat._id}>
+                              {cat.name}
+                            </option>
+                          ))}
+                        </motion.select>
+                      )}
+                    </div>
+
+                    {/* Breadcrumb display */}
+                    {selectedCategoryL1 && (
+                      <motion.div
+                        initial={{ opacity: 0, y: -5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-2 text-xs text-gray-600 px-2"
+                      >
+                        <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clipRule="evenodd" />
+                        </svg>
+                        <span className="font-medium">
+                          {categories.find(c => c._id === selectedCategoryL1)?.name}
+                        </span>
+                        {selectedCategoryL2 && (
+                          <>
+                            <span>›</span>
+                            <span className="font-medium">
+                              {categories.find(c => c._id === selectedCategoryL2)?.name}
+                            </span>
+                          </>
+                        )}
+                        {selectedCategoryL3 && (
+                          <>
+                            <span>›</span>
+                            <span className="font-medium text-orange">
+                              {categories.find(c => c._id === selectedCategoryL3)?.name}
+                            </span>
+                          </>
+                        )}
+                      </motion.div>
                     )}
                   </div>
                 </div>
