@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import MaintenanceRecord from "@/models/MaintenanceRecord";
+import Vehicle from "@/models/Vehicle";
+import VehicleMaintenanceSchedule from "@/models/VehicleMaintenanceSchedule";
+import Maintenance from "@/models/Maintenance";
 
 export async function GET(
   request: NextRequest,

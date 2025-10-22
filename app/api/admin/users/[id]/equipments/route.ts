@@ -3,6 +3,10 @@ import { auth } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import VehicleEquipment from "@/models/VehicleEquipment";
 import Vehicle from "@/models/Vehicle";
+import Equipment from "@/models/Equipment";
+import Category from "@/models/Category";
+import VehicleBrand from "@/models/VehicleBrand";
+import EquipmentBrand from "@/models/EquipmentBrand";
 
 export async function GET(
   request: NextRequest,
