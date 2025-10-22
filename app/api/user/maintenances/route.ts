@@ -19,9 +19,10 @@ export async function GET() {
     await dbConnect();
 
     // Force les modèles à être enregistrés
-    Maintenance;
-    VehicleEquipment;
-    Equipment;
+    void Maintenance;
+    void VehicleEquipment;
+    void Equipment;
+    void Category;
 
     // Récupérer les véhicules de l'utilisateur
     const vehicles = await Vehicle.find({ userId: session.user.id }).select('_id name make model');

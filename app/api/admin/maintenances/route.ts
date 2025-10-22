@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import Maintenance from "@/models/Maintenance";
 import Equipment from "@/models/Equipment";
+import Category from "@/models/Category";
 import { isUserAdmin } from "@/lib/admin";
 
 // GET all maintenances (optionally filtered by equipmentId)
@@ -18,6 +19,10 @@ export async function GET(request: NextRequest) {
     const equipmentId = searchParams.get("equipmentId");
 
     await connectDB();
+
+    // Force registration
+    void Equipment;
+    void Category;
 
     const query = equipmentId ? { equipmentId } : {};
 
@@ -55,6 +60,10 @@ export async function POST(request: NextRequest) {
     }
 
     await connectDB();
+
+    // Force registration
+    void Equipment;
+    void Category;
 
     const maintenance = await Maintenance.create(body);
 

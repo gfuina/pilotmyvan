@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
 import Maintenance from "@/models/Maintenance";
+import Equipment from "@/models/Equipment";
+import Category from "@/models/Category";
 import { isUserAdmin } from "@/lib/admin";
 import { del } from "@vercel/blob";
 
@@ -18,6 +20,10 @@ export async function GET(
     }
 
     await connectDB();
+
+    // Force registration
+    void Equipment;
+    void Category;
 
     const { id } = await params;
     const maintenance = await Maintenance.findById(id).populate(
@@ -68,6 +74,10 @@ export async function PATCH(
     }
 
     await connectDB();
+
+    // Force registration
+    void Equipment;
+    void Category;
 
     const maintenance = await Maintenance.findByIdAndUpdate(
       id,

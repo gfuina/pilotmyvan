@@ -25,6 +25,11 @@ export async function GET(
 
     await connectDB();
 
+    // Force model registration for populate (needed in serverless)
+    void Vehicle;
+    void VehicleMaintenanceSchedule;
+    void Maintenance;
+
     const maintenances = await MaintenanceRecord.find({ userId: id })
       .populate("vehicleId")
       .populate({

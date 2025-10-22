@@ -86,10 +86,16 @@ export async function POST(
     const VehicleEquipment = (await import("@/models/VehicleEquipment")).default;
     
     // Import models to ensure they're registered for populate
-    await import("@/models/Equipment");
-    await import("@/models/Category");
-    await import("@/models/VehicleBrand");
-    await import("@/models/EquipmentBrand");
+    const Equipment = (await import("@/models/Equipment")).default;
+    const Category = (await import("@/models/Category")).default;
+    const VehicleBrand = (await import("@/models/VehicleBrand")).default;
+    const EquipmentBrand = (await import("@/models/EquipmentBrand")).default;
+    
+    // Force registration
+    void Equipment;
+    void Category;
+    void VehicleBrand;
+    void EquipmentBrand;
 
     // Verify vehicle belongs to user
     const vehicle = await Vehicle.findOne({

@@ -27,6 +27,12 @@ export async function GET(
 
     await connectDB();
 
+    // Force model registration for populate (needed in serverless)
+    void Equipment;
+    void Category;
+    void VehicleBrand;
+    void EquipmentBrand;
+
     // First get all vehicles for this user
     const vehicles = await Vehicle.find({ userId: id }).select("_id");
     const vehicleIds = vehicles.map((v) => v._id);

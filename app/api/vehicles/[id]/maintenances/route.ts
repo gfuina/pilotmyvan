@@ -25,6 +25,10 @@ export async function GET(
     // Import models for populate
     const Maintenance = (await import("@/models/Maintenance")).default;
     const Equipment = (await import("@/models/Equipment")).default;
+    
+    // Force registration
+    void Maintenance;
+    void Equipment;
 
     // Verify vehicle belongs to user
     const vehicle = await Vehicle.findOne({

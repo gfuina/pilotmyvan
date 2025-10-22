@@ -15,8 +15,12 @@ export async function GET(request: NextRequest) {
     await connectDB();
 
     const Maintenance = (await import("@/models/Maintenance")).default;
-    await import("@/models/Equipment");
-    await import("@/models/User");
+    const Equipment = (await import("@/models/Equipment")).default;
+    const User = (await import("@/models/User")).default;
+    
+    // Force registration
+    void Equipment;
+    void User;
 
     const pendingMaintenances = await Maintenance.find({
       isUserContributed: true,
