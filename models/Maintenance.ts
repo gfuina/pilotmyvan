@@ -13,6 +13,7 @@ export interface IMaintenance extends Document {
     | "drain"
     | "test"
     | "calibration"
+    | "update"
     | "other";
   priority: "critical" | "important" | "recommended" | "optional";
   difficulty: "easy" | "intermediate" | "advanced" | "professional";
@@ -88,6 +89,7 @@ const MaintenanceSchema = new mongoose.Schema<IMaintenance>(
         "drain",
         "test",
         "calibration",
+        "update",
         "other",
       ],
       required: true,
