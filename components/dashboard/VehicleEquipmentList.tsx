@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { AnimatePresence } from "framer-motion";
 import EquipmentMaintenanceHistoryModal from "./EquipmentMaintenanceHistoryModal";
+import EquipmentChatbot from "./EquipmentChatbot";
 
 interface VehicleEquipment {
   _id: string;
@@ -68,6 +69,11 @@ export default function VehicleEquipmentList({
   const [historyEquipment, setHistoryEquipment] = useState<{
     id: string;
     name: string;
+  } | null>(null);
+  const [chatbotEquipment, setChatbotEquipment] = useState<{
+    id: string;
+    name: string;
+    manuals: Array<{ title: string; url: string }>;
   } | null>(null);
   const [maintenanceStatuses, setMaintenanceStatuses] = useState<Record<string, EquipmentMaintenanceStatus>>({});
   const [vehicle, setVehicle] = useState<{ currentMileage: number } | null>(null);
@@ -486,6 +492,34 @@ export default function VehicleEquipmentList({
                     </svg>
                     <span className="hidden sm:inline">Historique</span>
                   </button>
+                  {!item.isCustom && item.equipmentId?.manuals && item.equipmentId.manuals.length > 0 && (
+                    <button
+                      onClick={() =>
+                        setChatbotEquipment({
+                          id: item.equipmentId!._id,
+                          name: equipment.name,
+                          manuals: item.equipmentId!.manuals,
+                        })
+                      }
+                      className="flex-1 px-2 py-1.5 bg-green-50 hover:bg-green-100 text-green-600 rounded-lg transition-colors font-semibold text-xs flex items-center justify-center gap-1.5"
+                      title="Assistant IA - Posez vos questions sur les manuels"
+                    >
+                      <svg
+                        className="w-3.5 h-3.5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                        />
+                      </svg>
+                      <span className="hidden sm:inline">IA</span>
+                    </button>
+                  )}
                   <button
                     onClick={() => toggleExpand(item._id)}
                     className="px-2 py-1.5 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors"
@@ -627,6 +661,14 @@ export default function VehicleEquipmentList({
             vehicleEquipmentId={historyEquipment.id}
             equipmentName={historyEquipment.name}
             onClose={() => setHistoryEquipment(null)}
+          />
+        )}
+        {chatbotEquipment && (
+          <EquipmentChatbot
+            equipmentId={chatbotEquipment.id}
+            equipmentName={chatbotEquipment.name}
+            manuals={chatbotEquipment.manuals}
+            onClose={() => setChatbotEquipment(null)}
           />
         )}
       </AnimatePresence>
