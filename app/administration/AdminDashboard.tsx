@@ -12,6 +12,7 @@ import AddEquipmentModal from "@/components/admin/AddEquipmentModal";
 import PendingEquipments from "@/components/admin/PendingEquipments";
 import PendingMaintenances from "@/components/admin/PendingMaintenances";
 import PushNotificationsManager from "@/components/admin/PushNotificationsManager";
+import UserAccordion from "@/components/admin/UserAccordion";
 
 interface User {
   name?: string | null;
@@ -471,90 +472,32 @@ export default function AdminDashboard({ user }: AdminDashboardProps) {
               {/* Users Tab */}
               {activeTab === "users" && (
                 <div className="bg-white rounded-3xl shadow-lg overflow-hidden">
-                  {/* Mobile view */}
-                  <div className="block sm:hidden divide-y divide-gray-200">
-                    {users.map((u) => (
-                      <div key={u._id} className="p-4 hover:bg-gray-50">
-                        <div className="font-medium text-black mb-1">{u.name}</div>
-                        <div className="text-sm text-gray mb-2 break-all">{u.email}</div>
-                        <div className="flex flex-wrap gap-2 mb-2">
-                          {u.isAdmin && (
-                            <span className="px-2 py-1 text-xs font-semibold text-orange bg-orange/10 rounded-full">
-                              Admin
-                            </span>
-                          )}
-                          {u.emailVerified ? (
-                            <span className="px-2 py-1 text-xs font-semibold text-green-600 bg-green-100 rounded-full">
-                              Vérifié
-                            </span>
-                          ) : (
-                            <span className="px-2 py-1 text-xs font-semibold text-yellow-600 bg-yellow-100 rounded-full">
-                              Non vérifié
-                            </span>
-                          )}
+                  {/* Header for desktop */}
+                  <div className="hidden sm:block bg-gray-50 border-b border-gray-200">
+                    <div className="px-4 lg:px-6 py-3 lg:py-4">
+                      <div className="flex items-center gap-4">
+                        <div className="w-1/4 text-xs font-semibold text-gray uppercase tracking-wider">
+                          Nom
                         </div>
-                        <div className="text-xs text-gray">
-                          {new Date(u.createdAt).toLocaleDateString("fr-FR")}
+                        <div className="w-1/3 text-xs font-semibold text-gray uppercase tracking-wider">
+                          Email
                         </div>
+                        <div className="w-1/4 text-xs font-semibold text-gray uppercase tracking-wider">
+                          Statut
+                        </div>
+                        <div className="w-1/6 text-xs font-semibold text-gray uppercase tracking-wider">
+                          Date d&apos;inscription
+                        </div>
+                        <div className="w-8"></div>
                       </div>
-                    ))}
+                    </div>
                   </div>
-
-                  {/* Desktop view */}
-                  <div className="hidden sm:block overflow-x-auto">
-                    <table className="w-full">
-                      <thead className="bg-gray-50 border-b border-gray-200">
-                        <tr>
-                          <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-semibold text-gray uppercase tracking-wider">
-                            Nom
-                          </th>
-                          <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-semibold text-gray uppercase tracking-wider">
-                            Email
-                          </th>
-                          <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-semibold text-gray uppercase tracking-wider">
-                            Statut
-                          </th>
-                          <th className="px-4 lg:px-6 py-3 lg:py-4 text-left text-xs font-semibold text-gray uppercase tracking-wider">
-                            Date d&apos;inscription
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-gray-200">
-                        {users.map((u) => (
-                          <tr key={u._id} className="hover:bg-gray-50">
-                            <td className="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">
-                              <div className="text-sm font-medium text-black">
-                                {u.name}
-                              </div>
-                            </td>
-                            <td className="px-4 lg:px-6 py-3 lg:py-4">
-                              <div className="text-sm text-gray break-all">{u.email}</div>
-                            </td>
-                            <td className="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap">
-                              <div className="flex flex-wrap gap-2">
-                                {u.isAdmin && (
-                                  <span className="px-2 py-1 text-xs font-semibold text-orange bg-orange/10 rounded-full">
-                                    Admin
-                                  </span>
-                                )}
-                                {u.emailVerified ? (
-                                  <span className="px-2 py-1 text-xs font-semibold text-green-600 bg-green-100 rounded-full">
-                                    Vérifié
-                                  </span>
-                                ) : (
-                                  <span className="px-2 py-1 text-xs font-semibold text-yellow-600 bg-yellow-100 rounded-full">
-                                    Non vérifié
-                                  </span>
-                                )}
-                              </div>
-                            </td>
-                            <td className="px-4 lg:px-6 py-3 lg:py-4 whitespace-nowrap text-sm text-gray">
-                              {new Date(u.createdAt).toLocaleDateString("fr-FR")}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                  
+                  {/* Accordion list */}
+                  <div>
+                    {users.map((u) => (
+                      <UserAccordion key={u._id} user={u} />
+                    ))}
                   </div>
                 </div>
               )}
