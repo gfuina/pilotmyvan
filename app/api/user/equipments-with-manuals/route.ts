@@ -15,6 +15,10 @@ export async function GET() {
     }
 
     await connectDB();
+    
+    // Force model registration for production build
+    void Category;
+    void EquipmentBrand;
 
     // Récupérer tous les équipements approuvés avec des manuels
     const equipments = await Equipment.find({
