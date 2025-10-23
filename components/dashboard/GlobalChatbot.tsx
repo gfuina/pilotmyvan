@@ -194,7 +194,7 @@ export default function GlobalChatbot() {
 
       {/* Chatbot modal avec animation d'entrée */}
       {isOpen && (
-        <div className="fixed inset-x-4 top-20 bottom-4 md:inset-auto md:bottom-6 md:right-6 z-30 flex w-auto md:w-[450px] md:h-[650px] flex-col rounded-2xl bg-white shadow-2xl border border-gray-200 animate-in slide-in-from-bottom-4 fade-in duration-300 max-h-[85vh] md:max-h-none">
+        <div className="fixed inset-x-4 bottom-0 h-[500px] md:inset-auto md:bottom-0 md:right-6 md:w-[450px] md:h-[650px] z-30 flex w-auto flex-col rounded-t-2xl bg-white shadow-2xl border border-gray-200 animate-in slide-in-from-bottom-4 fade-in duration-300">
           {/* Header avec robot intégré */}
           <div className="relative border-b bg-gradient-to-r from-orange to-orange-light rounded-t-2xl overflow-visible">
             {/* Effet de brillance animé */}
@@ -279,7 +279,7 @@ export default function GlobalChatbot() {
                       <button
                         key={equipment._id}
                         onClick={() => handleSelectEquipment(equipment)}
-                        className="w-full rounded-xl border-2 border-gray-200 p-2.5 md:p-3 text-left transition-all hover:border-orange hover:bg-orange/5 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] bg-white"
+                        className="w-full rounded-xl border-2 border-gray-200 p-2.5 md:p-3 text-left transition-all hover:border-orange hover:bg-orange/5 hover:shadow-md active:scale-[0.98] bg-white"
                       >
                         <div className="flex gap-2 md:gap-3">
                           {equipment.photos[0] && (
