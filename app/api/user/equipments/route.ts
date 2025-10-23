@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import connectDB from "@/lib/mongodb";
+import type { IEquipmentBrand } from "@/models/EquipmentBrand";
 
 // POST - User creates a new equipment and adds it to their vehicle
 export async function POST(request: NextRequest) {
@@ -102,20 +103,20 @@ export async function POST(request: NextRequest) {
     if (customEquipmentBrands && customEquipmentBrands.length > 0) {
       for (const brandName of customEquipmentBrands) {
         // Check if brand already exists (case insensitive)
-        let existingBrand = await EquipmentBrand.findOne({
+        let existingBrand = (await EquipmentBrand.findOne({
           name: { $regex: new RegExp(`^${brandName.trim()}$`, "i") },
-        });
+        })) as IEquipmentBrand | null;
 
         if (!existingBrand) {
           // Create new brand with pending status for admin review
-          existingBrand = await EquipmentBrand.create({
+          existingBrand = (await EquipmentBrand.create({
             name: brandName.trim(),
             status: "pending",
             createdBy: session.user.id,
-          });
+          })) as IEquipmentBrand;
         }
 
-        customBrandIds.push(existingBrand._id.toString());
+        customBrandIds.push(String(existingBrand._id));
       }
     }
 
