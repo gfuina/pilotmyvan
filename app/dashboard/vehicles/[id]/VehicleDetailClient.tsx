@@ -122,9 +122,14 @@ export default function VehicleDetailClient({ vehicleId }: { vehicleId: string }
     fetchVehicle();
   };
 
-  const handleEquipmentSuccess = () => {
+  const handleEquipmentSuccess = (vehicleEquipmentId?: string) => {
     setIsAddEquipmentModalOpen(false);
     fetchEquipments();
+    
+    // Open maintenance modal with the new equipment pre-selected
+    if (vehicleEquipmentId) {
+      setPreSelectedEquipmentForMaintenance(vehicleEquipmentId);
+    }
   };
 
   if (isLoading) {

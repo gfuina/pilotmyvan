@@ -201,7 +201,9 @@ export default function MaintenanceForm({
     }
 
     if (!recurrence.time && !recurrence.kilometers) {
-      setError("Au moins une récurrence (temporelle ou kilométrique) est requise");
+      setError(
+        "Au moins une récurrence (temporelle ou kilométrique) est requise"
+      );
       return;
     }
 
@@ -218,38 +220,6 @@ export default function MaintenanceForm({
           <p className="text-red-600 text-sm">{error}</p>
         </div>
       )}
-
-      {/* Info Box */}
-      <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6">
-        <div className="flex items-start gap-4">
-          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
-            <svg
-              className="w-5 h-5 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-          <div className="flex-1">
-            <h3 className="text-lg font-bold text-blue-900 mb-2">
-              Enrichissez la bibliothèque !
-            </h3>
-            <p className="text-blue-700 text-sm mb-2">
-              Créez un entretien pour <strong>{equipmentName}</strong> et aidez la communauté.
-            </p>
-            <p className="text-blue-600 text-xs">
-              💡 Plus vous fournissez d&apos;informations (instructions, photos, pièces), plus c&apos;est utile !
-            </p>
-          </div>
-        </div>
-      </div>
 
       {/* Basic Info */}
       <div>
@@ -592,7 +562,9 @@ export default function MaintenanceForm({
             step="0.01"
             value={partCost ?? ""}
             onChange={(e) =>
-              setPartCost(e.target.value ? parseFloat(e.target.value) : undefined)
+              setPartCost(
+                e.target.value ? parseFloat(e.target.value) : undefined
+              )
             }
             placeholder="Coût estimé (€) (optionnel)"
             className="w-full px-4 py-2 rounded-xl border border-gray-200 focus:border-orange focus:outline-none text-sm"
@@ -668,7 +640,8 @@ export default function MaintenanceForm({
           Tags
         </label>
         <p className="text-xs text-gray mb-3">
-          Ex: &quot;électrique&quot;, &quot;sécurité&quot;, &quot;hiver&quot;, etc.
+          Ex: &quot;électrique&quot;, &quot;sécurité&quot;, &quot;hiver&quot;,
+          etc.
         </p>
 
         {formData.tags.length > 0 && (
@@ -728,5 +701,3 @@ export default function MaintenanceForm({
     </form>
   );
 }
-
-

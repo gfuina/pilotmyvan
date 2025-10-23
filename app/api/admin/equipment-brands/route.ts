@@ -12,13 +12,15 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 
-    if (!session.user.isAdmin) {
-      return NextResponse.json({ error: "Accès refusé" }, { status: 403 });
-    }
-
     await connectDB();
 
-    const brands = await EquipmentBrand.find({}).sort({ name: 1 });
+    // If admin, return all brands (including pending)
+    // If regular user, return only approved brands
+    const query = session.user.isAdmin 
+      ? {} 
+      : { $or: [{ status: "approved" }, { status: { $exists: false } }] };
+
+    const brands = await EquipmentBrand.find(query).sort({ name: 1 });
 
     return NextResponse.json({ brands }, { status: 200 });
   } catch (error) {

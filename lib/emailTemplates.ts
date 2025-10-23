@@ -2,7 +2,7 @@ interface MaintenanceEmailData {
   userName: string;
   vehicleName: string;
   maintenanceName: string;
-  daysUntilDue: number;
+  daysUntilDue?: number;
   nextDueDate?: string;
   nextDueKilometers?: number;
   currentMileage?: number;
@@ -17,7 +17,7 @@ interface MaintenanceEmailData {
 }
 
 interface OverdueMaintenanceEmailData extends MaintenanceEmailData {
-  daysOverdue: number;
+  daysOverdue?: number;
   kmOverdue?: number;
   urgencyLevel: "warning" | "urgent" | "critical";
 }
@@ -272,12 +272,14 @@ export function generateOverdueMaintenanceEmail(data: OverdueMaintenanceEmailDat
           <tr>
             <td style="padding: 0;">
               <div style="background-color: ${urgencyConfig.bg}; padding: 20px 24px; border-left: 6px solid ${urgencyConfig.border};">
+                ${data.daysOverdue ? `
                 <p style="margin: 0 0 4px 0; color: ${urgencyConfig.text}; font-weight: 700; font-size: 16px; letter-spacing: 0.5px;">
                   EN RETARD DE ${data.daysOverdue} JOUR${data.daysOverdue > 1 ? "S" : ""}
                 </p>
+                ` : ""}
                 ${data.kmOverdue ? `
-                <p style="margin: 0; color: ${urgencyConfig.text}; font-weight: 600; font-size: 14px;">
-                  Dépassement : ${data.kmOverdue.toLocaleString()} km
+                <p style="margin: ${data.daysOverdue ? "0" : "0 0 4px 0"}; color: ${urgencyConfig.text}; font-weight: ${data.daysOverdue ? "600" : "700"}; font-size: ${data.daysOverdue ? "14px" : "16px"}; ${!data.daysOverdue ? "letter-spacing: 0.5px;" : ""}">
+                  ${data.daysOverdue ? "Dépassement : " : "EN RETARD DE "}${data.kmOverdue.toLocaleString()} km
                 </p>
                 ` : ""}
               </div>
@@ -326,15 +328,17 @@ export function generateOverdueMaintenanceEmail(data: OverdueMaintenanceEmailDat
                   </p>
                   ` : ""}
                   
+                  ${data.daysOverdue ? `
                   <p style="margin: 0 0 8px 0; color: #dc2626; font-size: 15px; font-weight: 600;">
                     <span style="display: inline-block; margin-right: 6px;">⏰</span>
                     En retard depuis : ${data.daysOverdue} jour${data.daysOverdue > 1 ? "s" : ""}
                   </p>
+                  ` : ""}
 
                   ${data.kmOverdue ? `
                   <p style="margin: 0; color: #dc2626; font-size: 15px; font-weight: 600;">
                     <span style="display: inline-block; margin-right: 6px;">🛣️</span>
-                    Dépassement : ${data.kmOverdue.toLocaleString()} km
+                    ${data.daysOverdue ? "Dépassement : " : "En retard de "}${data.kmOverdue.toLocaleString()} km
                   </p>
                   ` : ""}
                 </div>

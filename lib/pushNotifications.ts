@@ -144,12 +144,13 @@ export function generateMaintenanceReminderPushPayload(data: {
 export function generateOverdueMaintenancePushPayload(data: {
   maintenanceName: string;
   vehicleName: string;
-  daysOverdue: number;
+  daysOverdue?: number;
+  kmOverdue?: number;
   urgencyLevel: "warning" | "urgent" | "critical";
   vehicleId: string;
   maintenanceScheduleId: string;
 }): PushNotificationPayload {
-  const { maintenanceName, vehicleName, daysOverdue, urgencyLevel, vehicleId, maintenanceScheduleId } = data;
+  const { maintenanceName, vehicleName, daysOverdue, kmOverdue, urgencyLevel, vehicleId, maintenanceScheduleId } = data;
 
   const urgencyIcons = {
     warning: "⚠️",
@@ -163,9 +164,19 @@ export function generateOverdueMaintenancePushPayload(data: {
     critical: "CRITIQUE",
   };
 
+  // Construire le message selon le type de retard
+  let bodyText = `${maintenanceName} en retard`;
+  if (daysOverdue && kmOverdue) {
+    bodyText += ` de ${daysOverdue} jour${daysOverdue > 1 ? "s" : ""} / ${kmOverdue.toLocaleString()} km`;
+  } else if (daysOverdue) {
+    bodyText += ` de ${daysOverdue} jour${daysOverdue > 1 ? "s" : ""}`;
+  } else if (kmOverdue) {
+    bodyText += ` de ${kmOverdue.toLocaleString()} km`;
+  }
+
   return {
     title: `${urgencyIcons[urgencyLevel]} ${urgencyText[urgencyLevel]} - ${vehicleName}`,
-    body: `${maintenanceName} en retard de ${daysOverdue} jour${daysOverdue > 1 ? "s" : ""}`,
+    body: bodyText,
     icon: "/icon.png",
     badge: "/icon.png",
     data: {

@@ -465,10 +465,14 @@ export default function VehicleMaintenancesCard({
 
   // Détermine l'état d'urgence pour les couleurs de la card avec dégradé granulaire
   const getUrgencyState = (schedule: MaintenanceSchedule): string => {
-    const daysRemaining = calculateDaysRemaining(schedule);
-    const kmRemaining = calculateKmRemaining(schedule);
+    const maintenance = schedule.isCustom ? schedule.customData : schedule.maintenanceId;
+    const hasTimeRecurrence = !!maintenance?.recurrence?.time;
+    const hasKmRecurrence = !!maintenance?.recurrence?.kilometers;
+    
+    const daysRemaining = hasTimeRecurrence ? calculateDaysRemaining(schedule) : null;
+    const kmRemaining = hasKmRecurrence ? calculateKmRemaining(schedule) : null;
 
-    // Prendre le critère le plus urgent entre jours et km
+    // Prendre le critère le plus urgent entre jours et km (seulement si définis)
     const worstDays = daysRemaining ?? Infinity;
     const worstKm = kmRemaining ?? Infinity;
 
@@ -521,33 +525,34 @@ export default function VehicleMaintenancesCard({
     return "excellent";
   };
 
-  // Trier les maintenances par ordre de date d'échéance (le plus proche en premier)
+  // Ordre d'urgence pour le tri (plus urgent = plus petit nombre)
+  const URGENCY_ORDER: Record<string, number> = {
+    overdue: 1,
+    critical: 2,
+    veryUrgent: 3,
+    urgent: 4,
+    soon: 5,
+    warning: 6,
+    moderate: 7,
+    good: 8,
+    veryGood: 9,
+    excellent: 10,
+  };
+
+  // Trier les maintenances par ordre d'urgence (couleur de la card)
   const getSortedMaintenances = () => {
     return [...maintenances].sort((a, b) => {
-      const daysRemainingA = calculateDaysRemaining(a);
-      const daysRemainingB = calculateDaysRemaining(b);
-      const kmRemainingA = calculateKmRemaining(a);
-      const kmRemainingB = calculateKmRemaining(b);
+      const urgencyA = getUrgencyState(a);
+      const urgencyB = getUrgencyState(b);
+      const urgencyOrderA = URGENCY_ORDER[urgencyA];
+      const urgencyOrderB = URGENCY_ORDER[urgencyB];
 
-      // Si les deux ont une date d'échéance, trier par date
-      if (daysRemainingA !== null && daysRemainingB !== null) {
-        return daysRemainingA - daysRemainingB;
+      // Trier par urgence d'abord
+      if (urgencyOrderA !== urgencyOrderB) {
+        return urgencyOrderA - urgencyOrderB;
       }
 
-      // Si seulement A a une date, A vient en premier
-      if (daysRemainingA !== null) return -1;
-      if (daysRemainingB !== null) return 1;
-
-      // Si ni l'un ni l'autre n'a de date, trier par kilométrage restant
-      if (kmRemainingA !== null && kmRemainingB !== null) {
-        return kmRemainingA - kmRemainingB;
-      }
-
-      // Si seulement A a un kilométrage, A vient en premier
-      if (kmRemainingA !== null) return -1;
-      if (kmRemainingB !== null) return 1;
-
-      // En dernier recours, trier par priorité
+      // Si même urgence, trier par priorité
       const maintenance1 = a.isCustom ? a.customData : a.maintenanceId;
       const maintenance2 = b.isCustom ? b.customData : b.maintenanceId;
       const priorityA = PRIORITY_ORDER[maintenance1?.priority || "optional"];
@@ -744,7 +749,7 @@ export default function VehicleMaintenancesCard({
 
                         {/* Info - flex-1 occupe l'espace restant */}
                         <div className="flex-1 min-w-0">
-                          {((daysRemaining !== null && daysRemaining <= 0) || (kmRemaining !== null && kmRemaining <= 0)) && (
+                          {(urgencyState === "overdue" || urgencyState === "critical") && (
                             <div className="flex items-center gap-1.5 mb-2 flex-wrap">
                               <span
                                 className={`inline-flex items-center gap-1 px-2 py-0.5 ${priorityColors.bg} ${priorityColors.text} text-[9px] sm:text-[10px] font-semibold rounded-full border ${priorityColors.border} whitespace-nowrap`}
@@ -774,7 +779,7 @@ export default function VehicleMaintenancesCard({
 
                         {/* Échéances - grille responsive avec dégradé de couleurs */}
                         <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-1.5 sm:gap-2 mb-3">
-                        {daysRemaining !== null && (
+                        {daysRemaining !== null && (schedule.isCustom ? schedule.customData?.recurrence?.time : schedule.maintenanceId?.recurrence?.time) && (
                           <div
                             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl font-semibold text-xs sm:text-sm ${
                               daysRemaining < 0

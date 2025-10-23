@@ -166,7 +166,7 @@ export default function GlobalChatbot() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed -bottom-4 right-4 md:right-8 z-50 group cursor-pointer"
+          className="fixed -bottom-4 right-4 md:right-8 z-30 group cursor-pointer"
           title="💬 Posez vos questions à l'assistant IA"
         >
           {/* Robot animé */}
@@ -194,7 +194,7 @@ export default function GlobalChatbot() {
 
       {/* Chatbot modal avec animation d'entrée */}
       {isOpen && (
-        <div className="fixed inset-x-4 top-20 bottom-4 md:inset-auto md:bottom-6 md:right-6 z-50 flex w-auto md:w-[450px] md:h-[650px] flex-col rounded-2xl bg-white shadow-2xl border border-gray-200 animate-in slide-in-from-bottom-4 fade-in duration-300 max-h-[85vh] md:max-h-none">
+        <div className="fixed inset-x-4 top-20 bottom-4 md:inset-auto md:bottom-6 md:right-6 z-30 flex w-auto md:w-[450px] md:h-[650px] flex-col rounded-2xl bg-white shadow-2xl border border-gray-200 animate-in slide-in-from-bottom-4 fade-in duration-300 max-h-[85vh] md:max-h-none">
           {/* Header avec robot intégré */}
           <div className="relative border-b bg-gradient-to-r from-orange to-orange-light rounded-t-2xl overflow-visible">
             {/* Effet de brillance animé */}

@@ -44,7 +44,7 @@ interface AddEquipmentModalProps {
   vehicleId: string;
   vehicleMake: string;
   onClose: () => void;
-  onSuccess: () => void;
+  onSuccess: (vehicleEquipmentId?: string) => void;
   existingEquipments: VehicleEquipment[];
 }
 
@@ -55,7 +55,7 @@ export default function AddEquipmentModal({
   onSuccess,
   existingEquipments,
 }: AddEquipmentModalProps) {
-  const [activeTab, setActiveTab] = useState<"library" | "custom">("library");
+  const [activeTab, setActiveTab] = useState<"library" | "custom">("custom");
   
   // Library state
   const [equipments, setEquipments] = useState<Equipment[]>([]);
@@ -223,8 +223,9 @@ export default function AddEquipmentModal({
       });
 
       if (response.ok) {
+        const data = await response.json();
         setIsAdding(false);
-        onSuccess(); // Hors du try/catch pour éviter faux message d'erreur
+        onSuccess(data.equipment?._id); // Pass the new equipment ID
         return;
       } else {
         const data = await response.json();
@@ -254,8 +255,9 @@ export default function AddEquipmentModal({
       });
 
       if (response.ok) {
+        const result = await response.json();
         setIsCreatingEquipment(false);
-        onSuccess(); // Hors du try/catch pour éviter faux message d'erreur
+        onSuccess(result.vehicleEquipment?._id); // Pass the new equipment ID
         return;
       } else {
         const result = await response.json();
@@ -366,16 +368,6 @@ export default function AddEquipmentModal({
         {/* Tabs */}
         <div className="flex gap-2 p-4 sm:p-6 border-b border-gray-200">
           <button
-            onClick={() => setActiveTab("library")}
-            className={`flex-1 px-3 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold rounded-2xl transition-all duration-300 whitespace-nowrap ${
-              activeTab === "library"
-                ? "bg-gradient-to-r from-orange to-orange-light text-white shadow-lg"
-                : "bg-gray-100 text-gray hover:bg-gray-200"
-            }`}
-          >
-            <span className="hidden sm:inline">📚 </span>Bibliothèque
-          </button>
-          <button
             onClick={() => setActiveTab("custom")}
             className={`flex-1 px-3 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold rounded-2xl transition-all duration-300 whitespace-nowrap ${
               activeTab === "custom"
@@ -384,6 +376,16 @@ export default function AddEquipmentModal({
             }`}
           >
             <span className="hidden sm:inline">✏️ </span>Créer le mien
+          </button>
+          <button
+            onClick={() => setActiveTab("library")}
+            className={`flex-1 px-3 sm:px-6 py-2.5 sm:py-3 text-sm sm:text-base font-semibold rounded-2xl transition-all duration-300 whitespace-nowrap ${
+              activeTab === "library"
+                ? "bg-gradient-to-r from-orange to-orange-light text-white shadow-lg"
+                : "bg-gray-100 text-gray hover:bg-gray-200"
+            }`}
+          >
+            <span className="hidden sm:inline">📚 </span>Bibliothèque
           </button>
         </div>
 
@@ -810,6 +812,46 @@ export default function AddEquipmentModal({
                 transition={{ duration: 0.2 }}
                 className="p-6"
               >
+                {/* Info box encourageant la recherche dans la bibliothèque */}
+                <div className="mb-8 bg-gradient-to-br from-orange-50 to-orange-100 border-2 border-orange-200 rounded-3xl p-6 shadow-md">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 bg-gradient-to-r from-orange to-orange-light rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg">
+                      <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-bold text-black mb-2">
+                        Votre équipement existe peut-être déjà !
+                      </h3>
+                      <p className="text-sm text-gray-700 mb-4">
+                        Avant de créer, jetez un œil à notre bibliothèque pour voir si l&apos;équipement est déjà disponible avec toutes ses maintenances recommandées.
+                      </p>
+                      <button
+                        onClick={() => setActiveTab("library")}
+                        className="inline-flex items-center gap-2 px-4 py-2.5 bg-gradient-to-r from-orange to-orange-light text-white font-semibold rounded-xl hover:shadow-lg hover:scale-105 transition-all duration-300"
+                      >
+                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                        Explorer la bibliothèque
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Séparateur avec texte */}
+                <div className="relative mb-8">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t-2 border-gray-200"></div>
+                  </div>
+                  <div className="relative flex justify-center">
+                    <span className="px-4 bg-white text-sm font-semibold text-gray">
+                      Ou créez votre équipement personnalisé
+                    </span>
+                  </div>
+                </div>
+
                 <EquipmentForm
                   onSubmit={handleCreateEquipment}
                   isSubmitting={isCreatingEquipment}

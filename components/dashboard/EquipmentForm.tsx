@@ -1,12 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import MultiImageUpload from "./MultiImageUpload";
 
 interface Category {
   _id: string;
   name: string;
   level: number;
+  parentId?: string;
   children?: Category[];
 }
 
@@ -27,6 +29,7 @@ export interface EquipmentFormData {
   categoryId: string;
   vehicleBrands: string[];
   equipmentBrands: string[];
+  customEquipmentBrands?: string[]; // Custom brand names not in the reference
   photos: string[];
   manuals: Array<{
     title: string;
@@ -46,12 +49,14 @@ export default function EquipmentForm({
     categoryId: "",
     vehicleBrands: [],
     equipmentBrands: [],
+    customEquipmentBrands: [],
     photos: [],
     manuals: [],
     notes: "",
   });
 
   const [categories, setCategories] = useState<Category[]>([]);
+  const [flatCategories, setFlatCategories] = useState<Category[]>([]);
   const [vehicleBrands, setVehicleBrands] = useState<Brand[]>([]);
   const [equipmentBrands, setEquipmentBrands] = useState<Brand[]>([]);
   const [error, setError] = useState("");
@@ -62,6 +67,15 @@ export default function EquipmentForm({
   const [isManualExternal, setIsManualExternal] = useState(true);
   const [isUploadingManual, setIsUploadingManual] = useState(false);
   const [isBrandSpecific, setIsBrandSpecific] = useState(false);
+
+  // Equipment brand search and custom
+  const [equipmentBrandSearch, setEquipmentBrandSearch] = useState("");
+  const [customBrandInput, setCustomBrandInput] = useState("");
+
+  // Category cascade navigation
+  const [selectedCategoryL1, setSelectedCategoryL1] = useState<string>("");
+  const [selectedCategoryL2, setSelectedCategoryL2] = useState<string>("");
+  const [selectedCategoryL3, setSelectedCategoryL3] = useState<string>("");
 
   useEffect(() => {
     fetchData();
@@ -78,6 +92,19 @@ export default function EquipmentForm({
       if (catRes.ok) {
         const data = await catRes.json();
         setCategories(data.categories);
+        
+        // Flatten categories with parent info for cascade selection
+        const flattenCategories = (cats: Category[], level = 1, parentId?: string): Category[] => {
+          let result: Category[] = [];
+          for (const cat of cats) {
+            result.push({ ...cat, level, parentId });
+            if (cat.children && cat.children.length > 0) {
+              result = result.concat(flattenCategories(cat.children, level + 1, cat._id));
+            }
+          }
+          return result;
+        };
+        setFlatCategories(flattenCategories(data.categories));
       }
 
       if (vhRes.ok) {
@@ -94,29 +121,39 @@ export default function EquipmentForm({
     }
   };
 
-  const renderCategoryOptions = (cats: Category[], level = 0): React.ReactElement[] => {
-    const options: React.ReactElement[] = [];
-    cats.forEach((cat) => {
-      let prefix = "";
-      if (level === 0) {
-        prefix = "📁 ";
-      } else if (level === 1) {
-        prefix = "  └─ ";
-      } else {
-        prefix = "    " + "  ".repeat(level - 1) + "└─ ";
-      }
-      
-      options.push(
-        <option key={cat._id} value={cat._id}>
-          {prefix}{cat.name}
-        </option>
-      );
-      if (cat.children && cat.children.length > 0) {
-        options.push(...renderCategoryOptions(cat.children, level + 1));
-      }
-    });
-    return options;
+  // Filter categories by level for cascade navigation
+  const categoriesL1 = useMemo(() => {
+    return flatCategories.filter(cat => cat.level === 1);
+  }, [flatCategories]);
+
+  const categoriesL2 = useMemo(() => {
+    if (!selectedCategoryL1) return [];
+    return flatCategories.filter(cat => cat.level === 2 && cat.parentId === selectedCategoryL1);
+  }, [flatCategories, selectedCategoryL1]);
+
+  const categoriesL3 = useMemo(() => {
+    if (!selectedCategoryL2) return [];
+    return flatCategories.filter(cat => cat.level === 3 && cat.parentId === selectedCategoryL2);
+  }, [flatCategories, selectedCategoryL2]);
+
+  // Handle category level changes with cascade reset
+  const handleCategoryL1Change = (value: string) => {
+    setSelectedCategoryL1(value);
+    setSelectedCategoryL2("");
+    setSelectedCategoryL3("");
   };
+
+  const handleCategoryL2Change = (value: string) => {
+    setSelectedCategoryL2(value);
+    setSelectedCategoryL3("");
+  };
+
+  // Update categoryId in formData based on cascade selection
+  useEffect(() => {
+    // Use the most specific level selected
+    const categoryId = selectedCategoryL3 || selectedCategoryL2 || selectedCategoryL1 || "";
+    setFormData((prev) => ({ ...prev, categoryId }));
+  }, [selectedCategoryL1, selectedCategoryL2, selectedCategoryL3]);
 
   const toggleBrand = (brandId: string, type: "vehicle" | "equipment") => {
     if (type === "vehicle") {
@@ -222,37 +259,6 @@ export default function EquipmentForm({
         </div>
       )}
 
-      {/* Info Box */}
-      <div className="bg-blue-50 border-2 border-blue-200 rounded-2xl p-6">
-        <div className="flex items-start gap-4">
-          <div className="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
-            <svg
-              className="w-5 h-5 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
-          </div>
-          <div className="flex-1">
-            <h3 className="text-lg font-bold text-blue-900 mb-2">
-              Enrichissez la bibliothèque !
-            </h3>
-            <p className="text-blue-700 text-sm mb-2">
-              Créez votre équipement et aidez la communauté en partageant vos informations.
-            </p>
-            <p className="text-blue-600 text-xs">
-              💡 Plus vous fournissez d&apos;informations, plus c&apos;est utile pour les autres utilisateurs !
-            </p>
-          </div>
-        </div>
-      </div>
 
       {/* Basic Info */}
       <div>
@@ -271,22 +277,112 @@ export default function EquipmentForm({
         />
       </div>
 
-      {/* Category */}
+      {/* Category - Cascade Selection */}
       <div>
-        <label className="block text-sm font-medium text-black mb-2">
+        <label className="block text-sm font-medium text-black mb-3">
           Catégorie <span className="text-orange">*</span>
         </label>
-        <select
-          value={formData.categoryId}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, categoryId: e.target.value }))
-          }
-          className="w-full px-4 py-3 rounded-2xl border-2 border-gray-200 focus:border-orange focus:outline-none transition-colors"
-          required
-        >
-          <option value="">Sélectionner une catégorie</option>
-          {renderCategoryOptions(categories)}
-        </select>
+        
+        <div className="space-y-3">
+          {/* Category cascade navigation */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            {/* Level 1 Categories */}
+            <select
+              value={selectedCategoryL1}
+              onChange={(e) => handleCategoryL1Change(e.target.value)}
+              className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-orange focus:outline-none transition-colors text-sm"
+            >
+              <option value="">📂 Catégorie principale</option>
+              {categoriesL1.map((cat) => (
+                <option key={cat._id} value={cat._id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+
+            {/* Level 2 Categories - Only show if L1 is selected */}
+            <AnimatePresence mode="wait">
+              {selectedCategoryL1 && (
+                <motion.select
+                  key="category-l2"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.2 }}
+                  value={selectedCategoryL2}
+                  onChange={(e) => handleCategoryL2Change(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-orange focus:outline-none transition-colors text-sm"
+                >
+                  <option value="">📁 Sous-catégorie</option>
+                  {categoriesL2.map((cat) => (
+                    <option key={cat._id} value={cat._id}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </motion.select>
+              )}
+            </AnimatePresence>
+
+            {/* Level 3 Categories - Only show if L2 is selected */}
+            <AnimatePresence mode="wait">
+              {selectedCategoryL2 && categoriesL3.length > 0 && (
+                <motion.select
+                  key="category-l3"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.2 }}
+                  value={selectedCategoryL3}
+                  onChange={(e) => setSelectedCategoryL3(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-orange focus:outline-none transition-colors text-sm"
+                >
+                  <option value="">📄 Détail</option>
+                  {categoriesL3.map((cat) => (
+                    <option key={cat._id} value={cat._id}>
+                      {cat.name}
+                    </option>
+                  ))}
+                </motion.select>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Breadcrumb display */}
+          <AnimatePresence>
+            {selectedCategoryL1 && (
+              <motion.div
+                initial={{ opacity: 0, y: -5 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -5 }}
+                transition={{ duration: 0.2 }}
+                className="flex items-center gap-2 text-sm p-3 bg-orange-50 border border-orange-200 rounded-xl"
+              >
+                <svg className="w-4 h-4 text-orange flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z" clipRule="evenodd" />
+                </svg>
+                <span className="font-semibold text-orange-700">
+                  {flatCategories.find(c => c._id === selectedCategoryL1)?.name}
+                </span>
+                {selectedCategoryL2 && (
+                  <>
+                    <span className="text-orange-400">›</span>
+                    <span className="font-semibold text-orange-700">
+                      {flatCategories.find(c => c._id === selectedCategoryL2)?.name}
+                    </span>
+                  </>
+                )}
+                {selectedCategoryL3 && (
+                  <>
+                    <span className="text-orange-400">›</span>
+                    <span className="font-bold text-orange">
+                      {flatCategories.find(c => c._id === selectedCategoryL3)?.name}
+                    </span>
+                  </>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
       </div>
 
       {/* Description */}
@@ -300,7 +396,7 @@ export default function EquipmentForm({
             setFormData((prev) => ({ ...prev, description: e.target.value }))
           }
           rows={3}
-          placeholder="Description de l&apos;équipement..."
+          placeholder="Description de l'équipement..."
           className="w-full px-4 py-3 rounded-2xl border-2 border-gray-200 focus:border-orange focus:outline-none resize-none transition-colors"
         />
       </div>
@@ -321,7 +417,10 @@ export default function EquipmentForm({
             }}
             className="w-5 h-5 text-orange rounded"
           />
-          <label htmlFor="isBrandSpecific" className="text-sm font-medium text-black cursor-pointer">
+          <label
+            htmlFor="isBrandSpecific"
+            className="text-sm font-medium text-black cursor-pointer"
+          >
             Mon équipement est spécifique à certaines marques de véhicule
           </label>
         </div>
@@ -343,7 +442,9 @@ export default function EquipmentForm({
                       : "border-gray-200 hover:border-orange/50"
                   }`}
                 >
-                  <p className="font-semibold text-sm text-black">{brand.name}</p>
+                  <p className="font-semibold text-sm text-black">
+                    {brand.name}
+                  </p>
                 </button>
               ))}
             </div>
@@ -356,21 +457,180 @@ export default function EquipmentForm({
         <label className="block text-sm font-medium text-black mb-3">
           Marques d&apos;équipement
         </label>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-48 overflow-y-auto p-2 border-2 border-gray-200 rounded-2xl">
-          {equipmentBrands.map((brand) => (
+
+        {/* Search bar */}
+        <div className="relative mb-4">
+          <input
+            type="text"
+            value={equipmentBrandSearch}
+            onChange={(e) => setEquipmentBrandSearch(e.target.value)}
+            placeholder="Rechercher une marque..."
+            className="w-full px-10 py-2.5 rounded-xl border-2 border-gray-200 focus:border-orange focus:outline-none transition-colors text-sm"
+          />
+          <svg
+            className="w-4 h-4 text-gray absolute left-3 top-1/2 -translate-y-1/2"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+          {equipmentBrandSearch && (
             <button
-              key={brand._id}
               type="button"
-              onClick={() => toggleBrand(brand._id, "equipment")}
-              className={`p-3 rounded-xl border-2 transition-all text-left ${
-                formData.equipmentBrands.includes(brand._id)
-                  ? "border-orange bg-orange/10"
-                  : "border-gray-200 hover:border-orange/50"
-              }`}
+              onClick={() => setEquipmentBrandSearch("")}
+              className="absolute right-3 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded-full"
             >
-              <p className="font-semibold text-sm text-black">{brand.name}</p>
+              <svg
+                className="w-4 h-4 text-gray"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
             </button>
-          ))}
+          )}
+        </div>
+
+        {/* Selected brands display */}
+        {(formData.equipmentBrands.length > 0 || (formData.customEquipmentBrands && formData.customEquipmentBrands.length > 0)) && (
+          <div className="mb-4 p-3 bg-orange-50 border-2 border-orange-200 rounded-xl">
+            <p className="text-xs font-semibold text-orange-700 mb-2">Marques sélectionnées :</p>
+            <div className="flex flex-wrap gap-2">
+              {formData.equipmentBrands.map((brandId) => {
+                const brand = equipmentBrands.find((b) => b._id === brandId);
+                return brand ? (
+                  <span
+                    key={brandId}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-orange-300 text-orange-700 text-sm font-medium rounded-lg"
+                  >
+                    {brand.name}
+                    <button
+                      type="button"
+                      onClick={() => toggleBrand(brandId, "equipment")}
+                      className="hover:bg-orange-100 rounded-full p-0.5"
+                    >
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </span>
+                ) : null;
+              })}
+              {formData.customEquipmentBrands?.map((brandName, index) => (
+                <span
+                  key={`custom-${index}`}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-100 border border-purple-300 text-purple-700 text-sm font-medium rounded-lg"
+                >
+                  {brandName}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormData((prev) => ({
+                        ...prev,
+                        customEquipmentBrands: prev.customEquipmentBrands?.filter((_, i) => i !== index),
+                      }));
+                    }}
+                    className="hover:bg-purple-200 rounded-full p-0.5"
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Brand selection grid */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 max-h-48 overflow-y-auto p-2 border-2 border-gray-200 rounded-2xl mb-4">
+          {equipmentBrands
+            .filter((brand) =>
+              brand.name.toLowerCase().includes(equipmentBrandSearch.toLowerCase())
+            )
+            .map((brand) => (
+              <button
+                key={brand._id}
+                type="button"
+                onClick={() => toggleBrand(brand._id, "equipment")}
+                className={`p-3 rounded-xl border-2 transition-all text-left ${
+                  formData.equipmentBrands.includes(brand._id)
+                    ? "border-orange bg-orange/10"
+                    : "border-gray-200 hover:border-orange/50"
+                }`}
+              >
+                <p className="font-semibold text-sm text-black">{brand.name}</p>
+              </button>
+            ))}
+          {equipmentBrands.filter((brand) =>
+            brand.name.toLowerCase().includes(equipmentBrandSearch.toLowerCase())
+          ).length === 0 && (
+            <div className="col-span-full text-center py-6 text-sm text-gray">
+              Aucune marque trouvée
+            </div>
+          )}
+        </div>
+
+        {/* Add custom brand */}
+        <div className="space-y-2 p-3 bg-purple-50 border-2 border-dashed border-purple-300 rounded-xl">
+          <p className="text-xs font-medium text-purple-700">
+            Marque introuvable ? Ajoutez-la manuellement :
+          </p>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={customBrandInput}
+              onChange={(e) => setCustomBrandInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  if (customBrandInput.trim()) {
+                    setFormData((prev) => ({
+                      ...prev,
+                      customEquipmentBrands: [
+                        ...(prev.customEquipmentBrands || []),
+                        customBrandInput.trim(),
+                      ],
+                    }));
+                    setCustomBrandInput("");
+                  }
+                }
+              }}
+              placeholder="Nom de la marque..."
+              className="flex-1 px-3 py-2 rounded-lg border border-purple-200 focus:border-purple-500 focus:outline-none text-sm"
+            />
+            <button
+              type="button"
+              onClick={() => {
+                if (customBrandInput.trim()) {
+                  setFormData((prev) => ({
+                    ...prev,
+                    customEquipmentBrands: [
+                      ...(prev.customEquipmentBrands || []),
+                      customBrandInput.trim(),
+                    ],
+                  }));
+                  setCustomBrandInput("");
+                }
+              }}
+              disabled={!customBrandInput.trim()}
+              className="px-4 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              + Ajouter
+            </button>
+          </div>
         </div>
       </div>
 
@@ -416,7 +676,9 @@ export default function EquipmentForm({
                   />
                 </svg>
                 <div className="flex-1">
-                  <p className="font-medium text-black text-sm">{manual.title}</p>
+                  <p className="font-medium text-black text-sm">
+                    {manual.title}
+                  </p>
                   <p className="text-xs text-gray">
                     {manual.isExternal ? "Lien externe" : "Fichier"}
                   </p>
@@ -544,4 +806,3 @@ export default function EquipmentForm({
     </form>
   );
 }
-

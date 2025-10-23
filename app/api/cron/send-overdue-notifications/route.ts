@@ -56,10 +56,13 @@ export async function GET(request: NextRequest) {
         const vehicles = await Vehicle.find({ userId: user._id });
 
         for (const vehicle of vehicles) {
-          // Récupérer toutes les maintenances planifiées en retard
+          // Récupérer toutes les maintenances planifiées (date OU kilomètres en retard)
           const maintenanceSchedules = await VehicleMaintenanceSchedule.find({
             vehicleId: vehicle._id,
-            nextDueDate: { $lt: today }, // Date dépassée
+            $or: [
+              { nextDueDate: { $lt: today } }, // Date dépassée
+              { nextDueKilometers: { $lt: vehicle.currentMileage } }, // Kilomètres dépassés
+            ],
           })
             .populate("vehicleEquipmentId")
             .populate("maintenanceId")
@@ -68,48 +71,64 @@ export async function GET(request: NextRequest) {
           results.totalOverdueMaintenances += maintenanceSchedules.length;
 
           for (const schedule of maintenanceSchedules) {
-            if (!schedule.nextDueDate) continue;
+            // Vérifier qu'on a au moins une échéance dépassée
+            const maintenance: any = schedule.isCustom
+              ? schedule.customData
+              : schedule.maintenanceId;
+            
+            if (!maintenance) continue;
 
-            const nextDueDate = new Date(schedule.nextDueDate);
-            nextDueDate.setHours(0, 0, 0, 0);
+            const hasTimeRecurrence = !!maintenance.recurrence?.time;
+            const hasKmRecurrence = !!maintenance.recurrence?.kilometers;
 
-            // Calculer les jours de retard
-            const daysOverdue = Math.ceil(
-              (today.getTime() - nextDueDate.getTime()) / (1000 * 60 * 60 * 24)
-            );
+            // Calculer les jours de retard (seulement si récurrence temporelle)
+            let daysOverdue = 0;
+            if (hasTimeRecurrence && schedule.nextDueDate) {
+              const nextDueDate = new Date(schedule.nextDueDate);
+              nextDueDate.setHours(0, 0, 0, 0);
+              daysOverdue = Math.ceil(
+                (today.getTime() - nextDueDate.getTime()) / (1000 * 60 * 60 * 24)
+              );
+              if (daysOverdue < 1) daysOverdue = 0;
+            }
 
-            if (daysOverdue < 1) continue; // Pas encore en retard
-
-            // Calculer le kilométrage de dépassement
+            // Calculer le kilométrage de dépassement (seulement si récurrence kilométrique)
             let kmOverdue = 0;
-            if (schedule.nextDueKilometers && vehicle.currentMileage) {
+            if (hasKmRecurrence && schedule.nextDueKilometers && vehicle.currentMileage) {
               const diff = vehicle.currentMileage - schedule.nextDueKilometers;
               if (diff > 0) {
                 kmOverdue = diff;
               }
             }
 
+            // Ignorer si aucun dépassement réel
+            if (daysOverdue === 0 && kmOverdue === 0) continue;
+
             // Déterminer le niveau d'urgence et quand envoyer
             let urgencyLevel: "warning" | "urgent" | "critical";
             let shouldSendToday = false;
 
-            if (daysOverdue >= 30) {
-              // CRITIQUE : 30+ jours
+            // Critères d'urgence basés sur le pire entre jours et km
+            if (daysOverdue >= 30 || kmOverdue >= 10000) {
+              // CRITIQUE : 30+ jours OU 10 000+ km
               urgencyLevel = "critical";
-              // Envoyer tous les 7 jours
-              shouldSendToday = daysOverdue % 7 === 0;
+              // Envoyer tous les 7 jours OU tous les 1000 km
+              shouldSendToday = (hasTimeRecurrence && daysOverdue % 7 === 0) || 
+                                (hasKmRecurrence && kmOverdue % 1000 < 50); // Approximation pour détecter paliers
               results.breakdown.critical++;
-            } else if (daysOverdue >= 7) {
-              // URGENT : 7-29 jours
+            } else if (daysOverdue >= 7 || kmOverdue >= 2000) {
+              // URGENT : 7-29 jours OU 2000-9999 km
               urgencyLevel = "urgent";
-              // Envoyer tous les 7 jours
-              shouldSendToday = daysOverdue % 7 === 0;
+              // Envoyer tous les 7 jours OU tous les 1000 km
+              shouldSendToday = (hasTimeRecurrence && daysOverdue % 7 === 0) || 
+                                (hasKmRecurrence && kmOverdue % 1000 < 50);
               results.breakdown.urgent++;
             } else {
-              // WARNING : 1-6 jours
+              // WARNING : 1-6 jours OU 1-1999 km
               urgencyLevel = "warning";
-              // Envoyer le jour 1 et jour 3
-              shouldSendToday = daysOverdue === 1 || daysOverdue === 3;
+              // Envoyer le jour 1 et jour 3 OU tous les 500 km
+              shouldSendToday = (hasTimeRecurrence && (daysOverdue === 1 || daysOverdue === 3)) ||
+                                (hasKmRecurrence && kmOverdue % 500 < 50);
               results.breakdown.warning++;
             }
 
@@ -120,7 +139,7 @@ export async function GET(request: NextRequest) {
               userId: user._id,
               maintenanceScheduleId: schedule._id,
               notificationDate: today,
-              daysBefore: -daysOverdue, // Négatif pour indiquer un retard
+              daysBefore: hasTimeRecurrence ? -daysOverdue : -(kmOverdue / 1000), // Négatif pour indiquer un retard (km divisé par 1000 pour normaliser)
             });
 
             if (existingNotification) {
@@ -130,27 +149,17 @@ export async function GET(request: NextRequest) {
               continue;
             }
 
-            // Préparer les données de l'email
-            const maintenance: any = schedule.isCustom
-              ? schedule.customData
-              : schedule.maintenanceId;
-
-            if (!maintenance) continue;
+            // Préparer les données de l'email (maintenance déjà récupéré plus haut)
 
             const vehicleEquipment: any = schedule.vehicleEquipmentId;
             const equipmentName = vehicleEquipment?.isCustom
               ? vehicleEquipment.customData?.name
               : vehicleEquipment?.equipmentId?.name;
 
-            const emailData = {
+            const emailData: any = {
               userName: user.name,
               vehicleName: vehicle.name,
               maintenanceName: maintenance.name,
-              daysUntilDue: -daysOverdue, // Négatif pour cohérence avec l'autre système
-              daysOverdue,
-              kmOverdue: kmOverdue > 0 ? kmOverdue : undefined,
-              nextDueDate: schedule.nextDueDate?.toISOString(),
-              nextDueKilometers: schedule.nextDueKilometers,
               currentMileage: vehicle.currentMileage,
               priority: maintenance.priority || "optional",
               instructions: maintenance.instructions,
@@ -163,13 +172,24 @@ export async function GET(request: NextRequest) {
               urgencyLevel,
             };
 
+            // Ajouter conditionnellement les propriétés de récurrence
+            if (hasTimeRecurrence && daysOverdue > 0) {
+              emailData.daysUntilDue = -daysOverdue;
+              emailData.daysOverdue = daysOverdue;
+              emailData.nextDueDate = schedule.nextDueDate?.toISOString();
+            }
+            if (hasKmRecurrence && kmOverdue > 0) {
+              emailData.kmOverdue = kmOverdue;
+              emailData.nextDueKilometers = schedule.nextDueKilometers;
+            }
+
             // Créer l'entrée dans l'historique
             const notificationHistory = new NotificationHistory({
               userId: user._id,
               maintenanceScheduleId: schedule._id,
               vehicleId: vehicle._id,
               notificationDate: today,
-              daysBefore: -daysOverdue, // Négatif pour indiquer un retard
+              daysBefore: hasTimeRecurrence ? -daysOverdue : -(kmOverdue / 1000), // Négatif pour indiquer un retard
               emailSent: false,
             });
 
@@ -183,9 +203,19 @@ export async function GET(request: NextRequest) {
                 critical: "🚨 CRITIQUE",
               };
 
+              // Construire le texte de retard selon le type de récurrence
+              let overdueText = "";
+              if (hasTimeRecurrence && hasKmRecurrence) {
+                overdueText = `${daysOverdue}j / ${kmOverdue.toLocaleString()}km`;
+              } else if (hasTimeRecurrence) {
+                overdueText = `${daysOverdue}j`;
+              } else {
+                overdueText = `${kmOverdue.toLocaleString()}km`;
+              }
+
               await sendEmail({
                 to: user.email,
-                subject: `${subjectPrefixes[urgencyLevel]} : ${maintenance.name} en retard (${daysOverdue}j) - ${vehicle.name}`,
+                subject: `${subjectPrefixes[urgencyLevel]} : ${maintenance.name} en retard (${overdueText}) - ${vehicle.name}`,
                 html: emailHtml,
               });
 
@@ -196,7 +226,7 @@ export async function GET(request: NextRequest) {
               results.successfulEmails++;
 
               console.log(
-                `Email de retard [${urgencyLevel}] envoyé à ${user.email} pour ${maintenance.name} (${daysOverdue}j)`
+                `Email de retard [${urgencyLevel}] envoyé à ${user.email} pour ${maintenance.name} (${overdueText})`
               );
             } catch (emailError: any) {
               // Enregistrer l'erreur
@@ -216,14 +246,21 @@ export async function GET(request: NextRequest) {
             // Envoyer la notification push si l'utilisateur a des subscriptions
             if (user.pushSubscriptions && user.pushSubscriptions.length > 0) {
               try {
-                const pushPayload = generateOverdueMaintenancePushPayload({
+                const pushData: any = {
                   maintenanceName: maintenance.name,
                   vehicleName: vehicle.name,
-                  daysOverdue,
                   urgencyLevel,
                   vehicleId: vehicle._id.toString(),
                   maintenanceScheduleId: schedule._id.toString(),
-                });
+                };
+                if (hasTimeRecurrence && daysOverdue > 0) {
+                  pushData.daysOverdue = daysOverdue;
+                }
+                if (hasKmRecurrence && kmOverdue > 0) {
+                  pushData.kmOverdue = kmOverdue;
+                }
+                
+                const pushPayload = generateOverdueMaintenancePushPayload(pushData);
 
                 const pushResults = await sendPushNotificationToMultiple(
                   user.pushSubscriptions,

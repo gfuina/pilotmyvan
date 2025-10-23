@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
       categoryId,
       vehicleBrands,
       equipmentBrands,
+      customEquipmentBrands,
       photos,
       manuals,
       notes,
@@ -96,13 +97,41 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // Handle custom equipment brands - create them as pending for admin review
+    const customBrandIds: string[] = [];
+    if (customEquipmentBrands && customEquipmentBrands.length > 0) {
+      for (const brandName of customEquipmentBrands) {
+        // Check if brand already exists (case insensitive)
+        let existingBrand = await EquipmentBrand.findOne({
+          name: { $regex: new RegExp(`^${brandName.trim()}$`, "i") },
+        });
+
+        if (!existingBrand) {
+          // Create new brand with pending status for admin review
+          existingBrand = await EquipmentBrand.create({
+            name: brandName.trim(),
+            status: "pending",
+            createdBy: session.user.id,
+          });
+        }
+
+        customBrandIds.push(existingBrand._id.toString());
+      }
+    }
+
+    // Merge regular brands and custom brands
+    const allEquipmentBrands = [
+      ...(equipmentBrands || []),
+      ...customBrandIds,
+    ];
+
     // Create equipment with pending status (will be reviewed by admin)
     const equipment = await Equipment.create({
       name,
       description,
       categoryId,
       vehicleBrands: vehicleBrands || [],
-      equipmentBrands: equipmentBrands || [],
+      equipmentBrands: allEquipmentBrands,
       photos: photos || [],
       manuals: manuals || [],
       notes,

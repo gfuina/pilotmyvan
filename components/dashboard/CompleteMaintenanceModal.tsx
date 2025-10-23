@@ -143,7 +143,7 @@ export default function CompleteMaintenanceModal({
           <div className="flex items-center justify-between gap-3">
             <div className="flex-1 min-w-0">
               <h3 className="text-lg sm:text-2xl font-bold text-black">
-                Marquer comme effectué
+                Marquer comme effectué / Dernière intervention
               </h3>
               <p className="text-xs sm:text-sm text-gray mt-1 truncate">{maintenanceName}</p>
             </div>
@@ -174,7 +174,7 @@ export default function CompleteMaintenanceModal({
             {/* Date */}
             <div>
               <label className="block text-sm font-semibold text-black mb-2">
-                Date d&apos;exécution <span className="text-red-500">*</span>
+                Date de dernière intervention <span className="text-red-500">*</span>
               </label>
               <input
                 type="date"
