@@ -143,12 +143,17 @@ export async function POST(
     if (isCustom) {
       // Create custom maintenance
       try {
-        const schedule = await VehicleMaintenanceSchedule.create({
+        const schedule = new VehicleMaintenanceSchedule({
           vehicleId: id,
           vehicleEquipmentId: vehicleEquipmentId,
           isCustom: true,
           customData,
         });
+
+        // Calculate next due dates using customData
+        schedule.calculateNextDue(vehicle.currentMileage, customData);
+        await schedule.save();
+
         created.push(schedule);
       } catch (error) {
         const err = error as { code?: number; message?: string };

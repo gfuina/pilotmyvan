@@ -65,6 +65,24 @@ const MaintenanceHistorySchema = new Schema({
   performedBy: String,
 });
 
+const CustomDataSchema = new Schema({
+  name: { type: String },
+  type: { type: String },
+  priority: { type: String },
+  difficulty: { type: String },
+  recurrence: {
+    time: {
+      value: { type: Number },
+      unit: { type: String },
+    },
+    kilometers: { type: Number },
+  },
+  description: { type: String },
+  instructions: { type: String },
+  estimatedDuration: { type: Number },
+  estimatedCost: { type: Number },
+}, { _id: false });
+
 const VehicleMaintenanceScheduleSchema: Schema<IVehicleMaintenanceSchedule> = new Schema(
   {
     vehicleId: {
@@ -89,21 +107,8 @@ const VehicleMaintenanceScheduleSchema: Schema<IVehicleMaintenanceSchedule> = ne
       default: false,
     },
     customData: {
-      name: String,
-      type: String,
-      priority: String,
-      difficulty: String,
-      recurrence: {
-        time: {
-          value: Number,
-          unit: String,
-        },
-        kilometers: Number,
-      },
-      description: String,
-      instructions: String,
-      estimatedDuration: Number,
-      estimatedCost: Number,
+      type: CustomDataSchema,
+      required: false,
     },
     history: {
       type: [MaintenanceHistorySchema],

@@ -180,18 +180,19 @@ export default function AddMaintenanceScheduleModal({
     setError("");
 
     try {
-      const response = await fetch("/api/user/maintenances", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...data,
-          equipmentId: equipmentIdForCustom,
-          vehicleEquipmentId,
-          vehicleId,
-        }),
-      });
+      const response = await fetch(
+        `/api/vehicles/${vehicleId}/equipments/${vehicleEquipmentId}/maintenances`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            isCustom: true,
+            customData: data,
+          }),
+        }
+      );
 
       if (response.ok) {
         onSuccess();
