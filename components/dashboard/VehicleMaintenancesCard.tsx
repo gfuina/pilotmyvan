@@ -6,6 +6,7 @@ import Image from "next/image";
 import AddMaintenanceScheduleModal from "./AddMaintenanceScheduleModal";
 import CompleteMaintenanceModal from "./CompleteMaintenanceModal";
 import MaintenanceInstructionsModal from "./MaintenanceInstructionsModal";
+import MaintenanceHistoryModal from "./MaintenanceHistoryModal";
 
 interface VehicleEquipment {
   _id: string;
@@ -257,6 +258,10 @@ export default function VehicleMaintenancesCard({
     estimatedDuration?: number;
     difficulty?: string;
     conditions?: string[];
+  } | null>(null);
+  const [historyData, setHistoryData] = useState<{
+    scheduleId: string;
+    name: string;
   } | null>(null);
   const [expandedRecommendations, setExpandedRecommendations] = useState<Set<string>>(new Set());
 
@@ -872,6 +877,23 @@ export default function VehicleMaintenancesCard({
                           </span>
                         </button>
 
+                        {/* Historique */}
+                        <button
+                          onClick={() =>
+                            setHistoryData({
+                              scheduleId: schedule._id,
+                              name: maintenance.name,
+                            })
+                          }
+                          className="group relative overflow-hidden px-3 py-2.5 bg-white border-2 border-purple-200 hover:border-purple-400 text-purple-600 hover:text-purple-700 font-medium rounded-xl transition-all duration-300 flex items-center justify-center gap-1.5"
+                          title="Voir l'historique"
+                        >
+                          <svg className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span className="text-xs hidden sm:inline">Hist.</span>
+                        </button>
+
                         {/* Instructions */}
                         {maintenance.instructions && typeof maintenance.instructions === 'string' && (
                           <button
@@ -1233,6 +1255,22 @@ export default function VehicleMaintenancesCard({
             difficulty={instructionsData.difficulty}
             conditions={instructionsData.conditions}
             onClose={() => setInstructionsData(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* History Modal */}
+      <AnimatePresence>
+        {historyData && (
+          <MaintenanceHistoryModal
+            vehicleId={vehicleId}
+            scheduleId={historyData.scheduleId}
+            maintenanceName={historyData.name}
+            onClose={() => setHistoryData(null)}
+            onUpdate={() => {
+              fetchVehicle();
+              fetchMaintenances();
+            }}
           />
         )}
       </AnimatePresence>

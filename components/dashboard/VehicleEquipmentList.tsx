@@ -661,6 +661,61 @@ export default function VehicleEquipmentList({
             vehicleEquipmentId={historyEquipment.id}
             equipmentName={historyEquipment.name}
             onClose={() => setHistoryEquipment(null)}
+            onUpdate={() => {
+              // Refetch maintenance statuses to update the badges
+              const fetchMaintenances = async () => {
+                try {
+                  const response = await fetch(`/api/vehicles/${vehicleId}/maintenances`);
+                  if (response.ok) {
+                    const data = await response.json();
+                    const maintenances = data.maintenances;
+
+                    const statuses: Record<string, EquipmentMaintenanceStatus> = {};
+
+                    equipments.forEach((equipment) => {
+                      const equipmentMaintenances = maintenances.filter(
+                        (m: any) => m.vehicleEquipmentId?._id === equipment._id
+                      );
+
+                      if (equipmentMaintenances.length === 0) {
+                        statuses[equipment._id] = {
+                          equipmentId: equipment._id,
+                          maintenancesCount: 0,
+                          urgencyState: "none",
+                        };
+                        return;
+                      }
+
+                      let mostUrgent: any = null;
+                      let highestUrgency = -1;
+
+                      equipmentMaintenances.forEach((m: any) => {
+                        const urgency = calculateUrgency(m);
+                        if (urgency > highestUrgency) {
+                          highestUrgency = urgency;
+                          mostUrgent = m;
+                        }
+                      });
+
+                      const urgencyState = getUrgencyState(mostUrgent);
+                      const nextDueText = formatNextDue(mostUrgent);
+
+                      statuses[equipment._id] = {
+                        equipmentId: equipment._id,
+                        maintenancesCount: equipmentMaintenances.length,
+                        urgencyState,
+                        nextDueText,
+                      };
+                    });
+
+                    setMaintenanceStatuses(statuses);
+                  }
+                } catch (error) {
+                  console.error("Error fetching maintenances:", error);
+                }
+              };
+              fetchMaintenances();
+            }}
           />
         )}
         {chatbotEquipment && (

@@ -15,6 +15,7 @@ interface MaintenanceRecord {
   maintenanceName: string;
   maintenanceType?: string;
   maintenancePriority?: string;
+  vehicleMaintenanceScheduleId?: string;
 }
 
 interface Stats {
@@ -36,6 +37,7 @@ interface EquipmentMaintenanceHistoryModalProps {
   vehicleEquipmentId: string;
   equipmentName: string;
   onClose: () => void;
+  onUpdate?: () => void;
 }
 
 const typeColors: Record<string, string> = {
@@ -61,6 +63,7 @@ export default function EquipmentMaintenanceHistoryModal({
   vehicleEquipmentId,
   equipmentName,
   onClose,
+  onUpdate,
 }: EquipmentMaintenanceHistoryModalProps) {
   const [records, setRecords] = useState<MaintenanceRecord[]>([]);
   const [stats, setStats] = useState<Stats | null>(null);
@@ -69,6 +72,9 @@ export default function EquipmentMaintenanceHistoryModal({
   const [expandedRecordId, setExpandedRecordId] = useState<string | null>(null);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
   const [selectedFilter, setSelectedFilter] = useState<string | null>(null);
+  const [editingRecord, setEditingRecord] = useState<MaintenanceRecord | null>(null);
+  const [deletingRecordId, setDeletingRecordId] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   useEffect(() => {
     fetchHistory();
@@ -103,6 +109,82 @@ export default function EquipmentMaintenanceHistoryModal({
       month: "long",
       year: "numeric",
     });
+  };
+
+  const formatTime = (dateString: string) => {
+    return new Date(dateString).toLocaleTimeString("fr-FR", {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
+  const handleUpdateRecord = async (record: MaintenanceRecord) => {
+    if (!record.vehicleMaintenanceScheduleId) {
+      alert("Impossible de modifier : ID de maintenance manquant");
+      return;
+    }
+
+    setIsSaving(true);
+    try {
+      const response = await fetch(
+        `/api/vehicles/${vehicleId}/maintenances/${record.vehicleMaintenanceScheduleId}/history/${record._id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            completedAt: record.completedAt,
+            mileageAtCompletion: record.mileageAtCompletion,
+            cost: record.cost,
+            notes: record.notes,
+            location: record.location,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        await fetchHistory();
+        setEditingRecord(null);
+        if (onUpdate) onUpdate();
+      } else {
+        alert("Erreur lors de la modification");
+      }
+    } catch (error) {
+      alert("Erreur lors de la modification");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDeleteRecord = async (record: MaintenanceRecord) => {
+    if (!record.vehicleMaintenanceScheduleId) {
+      alert("Impossible de supprimer : ID de maintenance manquant");
+      return;
+    }
+
+    if (!confirm(`Supprimer cet entretien "${record.maintenanceName}" ?`)) {
+      return;
+    }
+
+    setDeletingRecordId(record._id);
+    try {
+      const response = await fetch(
+        `/api/vehicles/${vehicleId}/maintenances/${record.vehicleMaintenanceScheduleId}/history/${record._id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        await fetchHistory();
+        if (onUpdate) onUpdate();
+      } else {
+        alert("Erreur lors de la suppression");
+      }
+    } catch (error) {
+      alert("Erreur lors de la suppression");
+    } finally {
+      setDeletingRecordId(null);
+    }
   };
 
   return (
@@ -270,41 +352,191 @@ export default function EquipmentMaintenanceHistoryModal({
 
               {/* Timeline des entretiens */}
               <div className="space-y-4">
-                {filteredRecords.map((record, index) => (
-                  <motion.div
-                    key={record._id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    className="relative bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl p-3 sm:p-4 hover:shadow-lg transition-all"
-                  >
-                    <div className="flex items-start gap-3 sm:gap-4">
-                      {/* Timeline dot */}
-                      <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-xs sm:text-sm">
-                        {index + 1}
-                      </div>
+                {filteredRecords.map((record, index) => {
+                  const isEditing = editingRecord && editingRecord._id === record._id;
+                  const isDeleting = deletingRecordId === record._id;
 
-                      <div className="flex-1 min-w-0">
-                        {/* Header */}
-                        <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
-                          <div className="flex-1 min-w-0">
-                            <h4 className="font-bold text-sm sm:text-base text-gray-900 truncate">
-                              {record.maintenanceName}
+                  if (isEditing) {
+                    return (
+                      <motion.div
+                        key={record._id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="relative bg-orange-50 border-2 border-orange-300 rounded-xl sm:rounded-2xl p-3 sm:p-4"
+                      >
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-2 mb-2">
+                            <div className="w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white font-bold text-xs">
+                              ✎
+                            </div>
+                            <h4 className="font-bold text-sm text-orange-900">
+                              Modification : {record.maintenanceName}
                             </h4>
-                            <p className="text-xs sm:text-sm text-gray-600">
-                              {formatDate(record.completedAt)}
-                            </p>
                           </div>
-                          {record.maintenanceType && (
-                            <span
-                              className={`px-2 py-1 rounded-lg text-xs font-medium ${
-                                typeColors[record.maintenanceType] || "bg-gray-100 text-gray-700"
-                              }`}
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                              <label className="block text-xs font-semibold text-black mb-1">
+                                Date et heure *
+                              </label>
+                              <input
+                                type="datetime-local"
+                                value={
+                                  editingRecord.completedAt
+                                    ? new Date(editingRecord.completedAt).toISOString().slice(0, 16)
+                                    : ""
+                                }
+                                onChange={(e) =>
+                                  setEditingRecord({
+                                    ...editingRecord,
+                                    completedAt: e.target.value,
+                                  })
+                                }
+                                className="w-full px-2 py-1.5 text-sm border-2 border-gray-300 rounded-lg focus:border-orange focus:ring-2 focus:ring-orange/20 outline-none transition-all"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs font-semibold text-black mb-1">
+                                Kilométrage
+                              </label>
+                              <input
+                                type="number"
+                                value={editingRecord.mileageAtCompletion || ""}
+                                onChange={(e) =>
+                                  setEditingRecord({
+                                    ...editingRecord,
+                                    mileageAtCompletion: e.target.value ? parseInt(e.target.value) : undefined,
+                                  })
+                                }
+                                placeholder="Ex: 45000"
+                                className="w-full px-2 py-1.5 text-sm border-2 border-gray-300 rounded-lg focus:border-orange focus:ring-2 focus:ring-orange/20 outline-none transition-all"
+                              />
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                              <label className="block text-xs font-semibold text-black mb-1">
+                                Coût (€)
+                              </label>
+                              <input
+                                type="number"
+                                step="0.01"
+                                value={editingRecord.cost || ""}
+                                onChange={(e) =>
+                                  setEditingRecord({
+                                    ...editingRecord,
+                                    cost: e.target.value ? parseFloat(e.target.value) : undefined,
+                                  })
+                                }
+                                placeholder="Ex: 150.00"
+                                className="w-full px-2 py-1.5 text-sm border-2 border-gray-300 rounded-lg focus:border-orange focus:ring-2 focus:ring-orange/20 outline-none transition-all"
+                              />
+                            </div>
+                            <div>
+                              <label className="block text-xs font-semibold text-black mb-1">
+                                Lieu
+                              </label>
+                              <input
+                                type="text"
+                                value={editingRecord.location || ""}
+                                onChange={(e) =>
+                                  setEditingRecord({
+                                    ...editingRecord,
+                                    location: e.target.value,
+                                  })
+                                }
+                                placeholder="Ex: Garage XYZ"
+                                className="w-full px-2 py-1.5 text-sm border-2 border-gray-300 rounded-lg focus:border-orange focus:ring-2 focus:ring-orange/20 outline-none transition-all"
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-semibold text-black mb-1">
+                              Notes
+                            </label>
+                            <textarea
+                              value={editingRecord.notes || ""}
+                              onChange={(e) =>
+                                setEditingRecord({
+                                  ...editingRecord,
+                                  notes: e.target.value,
+                                })
+                              }
+                              rows={2}
+                              placeholder="Remarques, observations..."
+                              className="w-full px-2 py-1.5 text-sm border-2 border-gray-300 rounded-lg focus:border-orange focus:ring-2 focus:ring-orange/20 outline-none transition-all resize-none"
+                            />
+                          </div>
+
+                          <div className="flex gap-2 pt-2">
+                            <button
+                              onClick={() => handleUpdateRecord(editingRecord)}
+                              disabled={isSaving}
+                              className="flex-1 px-3 py-2 bg-gradient-to-r from-orange to-orange-light text-white font-bold text-sm rounded-lg hover:shadow-lg transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                             >
-                              {typeLabels[record.maintenanceType] || record.maintenanceType}
-                            </span>
-                          )}
+                              {isSaving ? (
+                                <>
+                                  <svg className="w-4 h-4 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                  </svg>
+                                  Enregistrement...
+                                </>
+                              ) : (
+                                <>💾 Enregistrer</>
+                              )}
+                            </button>
+                            <button
+                              onClick={() => setEditingRecord(null)}
+                              disabled={isSaving}
+                              className="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold text-sm rounded-lg transition-colors disabled:opacity-50"
+                            >
+                              Annuler
+                            </button>
+                          </div>
                         </div>
+                      </motion.div>
+                    );
+                  }
+
+                  return (
+                    <motion.div
+                      key={record._id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="relative bg-white border-2 border-gray-200 rounded-xl sm:rounded-2xl p-3 sm:p-4 hover:shadow-lg transition-all"
+                    >
+                      <div className="flex items-start gap-3 sm:gap-4">
+                        {/* Timeline dot */}
+                        <div className="flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white font-bold text-xs sm:text-sm">
+                          {index + 1}
+                        </div>
+
+                        <div className="flex-1 min-w-0">
+                          {/* Header */}
+                          <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-2">
+                            <div className="flex-1 min-w-0">
+                              <h4 className="font-bold text-sm sm:text-base text-gray-900 truncate">
+                                {record.maintenanceName}
+                              </h4>
+                              <p className="text-xs sm:text-sm text-gray-600">
+                                {formatDate(record.completedAt)} • {formatTime(record.completedAt)}
+                              </p>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {record.maintenanceType && (
+                                <span
+                                  className={`px-2 py-1 rounded-lg text-xs font-medium ${
+                                    typeColors[record.maintenanceType] || "bg-gray-100 text-gray-700"
+                                  }`}
+                                >
+                                  {typeLabels[record.maintenanceType] || record.maintenanceType}
+                                </span>
+                              )}
+                            </div>
+                          </div>
 
                         {/* Info badges */}
                         <div className="flex flex-wrap gap-2 mb-2">
@@ -323,6 +555,42 @@ export default function EquipmentMaintenanceHistoryModal({
                               📍 {record.location}
                             </span>
                           )}
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex items-center gap-2 mb-2">
+                          <button
+                            onClick={() => setEditingRecord(record)}
+                            className="px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-600 rounded-lg transition-colors text-xs font-medium flex items-center gap-1"
+                            title="Modifier"
+                          >
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Modifier
+                          </button>
+                          <button
+                            onClick={() => handleDeleteRecord(record)}
+                            disabled={isDeleting}
+                            className="px-2 py-1 bg-red-50 hover:bg-red-100 text-red-600 rounded-lg transition-colors text-xs font-medium flex items-center gap-1 disabled:opacity-50"
+                            title="Supprimer"
+                          >
+                            {isDeleting ? (
+                              <>
+                                <svg className="w-3.5 h-3.5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                </svg>
+                                Suppression...
+                              </>
+                            ) : (
+                              <>
+                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                                Supprimer
+                              </>
+                            )}
+                          </button>
                         </div>
 
                         {/* Expandable details */}
@@ -403,10 +671,11 @@ export default function EquipmentMaintenanceHistoryModal({
                             </AnimatePresence>
                           </>
                         )}
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  );
+                })}
               </div>
             </>
           )}
