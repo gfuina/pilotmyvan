@@ -3,6 +3,14 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+interface Attachment {
+  url: string;
+  filename: string;
+  contentType: string;
+  size: number;
+  uploadedAt: Date;
+}
+
 interface HistoryEntry {
   _id: string;
   completedAt: Date | string;
@@ -10,13 +18,7 @@ interface HistoryEntry {
   cost?: number;
   notes?: string;
   location?: string;
-  attachments?: Array<{
-    url: string;
-    filename: string;
-    contentType: string;
-    size: number;
-    uploadedAt: Date;
-  }>;
+  attachments?: Attachment[];
 }
 
 interface MaintenanceHistoryModalProps {
@@ -39,6 +41,9 @@ export default function MaintenanceHistoryModal({
   const [editingEntry, setEditingEntry] = useState<HistoryEntry | null>(null);
   const [deletingEntryId, setDeletingEntryId] = useState<string | null>(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [viewingImage, setViewingImage] = useState<string | null>(null);
+  const [uploadingFiles, setUploadingFiles] = useState(false);
+  const [filesToDelete, setFilesToDelete] = useState<string[]>([]);
 
   useEffect(() => {
     fetchHistory();
@@ -87,6 +92,18 @@ export default function MaintenanceHistoryModal({
   const handleUpdateEntry = async (entry: HistoryEntry) => {
     setIsSaving(true);
     try {
+      // Supprimer les fichiers marqués pour suppression
+      for (const url of filesToDelete) {
+        await fetch(
+          `/api/vehicles/${vehicleId}/maintenances/${scheduleId}/history/${entry._id}/attachments`,
+          {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url }),
+          }
+        );
+      }
+
       const response = await fetch(
         `/api/vehicles/${vehicleId}/maintenances/${scheduleId}/history/${entry._id}`,
         {
@@ -105,6 +122,7 @@ export default function MaintenanceHistoryModal({
       if (response.ok) {
         await fetchHistory();
         setEditingEntry(null);
+        setFilesToDelete([]);
         onUpdate();
       } else {
         alert("Erreur lors de la modification");
@@ -116,18 +134,68 @@ export default function MaintenanceHistoryModal({
     }
   };
 
+  const handleFileUpload = async (
+    entry: HistoryEntry,
+    files: FileList | null
+  ) => {
+    if (!files || files.length === 0) return;
+
+    setUploadingFiles(true);
+    try {
+      const formData = new FormData();
+      Array.from(files).forEach((file) => {
+        formData.append("files", file);
+      });
+
+      const response = await fetch(
+        `/api/vehicles/${vehicleId}/maintenances/${scheduleId}/history/${entry._id}/attachments`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setEditingEntry({
+          ...entry,
+          attachments: [...(entry.attachments || []), ...data.attachments],
+        });
+      } else {
+        alert("Erreur lors de l'upload");
+      }
+    } catch (error) {
+      alert("Erreur lors de l'upload");
+    } finally {
+      setUploadingFiles(false);
+    }
+  };
+
+  const handleDeleteAttachment = (url: string) => {
+    if (editingEntry) {
+      setEditingEntry({
+        ...editingEntry,
+        attachments: editingEntry.attachments?.filter((a) => a.url !== url),
+      });
+      setFilesToDelete([...filesToDelete, url]);
+    }
+  };
+
+  const isImage = (contentType: string) => {
+    return contentType.startsWith("image/");
+  };
+
+  const formatFileSize = (bytes: number) => {
+    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+    return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+  };
+
   const formatDate = (date: Date | string) => {
     return new Date(date).toLocaleDateString("fr-FR", {
       day: "numeric",
       month: "long",
       year: "numeric",
-    });
-  };
-
-  const formatTime = (date: Date | string) => {
-    return new Date(date).toLocaleTimeString("fr-FR", {
-      hour: "2-digit",
-      minute: "2-digit",
     });
   };
 
@@ -315,6 +383,102 @@ export default function MaintenanceHistoryModal({
                           />
                         </div>
 
+                        {/* Pièces jointes */}
+                        <div>
+                          <label className="block text-sm font-semibold text-black mb-2">
+                            Pièces jointes
+                          </label>
+                          
+                          {editingEntry.attachments && editingEntry.attachments.length > 0 && (
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 mb-3">
+                              {editingEntry.attachments.map((att) => (
+                                <div
+                                  key={att.url}
+                                  className="relative group border-2 border-gray-200 rounded-xl overflow-hidden"
+                                >
+                                  {isImage(att.contentType) ? (
+                                    <div className="aspect-square relative">
+                                      <img
+                                        src={att.url}
+                                        alt={att.filename}
+                                        className="w-full h-full object-cover"
+                                      />
+                                      <button
+                                        onClick={() => setViewingImage(att.url)}
+                                        className="absolute inset-0 bg-black/0 hover:bg-black/50 transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100"
+                                      >
+                                        <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                        </svg>
+                                      </button>
+                                    </div>
+                                  ) : (
+                                    <a
+                                      href={att.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="flex flex-col items-center justify-center p-3 hover:bg-gray-50 transition-colors aspect-square"
+                                    >
+                                      <svg className="w-8 h-8 text-gray-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                      </svg>
+                                      <span className="text-xs text-center text-gray-600 truncate w-full">
+                                        {att.filename}
+                                      </span>
+                                      <span className="text-xs text-gray-400">
+                                        {formatFileSize(att.size)}
+                                      </span>
+                                    </a>
+                                  )}
+                                  <button
+                                    onClick={() => handleDeleteAttachment(att.url)}
+                                    className="absolute top-1 right-1 p-1.5 bg-red-500 text-white rounded-lg opacity-0 group-hover:opacity-100 transition-opacity hover:bg-red-600"
+                                    title="Supprimer"
+                                  >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          )}
+
+                          <div className="relative">
+                            <input
+                              type="file"
+                              multiple
+                              accept="image/*,.pdf"
+                              onChange={(e) => handleFileUpload(editingEntry, e.target.files)}
+                              className="hidden"
+                              id="file-upload"
+                              disabled={uploadingFiles}
+                            />
+                            <label
+                              htmlFor="file-upload"
+                              className={`flex items-center justify-center gap-2 px-4 py-3 border-2 border-dashed border-gray-300 rounded-xl hover:border-orange hover:bg-orange/5 transition-all cursor-pointer ${
+                                uploadingFiles ? "opacity-50 cursor-not-allowed" : ""
+                              }`}
+                            >
+                              {uploadingFiles ? (
+                                <>
+                                  <svg className="w-5 h-5 animate-spin text-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                  </svg>
+                                  <span className="text-sm text-gray-600">Upload en cours...</span>
+                                </>
+                              ) : (
+                                <>
+                                  <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                  </svg>
+                                  <span className="text-sm text-gray-600">Ajouter des fichiers</span>
+                                </>
+                              )}
+                            </label>
+                          </div>
+                        </div>
+
                         <div className="flex gap-2 pt-2">
                           <button
                             onClick={() => handleUpdateEntry(editingEntry)}
@@ -333,7 +497,10 @@ export default function MaintenanceHistoryModal({
                             )}
                           </button>
                           <button
-                            onClick={() => setEditingEntry(null)}
+                            onClick={() => {
+                              setEditingEntry(null);
+                              setFilesToDelete([]);
+                            }}
                             disabled={isSaving}
                             className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-colors disabled:opacity-50"
                           >
@@ -356,9 +523,6 @@ export default function MaintenanceHistoryModal({
                           <div className="w-2 h-2 rounded-full bg-green-500" />
                           <span className="font-bold text-black">
                             {formatDate(entry.completedAt)}
-                          </span>
-                          <span className="text-sm text-gray-500">
-                            {formatTime(entry.completedAt)}
                           </span>
                         </div>
 
@@ -397,18 +561,63 @@ export default function MaintenanceHistoryModal({
                         )}
 
                         {entry.attachments && entry.attachments.length > 0 && (
-                          <div className="mt-2 flex items-center gap-1.5 text-xs text-blue-600">
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
-                            </svg>
-                            <span>{entry.attachments.length} pièce{entry.attachments.length > 1 ? 's' : ''} jointe{entry.attachments.length > 1 ? 's' : ''}</span>
+                          <div className="mt-3">
+                            <div className="flex items-center gap-1.5 text-xs text-blue-600 mb-2">
+                              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                              </svg>
+                              <span>{entry.attachments.length} pièce{entry.attachments.length > 1 ? 's' : ''} jointe{entry.attachments.length > 1 ? 's' : ''}</span>
+                            </div>
+                            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                              {entry.attachments.map((att) => (
+                                <div
+                                  key={att.url}
+                                  className="relative group border border-gray-200 rounded-lg overflow-hidden hover:border-gray-300 transition-colors"
+                                >
+                                  {isImage(att.contentType) ? (
+                                    <button
+                                      onClick={() => setViewingImage(att.url)}
+                                      className="w-full aspect-square relative"
+                                    >
+                                      <img
+                                        src={att.url}
+                                        alt={att.filename}
+                                        className="w-full h-full object-cover"
+                                      />
+                                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
+                                        <svg className="w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                                        </svg>
+                                      </div>
+                                    </button>
+                                  ) : (
+                                    <a
+                                      href={att.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="flex flex-col items-center justify-center p-2 hover:bg-gray-50 transition-colors aspect-square"
+                                    >
+                                      <svg className="w-6 h-6 text-gray-400 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                      </svg>
+                                      <span className="text-xs text-center text-gray-600 truncate w-full px-1">
+                                        {att.filename.length > 10 ? att.filename.substring(0, 10) + '...' : att.filename}
+                                      </span>
+                                    </a>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
                           </div>
                         )}
                       </div>
 
                       <div className="flex gap-1 flex-shrink-0">
                         <button
-                          onClick={() => setEditingEntry(entry)}
+                          onClick={() => {
+                            setEditingEntry(entry);
+                            setFilesToDelete([]);
+                          }}
                           className="p-2 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"
                           title="Modifier"
                         >
@@ -441,6 +650,37 @@ export default function MaintenanceHistoryModal({
           )}
         </div>
       </motion.div>
+
+      {/* Modal d'affichage d'image */}
+      <AnimatePresence>
+        {viewingImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/90 z-[60] flex items-center justify-center p-4"
+            onClick={() => setViewingImage(null)}
+          >
+            <button
+              onClick={() => setViewingImage(null)}
+              className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+            >
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <motion.img
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              src={viewingImage}
+              alt="Aperçu"
+              className="max-w-full max-h-full object-contain rounded-lg"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }
